@@ -42,3 +42,34 @@ O ZeroTier permite acesso remoto seguro ao laboratório.
 - [ ] Configurar alertas no Telegram
 - [ ] Implementar backup automatizado
 - [ ] Documentar arquitetura completa
+
+## Temas principais do repositório e o que o laboratório deve cobrir:
+
+# Linux Server
+
+Ubuntu Server ou Debian, SSH, usuários, firewall, serviços, logs, backup e hardening básico.
+
+# Zabbix 7
+
+Instalação, Zabbix Server, Zabbix Agent, templates, hosts, triggers, discovery, mapas e alertas.
+
+# Grafana
+
+Dashboards, visualização de métricas, integração com Zabbix ou Prometheus, painéis para servidores e rede.
+
+# Redes e SNMP
+
+Monitoramento de roteadores, switches, firewall, impressoras, nobreaks, OIDs, SNMP v2/v3 e descoberta automática.
+
+# Alertas
+
+Telegram Bot, WhatsApp via API ou gateway, notificações críticas, escalonamento e evidências.
+
+# ZeroTier / VPN
+
+Acesso remoto seguro a servidores e dispositivos atrás de CGNAT, filial remota ou laboratório doméstico.
+
+# Hardware/Lab
+
+Mini PC (hardware de baixo custo), roteador, switch, servidor Linux, dispositivos SNMP, notebook, VM local e ambiente de testes.
+
