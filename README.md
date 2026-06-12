@@ -1,16 +1,16 @@
 # zabbix-linux-network-server-monitoring-lab
 
-Laboratório prático de monitoramento de redes, servidores Linux, SNMP, Zabbix, Grafana, alertas e acesso remoto seguro.
+Practical laboratory for monitoring networks, Linux servers, SNMP, Zabbix, Grafana, alerts and secure remote access.
 
 # Network & Server Monitoring Lab
 
-Laboratório prático para estudo e implementação de monitoramento profissional de redes, servidores Linux, dispositivos SNMP e alertas automatizados utilizando Zabbix, Grafana, Linux Server, SNMP, ZeroTier, Telegram e outras ferramentas.
+Practical laboratory for the study and implementation of professional monitoring of networks, Linux servers, SNMP devices and automated alerts using Zabbix, Grafana, Linux Server, SNMP, ZeroTier, Telegram and other tools.
 
-## Objetivo
+## Objective
 
-Este projeto tem como objetivo construir um ambiente de monitoramento semelhante ao utilizado em empresas, provedores, equipes de infraestrutura, NOC, SRE e Cloud Engineering.
+This project aims to build a monitoring environment similar to that used in companies, providers, infrastructure teams, NOCs, SREs, and Cloud Engineering.
 
-## Tecnologias
+## Technologies
 
 - Linux Server (Ubuntu)
 - Zabbix 7
@@ -25,7 +25,7 @@ Este projeto tem como objetivo construir um ambiente de monitoramento semelhante
 - Dashboards
 - Alertas 24/7
 
-## Arquitetura
+## Architecture
 
 Dispositivos monitorados enviam métricas para o Zabbix Server via Agent ou SNMP.  
 O Grafana é utilizado para visualização dos dashboards.  
