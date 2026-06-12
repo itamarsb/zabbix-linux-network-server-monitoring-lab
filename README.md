@@ -37,14 +37,14 @@ This project aims to build a monitoring environment similar to that used in comp
 
 ## Roadmap
 
-- [X] Instalar servidor Linux
-- [ ] Instalar Zabbix Server
-- [ ] Adicionar primeiro host Linux
-- [ ] Configurar SNMP
-- [ ] Criar dashboards no Grafana
-- [ ] Configurar alertas no Telegram
-- [ ] Implementar backup automatizado
-- [ ] Documentar arquitetura completa
+- [X] Install Linux Server;
+- [ ] Install Zabbix Server;
+- [ ] Add the first Linux host.;
+- [ ] Configure SNMP;
+- [ ] Creating dashboards in Grafana;
+- [ ] Set up alerts on Telegram;
+- [ ] Implement automated backup;
+- [ ] Document complete architecture.
 
 ## Temas principais do repositório e o que o laboratório deve cobrir:
 
