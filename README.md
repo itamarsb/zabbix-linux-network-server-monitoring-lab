@@ -34,7 +34,7 @@ O ZeroTier permite acesso remoto seguro ao laboratório.
 
 ## Roadmap
 
-- [ ] Instalar servidor Linux
+- [X] Instalar servidor Linux
 - [ ] Instalar Zabbix Server
 - [ ] Adicionar primeiro host Linux
 - [ ] Configurar SNMP
