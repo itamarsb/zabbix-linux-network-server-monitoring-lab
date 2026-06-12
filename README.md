@@ -23,14 +23,17 @@ This project aims to build a monitoring environment similar to that used in comp
 - Shell Script
 - Backup
 - Dashboards
-- Alertas 24/7
+- Alerts 24/7
 
 ## Architecture
 
-Dispositivos monitorados enviam métricas para o Zabbix Server via Agent ou SNMP.  
-O Grafana é utilizado para visualização dos dashboards.  
-Alertas críticos são enviados para Telegram e/ou WhatsApp.  
-O ZeroTier permite acesso remoto seguro ao laboratório.
+- Monitored devices send metrics to the Zabbix Server via Agent or SNMP;
+
+- Grafana is used for dashboard visualization;
+
+- Critical alerts are sent to Telegram and/or WhatsApp;
+
+- ZeroTier allows secure remote access to the lab.
 
 ## Roadmap
 
