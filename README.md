@@ -38,6 +38,9 @@ This project aims to build a monitoring environment similar to that used in comp
 ## Roadmap
 
 - [X] Install Linux Server;
+
+![Server](/docs/images/Ubuntu_Server_20.jpg)
+
 - [ ] Install Zabbix Server;
 - [ ] Add the first Linux host.;
 - [ ] Configure SNMP;
