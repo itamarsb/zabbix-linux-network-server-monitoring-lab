@@ -46,33 +46,33 @@ This project aims to build a monitoring environment similar to that used in comp
 - [ ] Implement automated backup;
 - [ ] Document complete architecture.
 
-## Temas principais do repositório e o que o laboratório deve cobrir:
+## Main topics of the repository and what the lab should cover:
 
 ## Linux Server
 
-Ubuntu Server ou Debian, SSH, usuários, firewall, serviços, logs, backup e hardening básico.
+Ubuntu Server or Debian, SSH, users, firewall, services, logs, backup, and basic hardening.
 
 ## Zabbix 7
 
-Instalação, Zabbix Server, Zabbix Agent, templates, hosts, triggers, discovery, mapas e alertas.
+Installation, Zabbix Server, Zabbix Agent, templates, hosts, triggers, discovery, maps, and alerts.
 
 ## Grafana
 
-Dashboards, visualização de métricas, integração com Zabbix ou Prometheus, painéis para servidores e rede.
+Dashboards, metrics visualization, integration with Zabbix or Prometheus, server and network panels.
 
-## Redes e SNMP
+## Networks and SNMP
 
-Monitoramento de roteadores, switches, firewall, impressoras, nobreaks, OIDs, SNMP v2/v3 e descoberta automática.
+Monitoring of routers, switches, firewalls, printers, UPS, OIDs, SNMP v2/v3, and automatic discovery.
 
-## Alertas
+## Alerts
 
-Telegram Bot, WhatsApp via API ou gateway, notificações críticas, escalonamento e evidências.
+Telegram Bot, WhatsApp via API or gateway, critical notifications, escalation, and evidence.
 
 ## ZeroTier / VPN
 
-Acesso remoto seguro a servidores e dispositivos atrás de CGNAT, filial remota ou laboratório doméstico.
+Secure remote access to servers and devices behind CGNAT, remote branch office, or home lab.
 
 ## Hardware/Lab
 
-Mini PC (hardware de baixo custo), roteador, switch, servidor Linux, dispositivos SNMP, notebook, VM local e ambiente de testes.
+Mini PC (low-cost hardware), router, switch, Linux server, SNMP devices, notebook, local VM, and testing environment.
 
