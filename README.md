@@ -80,8 +80,15 @@ Secure remote access to servers and devices behind CGNAT, remote branch office, 
 Mini PC (low-cost hardware), router, switch, Linux server, SNMP devices, notebook, local VM, and testing environment.
 
 
-<p align="center">
-  
-< href="https://info.flagcounter.com/iBrN"><img src="https://s01.flagcounter.com/count/iBrN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_100/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0" />
+---
 
+
+<p align="center">
+  <a href="https://info.flagcounter.com/iBrN">
+    <img
+      src="https://s01.flagcounter.com/count/iBrN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_100/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"
+      alt="Flag Counter"
+      width="900"
+    />
+  </a>
 </p>
