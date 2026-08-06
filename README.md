@@ -80,5 +80,5 @@ Secure remote access to servers and devices behind CGNAT, remote branch office, 
 Mini PC (low-cost hardware), router, switch, Linux server, SNMP devices, notebook, local VM, and testing environment.
 
 <p align="center">
-![](https://komarev.com/ghpvc/?username=itamarsb&color=blue)
+  <img src="https://komarev.com/ghpvc/?username=itamarsb&label=Profile%20Views&color=0e75b6&style=for-the-badge" alt="Profile Views" />
 </p>
