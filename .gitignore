@@ -1,0 +1,78 @@
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+*.secret
+*.secrets
+secrets/
+credentials/
+
+# Local configuration overrides
+*.local
+*.override
+compose.override.yaml
+compose.override.yml
+docker-compose.override.yaml
+docker-compose.override.yml
+
+# Runtime data and persistent service data
+data/
+volumes/
+runtime/
+tmp/
+temp/
+
+# Logs
+*.log
+logs/
+
+# Backup and database files
+*.bak
+*.backup
+*.dump
+*.sql
+*.sqlite
+*.sqlite3
+
+# TLS certificates and private keys
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Zabbix exports generated locally
+exports/private/
+zabbix_export_*.local.yaml
+zabbix_export_*.local.yml
+zabbix_export_*.local.json
+
+# Test and validation output
+reports/local/
+artifacts/local/
+validation-output/
+
+# PowerShell temporary and transcript files
+*.clixml
+*.transcript.txt
+
+# Python cache used by optional validation utilities
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.code-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary editor files
+*.swp
+*.swo
+*~
