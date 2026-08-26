@@ -308,4 +308,4 @@ The workstation is approved for deployment of the local Zabbix NOC laboratory.
 
 Stage 01 will create and validate the reproducible platform composed of PostgreSQL, Zabbix Server, and Zabbix Web.
 
-[Continue to the main project roadmap](../../README.md#implementation-roadmap)
+
