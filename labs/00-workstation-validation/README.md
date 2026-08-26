@@ -85,7 +85,7 @@ The workstation has sufficient capacity to run the planned stack while preservin
 ## Required Ports
 
 | Port | Protocol | Planned purpose | Baseline result |
-|---:|---|---|---|
+|:---:|:---:|---|:---:|
 | 8080 | TCP | Zabbix web interface | Available |
 | 8443 | TCP | Optional HTTPS interface | Available |
 | 10050 | TCP | Zabbix Agent 2 | Available |
