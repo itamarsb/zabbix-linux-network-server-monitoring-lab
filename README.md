@@ -113,7 +113,7 @@ Additional directories will be introduced only when they contain implemented and
 ## Implementation Roadmap
 
 | Stage | Scope | Status |
-|---:|---|---|
+|:---:|---|:---:|
 | 00 | Workstation validation and repository baseline | Completed |
 | 01 | Zabbix platform deployment and health validation | In progress |
 | 02 | Linux host monitoring with Zabbix Agent 2 | Planned |
