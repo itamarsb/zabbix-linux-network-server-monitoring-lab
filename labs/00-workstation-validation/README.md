@@ -153,7 +153,7 @@ An optional check may generate a warning without rejecting the workstation. For 
 ## Validation Results
 
 | Validation area | Result |
-|---|---|
+|---|:---:|
 | Windows architecture | Passed |
 | Logical processors | Passed |
 | Physical memory | Passed |
