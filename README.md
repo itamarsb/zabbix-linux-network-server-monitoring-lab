@@ -239,3 +239,18 @@ Stage 01 is in progress and will introduce the reproducible Zabbix platform befo
 ---
 
 This repository is a controlled laboratory environment intended for technical practice and portfolio demonstration. It is not a production deployment guide.
+
+---
+
+## 📈 Repository Metrics
+
+
+<p align="center">
+  <a href="https://info.flagcounter.com/iBrN">
+    <img
+      src="https://s01.flagcounter.com/count/iBrN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_100/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"
+      alt="Flag Counter"
+      width="900"
+    />
+  </a>
+</p>
