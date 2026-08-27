@@ -306,6 +306,7 @@ If screenshots are added later, they must exclude credentials, personal informat
 
 The workstation is approved for deployment of the local Zabbix NOC laboratory.
 
-Stage 01 will create and validate the reproducible platform composed of PostgreSQL, Zabbix Server, and Zabbix Web.
+Stage 01 subsequently created and validated the reproducible platform composed of PostgreSQL, Zabbix Server, and Zabbix Web.
 
+Continue to [`Lab 01 — Zabbix Platform Deployment`](../01-zabbix-platform/README.md).
 
