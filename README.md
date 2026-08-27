@@ -115,8 +115,8 @@ Additional directories will be introduced only when they contain implemented and
 | Stage | Scope | Status |
 |:---:|---|:---:|
 | 00 | Workstation validation and repository baseline | Completed |
-| 01 | Zabbix platform deployment and health validation | In progress |
-| 02 | Linux host monitoring with Zabbix Agent 2 | Planned |
+| 01 | Zabbix platform deployment and health validation | Completed |
+| 02 | Linux host monitoring with Zabbix Agent 2 | In progress |
 | 03 | Windows host monitoring with Zabbix Agent 2 | Planned |
 | 04 | Network, DNS, TCP, and HTTP service monitoring | Planned |
 | 05 | Triggers, severities, events, and alert handling | Planned |
