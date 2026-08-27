@@ -308,7 +308,7 @@ After host registration and template assignment, Zabbix initialized 120 items.
 The initial item state was:
 
 | State | Count |
-|---|---:|
+|:---:|:---:|
 | Normal | 116 |
 | Unsupported | 4 |
 | Total | 120 |
@@ -406,7 +406,7 @@ The current host interface uses the validated WSL address. A future operational 
 ## Acceptance Criteria
 
 | Criterion | Status |
-|---|---|
+|---|:---:|
 | Ubuntu 24.04 WSL selected as monitored host | Passed |
 | Official Zabbix repository configured | Passed |
 | Zabbix Agent 2 installed | Passed |
