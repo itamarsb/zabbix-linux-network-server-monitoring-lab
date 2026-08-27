@@ -28,7 +28,7 @@ After completing this laboratory, the operator can:
 ## Platform Components
 
 | Component | Image | Purpose |
-|---|---|---|
+|:---:|---|---|
 | PostgreSQL | `postgres:16.15-alpine3.24` | Persistent Zabbix configuration and monitoring database |
 | Zabbix Server | `zabbix/zabbix-server-pgsql:ubuntu-7.0.30` | Data collection, trigger evaluation, event processing, and monitoring logic |
 | Zabbix Web | `zabbix/zabbix-web-nginx-pgsql:ubuntu-7.0.30` | Web administration and NOC operations interface |
@@ -38,7 +38,7 @@ After completing this laboratory, the operator can:
 The platform uses three Docker networks with distinct responsibilities.
 
 | Network | Purpose |
-|---|---|
+|:---:|---|
 | `backend` | Isolated communication between PostgreSQL, Zabbix Server, and Zabbix Web |
 | `frontend` | Access to the Zabbix web interface |
 | `monitoring` | Communication between Zabbix Server and monitored services |
@@ -48,7 +48,7 @@ The `backend` network is internal. PostgreSQL is not published to the Windows wo
 Only the following ports are published:
 
 | Workstation endpoint | Container endpoint | Purpose |
-|---|---|---|
+|:---:|---|---|
 | `127.0.0.1:8080` | `zabbix-web:8080` | Local Zabbix web interface |
 | `127.0.0.1:10051` | `zabbix-server:10051` | Zabbix Server communication |
 
