@@ -4,7 +4,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Linux](https://img.shields.io/badge/Linux-Monitoring-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
 [![Windows](https://img.shields.io/badge/Windows-Monitoring-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
-[![Status](https://img.shields.io/badge/Status-Stage%2001%20In%20Progress-orange)](#implementation-roadmap)
+[![Status](https://img.shields.io/badge/Status-Stage%2002%20In%20Progress-orange)](#implementation-roadmap)
 
 A practical Network Operations Center lab focused on infrastructure monitoring, alert triage, troubleshooting, incident response, service recovery, and operational documentation.
 
@@ -105,7 +105,11 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 ## Current Repository Contents
 
 - [`labs/00-workstation-validation/`](labs/00-workstation-validation/) - workstation baseline, acceptance criteria, findings, and results;
+- [`labs/01-zabbix-platform/`](labs/01-zabbix-platform/) - reproducible Zabbix platform deployment, validation, troubleshooting, and evidence;
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - reusable read-only workstation validation;
+- [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, persistent storage, and isolated networks;
+- [`.env.example`](.env.example) - versioned environment-variable template without operational credentials;
+- [`docs/screenshots/`](docs/screenshots/) - selected technical evidence from completed stages;
 - [`.gitignore`](.gitignore) - protection for secrets, runtime data, logs, local overrides, and temporary files.
 
 Additional directories will be introduced only when they contain implemented and validated material.
@@ -126,7 +130,7 @@ Additional directories will be introduced only when they contain implemented and
 
 A stage is marked as completed only after its implementation, validation, troubleshooting notes, and relevant evidence are committed.
 
-## Completed Stage
+## Completed Stages
 
 ### Stage 00 - Workstation Validation
 
@@ -156,22 +160,41 @@ RESULT: WORKSTATION APPROVED
 
 See the complete documentation in [`labs/00-workstation-validation/README.md`](labs/00-workstation-validation/README.md).
 
-## Current Stage
-
 ### Stage 01 - Zabbix Platform Deployment
 
-The next stage will introduce and validate:
+Stage 01 delivered a reproducible Zabbix 7.0 LTS platform composed of PostgreSQL, Zabbix Server, and Zabbix Web.
 
-- PostgreSQL;
-- Zabbix Server 7.0 LTS;
-- Zabbix Web;
-- persistent Docker volumes;
-- an isolated Docker network;
-- service health checks;
+The implementation included:
+
+- pinned container image versions;
+- an internal database network;
+- persistent PostgreSQL storage;
+- loopback-only published ports;
+- database health validation;
 - controlled environment variables;
-- initial platform availability tests.
+- local HTTP availability validation;
+- replacement of default administrative credentials;
+- investigation and correction of an inappropriate template relationship;
+- confirmation of platform recovery with no current problems.
 
-Deployment files will be committed only after local configuration and validation succeed.
+See the complete documentation in [`labs/01-zabbix-platform/README.md`](labs/01-zabbix-platform/README.md).
+
+## Current Stage
+
+### Stage 02 - Linux Host Monitoring
+
+The current stage will introduce and validate:
+
+- a dedicated Linux monitoring target;
+- Zabbix Agent 2 installation and configuration;
+- host registration and template assignment;
+- agent availability and communication;
+- CPU, memory, filesystem, process, and network-interface data;
+- unsupported-item investigation;
+- controlled resource activity and updated item values;
+- selected validation evidence.
+
+Implementation files will be committed only after configuration and validation succeed.
 
 ## Evidence Policy
 
@@ -232,9 +255,9 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 
 ## Project Status
 
-Stage 00 is complete, validated, and documented.
+Stages 00 and 01 are complete, validated, and documented.
 
-Stage 01 is in progress and will introduce the reproducible Zabbix platform before the first monitored Linux host is added.
+Stage 02 is in progress and will add the first monitored Linux host with Zabbix Agent 2.
 
 ---
 
@@ -243,7 +266,6 @@ This repository is a controlled laboratory environment intended for technical pr
 ---
 
 ## 📈 Repository Metrics
-
 
 <p align="center">
   <a href="https://info.flagcounter.com/iBrN">
