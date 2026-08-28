@@ -10,7 +10,7 @@ The initial implementation uses passive agent checks initiated by the containeri
 
 ## Current Status
 
-**In progress**
+**Completed**
 
 The following milestones are complete:
 
@@ -22,9 +22,11 @@ The following milestones are complete:
 - access restrictions adjusted for the Docker and WSL private networks;
 - host registered in the Zabbix frontend;
 - `Linux by Zabbix agent` template assigned;
-- initial item discovery and data collection confirmed.
-
-Further validation, unsupported-item investigation, controlled resource activity, and final technical evidence remain pending.
+- initial item discovery and data collection confirmed;
+- initial unsupported-item state reviewed and confirmed as transient;
+- controlled CPU, memory, filesystem, and network activity validated;
+- Agent 2 startup after WSL termination validated;
+- final technical evidence selected and stored.
 
 ## Environment
 
@@ -330,25 +332,114 @@ Collected information included:
 - filesystem discovery;
 - storage-device discovery.
 
-The four unsupported items remain recorded as an investigation task. They do not invalidate the successful installation or the confirmed collection of the remaining items.
+The four initially unsupported items were transient during template discovery and initialization. Without disabling items or changing the template, subsequent collection showed all supported items operating normally and no unsupported items remaining.
+
+## Controlled Resource Validation
+
+Controlled activity was generated to confirm that the collected metrics reacted to real changes on the monitored host and returned to their previous ranges afterward.
+
+### CPU activity
+
+Four CPU-intensive processes were executed for 90 seconds:
+
+```bash
+for i in {1..4}; do
+  yes > /dev/null &
+done
+
+sleep 90
+pkill yes
+```
+
+Zabbix recorded CPU system time at approximately `39.93%` and CPU user time at approximately `10.09%` during the test. Both values returned to approximately `1%` after the workload ended.
+
+### Memory activity
+
+A Python process allocated and touched 1 GiB of memory for 90 seconds:
+
+```bash
+python3 - <<'PY'
+import time
+
+memory = bytearray(1024 * 1024 * 1024)
+
+for position in range(0, len(memory), 4096):
+    memory[position] = 1
+
+print("1 GB memory allocation active for 90 seconds.")
+time.sleep(90)
+print("Memory allocation completed.")
+PY
+```
+
+Available memory decreased from approximately `13.33 GB` to `12.21 GB`, reached a minimum of approximately `83.60%`, and recovered to approximately `13.22 GB` after the process completed.
+
+### Filesystem activity
+
+A temporary 512 MiB file was created and removed:
+
+```bash
+dd if=/dev/zero \
+  of=/tmp/zabbix-stage02-io-test.bin \
+  bs=1M \
+  count=512 \
+  conv=fdatasync \
+  status=progress
+
+rm -f /tmp/zabbix-stage02-io-test.bin
+```
+
+During the test, used filesystem space increased from approximately `2.31 GB` to `2.81 GB`, while available space decreased from approximately `953.33 GB` to `952.83 GB`. Both measurements returned to their previous values after cleanup. Total filesystem capacity remained stable at approximately `1006.85 GB`.
+
+### Network activity
+
+The first attempt used a hard-coded repository URL and returned HTTP `404`. The corrected test used APT to resolve the current package path dynamically:
+
+```bash
+test_dir="/tmp/zabbix-stage02-network-test"
+
+mkdir -p "$test_dir"
+cd "$test_dir" || exit 1
+
+for i in {1..10}; do
+  echo "Download $i of 10"
+  rm -f ./*.deb
+  apt-get download zabbix-agent2 || exit 1
+done
+
+rm -f ./*.deb
+cd - >/dev/null
+```
+
+Ten downloads of the approximately `5.6 MB` Agent 2 package generated controlled inbound traffic. The `Interface eth0: Bits received` item increased from its low baseline to approximately `2.68 Mbps` and returned to the baseline after the downloads ended.
 
 ## Validation Evidence
 
-The selected screenshot shows the monitored Ubuntu WSL host in the Zabbix **Latest data** view.
+### Initial Linux data collection
 
-![Stage 02 Linux host latest data](../../docs/screenshots/Clipboard_08-27-2026_13.png)
+![Stage 02 initial Linux host data collection](../../docs/screenshots/Clipboard_08-27-2026_13.png)
 
-The evidence confirms:
+This evidence confirms host registration, template assignment, initialization of 120 items, and current CPU, swap, system, and agent data.
 
-- the host is registered in the `Linux servers` group;
-- the `Linux by Zabbix agent` template is collecting data;
-- 120 items were initialized;
-- CPU metrics contain recent values;
-- swap metrics contain recent values;
-- the agent reports the configured host name;
-- data timestamps continue to update.
+### Zabbix platform after Linux host integration
 
-The image contains no credentials, passwords, tokens, unrelated applications, or private configuration values.
+![Stage 02 dashboard after Linux host integration](../../docs/screenshots/Clipboard_08-28-2026_14.png)
+
+The dashboard confirms that the Zabbix Server remained operational, the monitored host was available, and no active problems were generated after the integration.
+
+### Final Linux data collection
+
+![Stage 02 final Linux host data collection](../../docs/screenshots/Clipboard_08-28-2026_15.png)
+
+The final **Latest data** view confirms continued collection across memory, CPU, operating-system, security, filesystem, storage, and network categories.
+
+### Controlled memory activity
+
+![Stage 02 controlled memory activity](../../docs/screenshots/Clipboard_08-28-2026_16.png)
+
+The graph records the controlled 1 GiB memory allocation, the reduction from approximately `13.33 GB` to `12.21 GB`, and the recovery after the workload completed.
+
+The selected images contain no credentials, passwords, tokens, or private authentication material.
 
 ## Troubleshooting
 
@@ -389,19 +480,31 @@ Server=172.20.0.0/16,172.31.96.0/20
 
 After configuration validation and service restart, all three `zabbix_get` checks succeeded.
 
-### Agent unavailable after leaving WSL
+### Agent lifecycle after WSL termination
 
-Closing the active WSL session could stop the distribution and therefore stop the Agent 2 service.
+The Ubuntu distribution was deliberately terminated from PowerShell and started again:
 
-For the initial validation, an active WSL terminal was kept open while Zabbix collected data.
+```powershell
+wsl.exe --terminate Ubuntu-24.04
+Start-Sleep -Seconds 5
+wsl.exe -d Ubuntu-24.04 -- systemctl is-active zabbix-agent2
+```
 
-Long-term WSL startup and service-lifecycle handling remains an operational task for this stage.
+After restart, systemd automatically restored Zabbix Agent 2 to the `active` state and TCP port `10050` was listening again. Direct checks from the Zabbix Server returned:
+
+| Item key | Result |
+|---|:---:|
+| `agent.ping` | `1` |
+| `system.hostname` | `NoteAcerItamar1` |
+| `agent.version` | `7.0.30` |
+
+No manual service intervention was required.
 
 ### Dynamic WSL address
 
 The WSL IPv4 address is dynamically assigned and may change after WSL or Windows restarts.
 
-The current host interface uses the validated WSL address. A future operational improvement must define a reliable way to detect address changes and update or automate the monitoring configuration.
+The address remained `172.31.111.15` during the controlled WSL termination and restart test. Because WSL addresses are not guaranteed to remain fixed, the current operational procedure is to rediscover the address after a restart and update the Zabbix host interface only if it changes.
 
 ## Acceptance Criteria
 
@@ -420,10 +523,10 @@ The current host interface uses the validated WSL address. A future operational 
 | Linux template assigned | Passed |
 | Initial item discovery completed | Passed |
 | Initial metric collection confirmed | Passed |
-| Unsupported items investigated | Pending |
-| Controlled resource activity validated | Pending |
-| WSL lifecycle handling evaluated | Pending |
-| Final Stage 02 evidence selected | Pending |
+| Unsupported items investigated | Passed |
+| Controlled resource activity validated | Passed |
+| WSL lifecycle handling evaluated | Passed |
+| Final Stage 02 evidence selected | Passed |
 
 ## Current Result
 
@@ -431,19 +534,12 @@ The first monitored Linux host is operational.
 
 Zabbix Agent 2 version `7.0.30` is installed on Ubuntu 24.04 WSL, runs under systemd, listens on TCP port `10050`, accepts authorized passive checks from the containerized Zabbix Server, and provides current Linux operating-system and resource metrics.
 
-Direct `zabbix_get` validation and frontend data collection both succeeded.
+Direct `zabbix_get` validation, frontend data collection, controlled resource tests, and the WSL lifecycle validation all succeeded.
 
-Stage 02 remains in progress because unsupported-item investigation, controlled resource tests, WSL lifecycle handling, and final acceptance evidence are still pending.
+The four initially unsupported items resolved during template initialization without manual suppression or template modification. All Stage 02 acceptance criteria passed, and the selected evidence is stored in the repository.
+
+Stage 02 is complete.
 
 ## Next Steps
 
-The next activities are:
-
-1. investigate the four unsupported items;
-2. confirm host availability status in the monitoring view;
-3. review discovered filesystems and storage devices;
-4. generate controlled CPU, memory, filesystem, and network activity;
-5. confirm corresponding metric updates;
-6. select and store meaningful technical evidence;
-7. evaluate WSL startup and dynamic-address operational handling;
-8. document final acceptance criteria and outcome.
+The next project stage will introduce Windows host monitoring and validate operating-system, service, resource, and network data collection from a Windows target.
