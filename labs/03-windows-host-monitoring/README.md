@@ -12,13 +12,14 @@ Zabbix Agent 2 will be installed as a native Windows service and initially confi
 
 **In progress**
 
-The following milestone is complete:
+The following milestones are complete:
 
-- Windows host baseline collected before Agent 2 installation.
+- Windows host baseline collected before Agent 2 installation;
+- container-to-Windows IPv4 connectivity validated;
+- preferred Docker-to-Windows destination identified.
 
 The following activities remain pending:
 
-- validate container-to-Windows IPv4 connectivity;
 - download and verify the official Zabbix Agent 2 package;
 - install Zabbix Agent 2 as a Windows service;
 - configure passive-check authorization;
@@ -70,7 +71,112 @@ The WSL virtual interface provides communication between Windows and the WSL env
 
 The Wi-Fi interface provides local-network and internet connectivity.
 
-The final Zabbix Agent interface and authorization settings will be selected only after connectivity from the Zabbix Server container is validated.
+## Docker-to-Windows IPv4 Validation
+
+The Zabbix Server container was identified dynamically:
+
+```powershell
+$serverContainer = docker ps `
+    --filter "label=com.docker.compose.service=zabbix-server" `
+    --format "{{.Names}}" |
+    Select-Object -First 1
+```
+
+The identified container was:
+
+```text
+zabbix-noc-lab-zabbix-server-1
+```
+
+Its runtime state was:
+
+```text
+running
+```
+
+### Docker internal host resolution
+
+The Docker-managed host name was resolved from inside the Zabbix Server container:
+
+```powershell
+docker exec `
+    $serverContainer `
+    getent ahostsv4 host.docker.internal
+```
+
+Validated IPv4 result:
+
+```text
+192.168.65.254
+```
+
+The command completed with exit code `0`.
+
+This result confirms that the container can resolve a Docker-managed IPv4 destination representing the Windows host.
+
+### WSL virtual interface connectivity
+
+The WSL virtual interface was tested from the Zabbix Server container:
+
+```powershell
+docker exec `
+    $serverContainer `
+    ping -c 2 172.31.96.1
+```
+
+Validated result:
+
+```text
+2 packets transmitted
+2 packets received
+0% packet loss
+Average round-trip time: 2.557 ms
+```
+
+The command completed with exit code `0`.
+
+### Wi-Fi interface connectivity
+
+The Windows Wi-Fi interface was also tested:
+
+```powershell
+docker exec `
+    $serverContainer `
+    ping -c 2 192.168.0.179
+```
+
+Validated result:
+
+```text
+2 packets transmitted
+2 packets received
+0% packet loss
+Average round-trip time: 2.683 ms
+```
+
+The command completed with exit code `0`.
+
+## Selected Monitoring Destination
+
+All three relevant paths were evaluated:
+
+| Destination | Purpose | Result |
+|---|---|:---:|
+| `host.docker.internal` | Docker-managed Windows destination | Resolved to IPv4 |
+| `172.31.96.1` | Windows WSL virtual interface | Reachable |
+| `192.168.0.179` | Windows Wi-Fi interface | Reachable |
+
+The preferred destination for container-initiated Agent 2 checks is:
+
+```text
+host.docker.internal
+```
+
+This name is preferable to a directly configured Wi-Fi or WSL address because Docker Desktop manages its resolution.
+
+The Zabbix frontend can therefore use a DNS-based Agent interface instead of depending on the current physical or virtual IPv4 address.
+
+TCP port `10050` will be tested through this destination after Agent 2 installation and Windows Firewall configuration.
 
 ## Pre-installation State
 
@@ -83,38 +189,16 @@ The baseline inspection confirmed:
 | Zabbix-specific Windows Firewall rule | Not found |
 | Zabbix Server container available | Yes |
 | Zabbix Server container state | Running |
-| `host.docker.internal` name resolution | Available |
-| Container-to-Windows IPv4 path | Pending validation |
+| `host.docker.internal` IPv4 resolution | Passed |
+| WSL-interface ICMP connectivity | Passed |
+| Wi-Fi-interface ICMP connectivity | Passed |
+| Container-to-Windows IPv4 path | Passed |
 
 Because no existing Zabbix service, listener, or firewall rule was found, the workstation is ready for a controlled Agent 2 installation without conflicting with an earlier installation.
 
-## Zabbix Server Container
+## Baseline Commands
 
-The Zabbix Server container was identified as:
-
-```text
-zabbix-noc-lab-zabbix-server-1
-```
-
-Its runtime state was:
-
-```text
-running
-```
-
-From inside the container, `host.docker.internal` resolved initially to:
-
-```text
-fdc4:f303:9324::254
-```
-
-This result confirms internal Docker name resolution, but it currently represents an IPv6 address.
-
-Before configuring the Windows Agent 2 interface, the IPv4 path from the Zabbix Server container to the Windows host must be identified and tested.
-
-## Baseline Command
-
-The Windows baseline was collected with PowerShell commands that inspected:
+The Windows baseline inspected:
 
 - operating-system identity and version;
 - computer manufacturer and model;
@@ -125,9 +209,10 @@ The Windows baseline was collected with PowerShell commands that inspected:
 - TCP port `10050`;
 - Windows Firewall rules;
 - Zabbix Server container availability;
-- Docker resolution of `host.docker.internal`.
+- Docker resolution of `host.docker.internal`;
+- container connectivity to the Windows virtual and physical interfaces.
 
-The baseline was read-only and did not:
+The baseline and connectivity tests did not:
 
 - install software;
 - create or modify services;
@@ -170,6 +255,20 @@ The absence of output from the completed `if` checks, together with the failed s
 
 Future interactive validation blocks will avoid separated `if` and `else` statements.
 
+### The container did not include the `ip` utility
+
+An attempt to display the container IPv4 routing table returned:
+
+```text
+exec: "ip": executable file not found in $PATH
+```
+
+The Zabbix Server container image does not include the `ip` command-line utility.
+
+No package was installed inside the container because runtime containers should remain consistent with their declared image.
+
+The missing diagnostic utility did not indicate a connectivity failure. IPv4 name resolution and ICMP tests subsequently completed successfully.
+
 ## Security Considerations
 
 The Windows Agent 2 configuration will follow these controls:
@@ -192,7 +291,10 @@ The Windows Agent 2 configuration will follow these controls:
 | TCP port `10050` availability checked | Passed |
 | Existing firewall rules checked | Passed |
 | Zabbix Server container identified | Passed |
-| Container-to-Windows IPv4 connectivity validated | Pending |
+| `host.docker.internal` IPv4 resolution validated | Passed |
+| Container-to-WSL-interface connectivity validated | Passed |
+| Container-to-Wi-Fi-interface connectivity validated | Passed |
+| Container-to-Windows IPv4 connectivity validated | Passed |
 | Official Zabbix Agent 2 package obtained | Pending |
 | Package authenticity validated | Pending |
 | Zabbix Agent 2 installed | Pending |
@@ -210,14 +312,21 @@ The Windows Agent 2 configuration will follow these controls:
 
 ## Current Result
 
-The Windows workstation baseline is complete.
+The Windows workstation baseline and Docker-to-Windows IPv4 validation are complete.
 
 The target is a 64-bit Windows 11 Pro system with no existing Zabbix service, no listener on TCP port `10050`, and no Zabbix-specific Windows Firewall rule.
 
-The Zabbix Server container is operational and resolves `host.docker.internal`, but the container-to-Windows IPv4 monitoring path must be validated before Agent 2 installation and configuration.
+The Zabbix Server container successfully:
+
+- resolved `host.docker.internal` to `192.168.65.254`;
+- reached the Windows WSL virtual interface at `172.31.96.1`;
+- reached the Windows Wi-Fi interface at `192.168.0.179`;
+- completed both ICMP tests without packet loss.
+
+The preferred monitoring destination is `host.docker.internal`.
 
 No state-changing action has been performed during Stage 03.
 
 ## Next Steps
 
-The next activity will validate the IPv4 communication path from the Zabbix Server container to the Windows host before installing Zabbix Agent 2.
+The next activity will obtain and verify the official Windows Zabbix Agent 2 package before installation.
