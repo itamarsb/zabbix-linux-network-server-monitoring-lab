@@ -4,7 +4,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Linux](https://img.shields.io/badge/Linux-Monitoring-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
 [![Windows](https://img.shields.io/badge/Windows-Monitoring-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
-[![Status](https://img.shields.io/badge/Status-Stage%2002%20In%20Progress-orange)](#implementation-roadmap)
+[![Status](https://img.shields.io/badge/Status-Stage%2002%20Completed-brightgreen)](#implementation-roadmap)
 
 A practical Network Operations Center lab focused on infrastructure monitoring, alert triage, troubleshooting, incident response, service recovery, and operational documentation.
 
@@ -106,6 +106,7 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 
 - [`labs/00-workstation-validation/`](labs/00-workstation-validation/) - workstation baseline, acceptance criteria, findings, and results;
 - [`labs/01-zabbix-platform/`](labs/01-zabbix-platform/) - reproducible Zabbix platform deployment, validation, troubleshooting, and evidence;
+- [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/) - Linux host monitoring with Zabbix Agent 2, controlled resource validation, lifecycle testing, and evidence;
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - reusable read-only workstation validation;
 - [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, persistent storage, and isolated networks;
 - [`.env.example`](.env.example) - versioned environment-variable template without operational credentials;
@@ -120,7 +121,7 @@ Additional directories will be introduced only when they contain implemented and
 |:---:|---|:---:|
 | 00 | Workstation validation and repository baseline | Completed |
 | 01 | Zabbix platform deployment and health validation | Completed |
-| 02 | Linux host monitoring with Zabbix Agent 2 | In progress |
+| 02 | Linux host monitoring with Zabbix Agent 2 | Completed |
 | 03 | Windows host monitoring with Zabbix Agent 2 | Planned |
 | 04 | Network, DNS, TCP, and HTTP service monitoring | Planned |
 | 05 | Triggers, severities, events, and alert handling | Planned |
@@ -179,19 +180,40 @@ The implementation included:
 
 See the complete documentation in [`labs/01-zabbix-platform/README.md`](labs/01-zabbix-platform/README.md).
 
-## Current Stage
-
 ### Stage 02 - Linux Host Monitoring
 
-The current stage will introduce and validate:
+Stage 02 introduced the first monitored Linux host: Ubuntu 24.04 LTS running under WSL 2 with Zabbix Agent 2.
 
-- a dedicated Linux monitoring target;
-- Zabbix Agent 2 installation and configuration;
+The implementation included:
+
+- installation from the official Zabbix 7.0 repository;
+- passive Agent 2 checks on TCP port `10050`;
+- Docker-to-WSL connectivity and authorization validation;
+- direct `zabbix_get` checks for availability, host identity, and agent version;
+- host registration with the `Linux by Zabbix agent` template;
+- collection of CPU, memory, swap, filesystem, storage, process, operating-system, and network data;
+- investigation of transient unsupported items during template initialization;
+- controlled CPU, memory, filesystem, and network activity;
+- WSL termination and automatic Agent 2 recovery validation;
+- selected initial, final, dashboard, and memory-test evidence.
+
+All acceptance criteria passed, and the monitored Linux host remained operational after the lifecycle and resource tests.
+
+See the complete documentation in [`labs/02-linux-host-monitoring/README.md`](labs/02-linux-host-monitoring/README.md).
+
+## Current Stage
+
+### Stage 03 - Windows Host Monitoring
+
+The next stage will introduce and validate:
+
+- a dedicated Windows monitoring target;
+- Zabbix Agent 2 installation and service configuration;
 - host registration and template assignment;
 - agent availability and communication;
-- CPU, memory, filesystem, process, and network-interface data;
-- unsupported-item investigation;
-- controlled resource activity and updated item values;
+- CPU, memory, filesystem, service, and network-interface data;
+- Windows service and event-oriented monitoring;
+- controlled resource or service activity and updated item values;
 - selected validation evidence.
 
 Implementation files will be committed only after configuration and validation succeed.
@@ -255,9 +277,9 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 
 ## Project Status
 
-Stages 00 and 01 are complete, validated, and documented.
+Stages 00, 01, and 02 are complete, validated, and documented.
 
-Stage 02 is in progress and will add the first monitored Linux host with Zabbix Agent 2.
+Stage 03 is the next planned implementation and will add Windows host monitoring with Zabbix Agent 2.
 
 ---
 
