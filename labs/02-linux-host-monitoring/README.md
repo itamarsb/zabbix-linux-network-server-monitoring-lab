@@ -423,7 +423,7 @@ The current host interface uses the validated WSL address. A future operational 
 | Unsupported items investigated | Pending |
 | Controlled resource activity validated | Pending |
 | WSL lifecycle handling evaluated | Pending |
-| Final Stage 02 evidence selected | In progress |
+| Final Stage 02 evidence selected | Pending |
 
 ## Current Result
 
