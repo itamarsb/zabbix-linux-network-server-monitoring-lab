@@ -4,7 +4,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Linux](https://img.shields.io/badge/Linux-Monitoring-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
 [![Windows](https://img.shields.io/badge/Windows-Monitoring-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
-[![Status](https://img.shields.io/badge/Status-Stage%2002%20Completed-brightgreen)](#implementation-roadmap)
+[![Status](https://img.shields.io/badge/Status-Stage%2003%20Completed-brightgreen)](#implementation-roadmap)
 
 A practical Network Operations Center lab focused on infrastructure monitoring, alert triage, troubleshooting, incident response, service recovery, and operational documentation.
 
@@ -107,6 +107,7 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 - [`labs/00-workstation-validation/`](labs/00-workstation-validation/) - workstation baseline, acceptance criteria, findings, and results;
 - [`labs/01-zabbix-platform/`](labs/01-zabbix-platform/) - reproducible Zabbix platform deployment, validation, troubleshooting, and evidence;
 - [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/) - Linux host monitoring with Zabbix Agent 2, controlled resource validation, lifecycle testing, and evidence;
+- [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/) - Windows host monitoring with Zabbix Agent 2, DNS-based Docker connectivity, metric discovery, controlled CPU validation, and evidence;
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - reusable read-only workstation validation;
 - [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, persistent storage, and isolated networks;
 - [`.env.example`](.env.example) - versioned environment-variable template without operational credentials;
@@ -122,7 +123,7 @@ Additional directories will be introduced only when they contain implemented and
 | 00 | Workstation validation and repository baseline | Completed |
 | 01 | Zabbix platform deployment and health validation | Completed |
 | 02 | Linux host monitoring with Zabbix Agent 2 | Completed |
-| 03 | Windows host monitoring with Zabbix Agent 2 | Planned |
+| 03 | Windows host monitoring with Zabbix Agent 2 | Completed |
 | 04 | Network, DNS, TCP, and HTTP service monitoring | Planned |
 | 05 | Triggers, severities, events, and alert handling | Planned |
 | 06 | Incident response and service recovery | Planned |
@@ -201,19 +202,46 @@ All acceptance criteria passed, and the monitored Linux host remained operationa
 
 See the complete documentation in [`labs/02-linux-host-monitoring/README.md`](labs/02-linux-host-monitoring/README.md).
 
+### Stage 03 - Windows Host Monitoring
+
+Stage 03 introduced the first monitored Windows host: a native Windows 11 Pro workstation running Zabbix Agent 2 as a Windows service.
+
+The implementation included:
+
+- Windows host, network-interface, service, firewall, and TCP-port baseline validation;
+- Docker-to-Windows connectivity through `host.docker.internal`;
+- discovery and restriction of the required Docker network authorization scope;
+- download and verification of the official Zabbix Agent 2 `7.0.30` MSI;
+- SHA-256 and Authenticode validation before installation;
+- preservation of the original Agent configuration;
+- passive Agent checks through TCP port `10050`;
+- a restricted inbound Windows Firewall rule;
+- direct `zabbix_get` validation from the Zabbix Server container;
+- creation of the `Windows servers` host group;
+- host registration with a DNS-based Agent interface;
+- assignment of the `Windows by Zabbix agent` template;
+- validation of Agent availability and `146` monitored values after initial discovery;
+- collection of CPU, memory, swap, uptime, process, thread, disk, filesystem, network-interface, and service data;
+- a controlled two-minute CPU workload using six of eight logical processors;
+- observation of CPU utilization increasing to `89.5912%` and recovering to `36.6596%`;
+- selected host-availability, latest-data, workload, and recovery evidence.
+
+All acceptance criteria passed, and the Windows monitoring path remained available throughout the controlled activity and recovery validation.
+
+See the complete documentation in [`labs/03-windows-host-monitoring/README.md`](labs/03-windows-host-monitoring/README.md).
+
 ## Current Stage
 
-### Stage 03 - Windows Host Monitoring
+### Stage 04 - Network, DNS, TCP, and HTTP Service Monitoring
 
 The next stage will introduce and validate:
 
-- a dedicated Windows monitoring target;
-- Zabbix Agent 2 installation and service configuration;
-- host registration and template assignment;
-- agent availability and communication;
-- CPU, memory, filesystem, service, and network-interface data;
-- Windows service and event-oriented monitoring;
-- controlled resource or service activity and updated item values;
+- ICMP reachability, response time, and packet-loss monitoring;
+- DNS resolution checks for selected targets;
+- TCP service availability checks;
+- HTTP service availability, response code, and response-time monitoring;
+- controlled network or service failures;
+- validation of metric changes during failure and recovery;
 - selected validation evidence.
 
 Implementation files will be committed only after configuration and validation succeed.
@@ -225,7 +253,9 @@ Evidence is selected to demonstrate meaningful technical results rather than eve
 Relevant evidence may include:
 
 - platform and host availability;
+- recognizable Zabbix host, status, and monitoring views;
 - item data collection;
+- metric graphs showing controlled change and recovery;
 - trigger transition from `OK` to `PROBLEM`;
 - acknowledged incident with an operational note;
 - diagnostic command output;
@@ -277,9 +307,9 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 
 ## Project Status
 
-Stages 00, 01, and 02 are complete, validated, and documented.
+Stages 00, 01, 02, and 03 are complete, validated, and documented.
 
-Stage 03 is the next planned implementation and will add Windows host monitoring with Zabbix Agent 2.
+Stage 04 is the next planned implementation and will add network, DNS, TCP, and HTTP service monitoring.
 
 ---
 
