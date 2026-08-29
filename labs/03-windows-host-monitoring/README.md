@@ -6,7 +6,7 @@ This stage introduces the first monitored Windows host into the Zabbix NOC Opera
 
 The monitoring target is the Windows 11 Pro workstation that also hosts Docker Desktop, WSL 2, and the containerized Zabbix platform.
 
-Zabbix Agent 2 will be installed as a native Windows service and initially configured for passive checks initiated by the Zabbix Server container.
+Zabbix Agent 2 is installed as a native Windows service and configured for passive checks initiated by the Zabbix Server container.
 
 ## Current Status
 
@@ -18,15 +18,15 @@ The following milestones are complete:
 - container-to-Windows IPv4 connectivity validated;
 - preferred Docker-to-Windows destination identified;
 - Docker network scope discovered and documented;
-- official Zabbix Agent 2 package downloaded and verified.
+- official Zabbix Agent 2 package downloaded and verified;
+- Zabbix Agent 2 installed as a Windows service;
+- passive-check configuration applied and validated;
+- restricted Windows Firewall rule created;
+- TCP port `10050` listener validated;
+- direct checks from the Zabbix Server container completed successfully.
 
 The following activities remain pending:
 
-- install Zabbix Agent 2 as a Windows service;
-- configure passive-check authorization;
-- create the required Windows Firewall rule;
-- validate TCP port `10050`;
-- perform direct checks from the Zabbix Server container;
 - register the Windows host in the Zabbix frontend;
 - assign the Windows monitoring template;
 - validate initial item discovery and data collection;
@@ -49,9 +49,9 @@ The following activities remain pending:
 | Physical memory | `29.94 GB` |
 | PowerShell edition | Desktop |
 | PowerShell version | `5.1.26100.9168` |
-| Planned agent | Zabbix Agent 2 |
-| Planned agent port | `10050/TCP` |
-| Planned check mode | Passive |
+| Installed agent | Zabbix Agent 2 `7.0.30` |
+| Agent port | `10050/TCP` |
+| Check mode | Passive |
 
 The workstation last boot time reported during the baseline was:
 
@@ -177,7 +177,7 @@ This name is preferable to a directly configured Wi-Fi or WSL address because Do
 
 The Zabbix frontend can therefore use a DNS-based Agent interface instead of depending on the current physical or virtual IPv4 address.
 
-TCP port `10050` will be tested through this destination after Agent 2 installation and Windows Firewall configuration.
+TCP port `10050` was subsequently validated through this destination after Agent 2 installation and Windows Firewall configuration.
 
 ## Docker Network Scope Discovery
 
@@ -196,13 +196,13 @@ host.docker.internal -> 192.168.65.254
 
 The Windows Wi-Fi interface was using the `Public` network profile during discovery.
 
-Docker Desktop may translate the source address while forwarding a connection from a Linux container to a Windows-hosted service. The initial passive-check authorization will therefore include only the observed local and Docker-related ranges:
+Docker Desktop may translate the source address while forwarding a connection from a Linux container to a Windows-hosted service. The passive-check authorization therefore includes only the observed local and Docker-related ranges:
 
 ```text
 127.0.0.1,172.19.0.0/16,172.20.0.0/16,192.168.65.0/24
 ```
 
-This is a controlled initial scope rather than unrestricted access. After the first successful direct check, the effective source address presented to Windows will be reviewed and the authorization may be narrowed further.
+This is a controlled scope rather than unrestricted access. Successful direct checks confirmed that it supports the current Docker Desktop path, and it may be narrowed further if later source-address evidence permits.
 
 ### Network-scope evidence
 
@@ -226,7 +226,7 @@ The baseline inspection confirmed:
 | Wi-Fi-interface ICMP connectivity | Passed |
 | Container-to-Windows IPv4 path | Passed |
 
-Because no existing Zabbix service, listener, or firewall rule was found, the workstation is ready for a controlled Agent 2 installation without conflicting with an earlier installation.
+Because no existing Zabbix service, listener, or firewall rule was found, the workstation was ready for a controlled Agent 2 installation without conflicting with an earlier installation.
 
 ## Official Agent 2 Package Verification
 
@@ -260,13 +260,122 @@ CN=Zabbix SIA, O=Zabbix SIA, L=Riga, C=LV
 
 The SHA-256 digest provides a reproducible identifier for the exact package used in this stage. The valid Authenticode signature confirms that Windows recognized the package as signed by Zabbix SIA and that the signed content passed integrity verification.
 
-The package was only downloaded and inspected. It was not executed or installed during this activity.
+The package was only downloaded and inspected during this verification activity. Installation was performed later as a separate controlled change.
 
 ### Verification evidence
 
 ![Zabbix Agent 2 package verification](../../docs/screenshots/stage-03-zabbix-agent2-package-verification.png)
 
 The evidence records the official download URL, package metadata, SHA-256 digest, valid Authenticode status, signer identity, and the explicit confirmation that installation had not yet occurred.
+
+## Controlled Agent 2 Installation
+
+The previously verified MSI was installed silently with Windows Installer after its SHA-256 digest was recalculated and matched against the recorded value.
+
+Validated installation details:
+
+| Property | Validated value |
+|---|---|
+| Product | Zabbix Agent 2 |
+| Version | `7.0.30` |
+| Installation directory | `C:\Program Files\Zabbix Agent 2` |
+| Windows service | `Zabbix Agent 2` |
+| Service state | Running |
+| Configuration file | `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` |
+| Passive-check port | `10050/TCP` |
+| Agent hostname | `NOTEACERITAMAR1` |
+| Configuration validation | Passed |
+
+Before changing the generated configuration, the original file was preserved as:
+
+```text
+C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf.pre-stage03-20260828-234136.bak
+```
+
+The controlled passive-check configuration is:
+
+```ini
+Server=127.0.0.1,172.19.0.0/16,172.20.0.0/16,192.168.65.0/24
+ServerActive=
+Hostname=NOTEACERITAMAR1
+ListenPort=10050
+```
+
+The Agent configuration test completed successfully with exit code `0` before the service was started.
+
+## Windows Firewall Configuration
+
+The installation created a dedicated inbound Windows Firewall rule:
+
+| Property | Validated value |
+|---|---|
+| Display name | `Zabbix Agent 2 - Passive Checks` |
+| Direction | Inbound |
+| Action | Allow |
+| Protocol | TCP |
+| Local port | `10050` |
+| Enabled | True |
+| Profile | Any |
+
+The permitted remote-address scope is restricted to:
+
+```text
+172.19.0.0/16
+172.20.0.0/16
+192.168.65.0/24
+```
+
+The rule does not permit arbitrary remote systems to initiate passive checks.
+
+## Local Agent Validation
+
+After configuration, the Windows service reached the `Running` state and opened TCP port `10050`.
+
+The listener was reported on the IPv6 wildcard address, which also supports the required Windows socket behavior:
+
+```text
+State:        Listen
+LocalAddress: ::
+LocalPort:    10050
+```
+
+Local Agent checks returned:
+
+| Check | Returned value | Exit code | Result |
+|---|---|---:|:---:|
+| `agent.ping` | `1` | `0` | Passed |
+| `system.hostname` | `NOTEACERITAMAR1` | `0` | Passed |
+| Agent version | `7.0.30` | `0` | Passed |
+
+## Container-to-Windows Agent Validation
+
+Direct passive checks were initiated from the Zabbix Server container through the selected Docker-managed destination:
+
+```text
+host.docker.internal:10050
+```
+
+The validated results were:
+
+| Item key | Expected value | Returned value | Exit code | Result |
+|---|---|---|---:|:---:|
+| `agent.ping` | `1` | `1` | `0` | Passed |
+| `system.hostname` | `NOTEACERITAMAR1` | `NOTEACERITAMAR1` | `0` | Passed |
+| `agent.version` | `7.0.30` | `7.0.30` | `0` | Passed |
+
+These results confirm that:
+
+- Docker-to-Windows TCP connectivity is operational;
+- the Windows Firewall rule permits the documented Docker source scope;
+- the Agent accepts passive checks from the Zabbix Server container;
+- the configured hostname matches the Windows monitoring target;
+- the running Agent version matches the verified package.
+
+### Service-validation evidence
+
+![Windows Agent 2 service validation](../../docs/screenshots/stage-03-windows-agent2-service-validation.png)
+
+The evidence records the three successful `zabbix_get` checks, expected and returned values, exit codes, and the final container-to-Windows validation result.
 
 ## Baseline Commands
 
@@ -341,9 +450,19 @@ No package was installed inside the container because runtime containers should 
 
 The missing diagnostic utility did not indicate a connectivity failure. IPv4 name resolution and ICMP tests subsequently completed successfully.
 
+### Configuration continuation after an interrupted installation workflow
+
+The MSI installation completed successfully, but the first configuration-editing function stopped when PowerShell attempted to bind configuration content containing empty lines to a mandatory string-array parameter.
+
+The interruption occurred after installation and after the original configuration had been backed up, but before creation of the firewall rule or completion of service validation.
+
+A state assessment confirmed the installed components, and the workflow continued without reinstalling the MSI. The corrected configuration routine preserved empty lines safely, removed conflicting key definitions, appended the controlled values, and validated the resulting configuration before starting the service.
+
+This recovery avoided duplicating the installation and preserved the original configuration backup.
+
 ## Security Considerations
 
-The Windows Agent 2 configuration will follow these controls:
+The Windows Agent 2 configuration follows these controls:
 
 - use the official Zabbix package;
 - validate the downloaded package before installation;
@@ -351,7 +470,7 @@ The Windows Agent 2 configuration will follow these controls:
 - avoid unrestricted passive-check access;
 - create a narrowly scoped inbound firewall rule;
 - avoid publishing credentials or private authentication material;
-- preserve the original Agent 2 configuration before later modifications;
+- preserve the original Agent 2 configuration before modification;
 - review all diagnostic evidence before committing it.
 
 The package-verification controls completed before installation were:
@@ -364,13 +483,13 @@ The package-verification controls completed before installation were:
 - confirm Zabbix SIA as the signing organization;
 - stop before installation so that deployment remains a separate controlled change.
 
-The initial Agent `Server` authorization will be:
+The Agent `Server` authorization is:
 
 ```text
 127.0.0.1,172.19.0.0/16,172.20.0.0/16,192.168.65.0/24
 ```
 
-The Windows Firewall rule will use the required Docker-related remote-address scope instead of allowing arbitrary remote systems. Its final scope will be validated after observing the effective source address used by Docker Desktop.
+The Windows Firewall rule uses the required Docker-related remote-address scope instead of allowing arbitrary remote systems. Successful direct checks confirmed that the current scope supports the Docker Desktop path without unrestricted access.
 
 ## Acceptance Criteria
 
@@ -393,12 +512,12 @@ The Windows Firewall rule will use the required Docker-related remote-address sc
 | Package Authenticode signature validated | Passed |
 | Package signer identified as Zabbix SIA | Passed |
 | Package authenticity validated | Passed |
-| Zabbix Agent 2 installed | Pending |
-| Windows service active | Pending |
-| Passive-check configuration validated | Pending |
-| Windows Firewall rule configured | Pending |
-| TCP port `10050` listening | Pending |
-| Direct passive checks succeed | Pending |
+| Zabbix Agent 2 installed | Passed |
+| Windows service active | Passed |
+| Passive-check configuration validated | Passed |
+| Windows Firewall rule configured | Passed |
+| TCP port `10050` listening | Passed |
+| Direct passive checks succeed | Passed |
 | Windows host registered in Zabbix | Pending |
 | Windows template assigned | Pending |
 | Initial item discovery completed | Pending |
@@ -408,9 +527,9 @@ The Windows Firewall rule will use the required Docker-related remote-address sc
 
 ## Current Result
 
-The Windows workstation baseline, Docker-to-Windows IPv4 validation, Docker network-scope discovery, and official Agent 2 package verification are complete.
+The Windows workstation baseline, Docker-to-Windows IPv4 validation, Docker network-scope discovery, official Agent 2 package verification, controlled installation, and direct passive-check validation are complete.
 
-The target is a 64-bit Windows 11 Pro system with no existing Zabbix service, no listener on TCP port `10050`, and no Zabbix-specific Windows Firewall rule.
+The target is a 64-bit Windows 11 Pro system now running Zabbix Agent 2 `7.0.30` as a native Windows service.
 
 The Zabbix Server container successfully:
 
@@ -421,12 +540,14 @@ The Zabbix Server container successfully:
 
 The preferred monitoring destination is `host.docker.internal`.
 
-The Zabbix Server currently uses `172.19.0.3` on the backend network and `172.20.0.2` on the monitoring network. The initial Agent authorization will also account for Docker Desktop address translation through `192.168.65.0/24` and local validation through `127.0.0.1`.
+The Zabbix Server currently uses `172.19.0.3` on the backend network and `172.20.0.2` on the monitoring network. Agent authorization accounts for Docker Desktop address translation through `192.168.65.0/24` and local validation through `127.0.0.1`.
 
 The official Zabbix Agent 2 `7.0.30` Windows AMD64 OpenSSL MSI was downloaded from the Zabbix content-delivery network. Its SHA-256 digest was recorded, and Windows reported a valid Authenticode signature from Zabbix SIA.
 
-No Agent installation, service creation, firewall modification, or Zabbix host registration has been performed during Stage 03.
+The original Agent configuration was preserved, the passive-check configuration passed validation, the restricted firewall rule was created, and TCP port `10050` is listening. Direct checks from the Zabbix Server container returned `1`, `NOTEACERITAMAR1`, and `7.0.30` for `agent.ping`, `system.hostname`, and `agent.version`, respectively.
+
+The Windows host has not yet been registered in the Zabbix frontend.
 
 ## Next Steps
 
-The next activity will install Zabbix Agent 2 as a Windows service with the documented initial passive-check authorization. The service, configuration, firewall rule, TCP listener, and direct checks will then be validated before the scope is finalized.
+The next activity will register the Windows host in the Zabbix frontend using `host.docker.internal` as its DNS-based Agent interface, assign the appropriate Windows template, and validate initial item discovery and metric collection.
