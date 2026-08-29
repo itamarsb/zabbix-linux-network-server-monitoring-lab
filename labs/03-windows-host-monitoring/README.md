@@ -17,6 +17,7 @@ The following milestones are complete:
 - Windows host baseline collected before Agent 2 installation;
 - container-to-Windows IPv4 connectivity validated;
 - preferred Docker-to-Windows destination identified;
+- Docker network scope discovered and documented;
 - official Zabbix Agent 2 package downloaded and verified.
 
 The following activities remain pending:
@@ -178,6 +179,37 @@ The Zabbix frontend can therefore use a DNS-based Agent interface instead of dep
 
 TCP port `10050` will be tested through this destination after Agent 2 installation and Windows Firewall configuration.
 
+## Docker Network Scope Discovery
+
+The Zabbix Server container is attached to two Docker bridge networks:
+
+| Docker network | Container IPv4 | Prefix | Subnet | Gateway |
+|---|---|---:|---|---|
+| `zabbix-noc-lab_backend` | `172.19.0.3` | `16` | `172.19.0.0/16` | `172.19.0.1` |
+| `zabbix-noc-lab_monitoring` | `172.20.0.2` | `16` | `172.20.0.0/16` | `172.20.0.1` |
+
+The container resolved the Docker-managed Windows destination as:
+
+```text
+host.docker.internal -> 192.168.65.254
+```
+
+The Windows Wi-Fi interface was using the `Public` network profile during discovery.
+
+Docker Desktop may translate the source address while forwarding a connection from a Linux container to a Windows-hosted service. The initial passive-check authorization will therefore include only the observed local and Docker-related ranges:
+
+```text
+127.0.0.1,172.19.0.0/16,172.20.0.0/16,192.168.65.0/24
+```
+
+This is a controlled initial scope rather than unrestricted access. After the first successful direct check, the effective source address presented to Windows will be reviewed and the authorization may be narrowed further.
+
+### Network-scope evidence
+
+![Docker network scope discovery](../../docs/screenshots/stage-03-docker-network-scope-discovery.png)
+
+The evidence records both Docker networks, the current Zabbix Server addresses, Docker-managed Windows resolution, the Windows network profile, and the absence of an existing TCP `10050` listener or Zabbix-specific firewall rule.
+
 ## Pre-installation State
 
 The baseline inspection confirmed:
@@ -332,6 +364,14 @@ The package-verification controls completed before installation were:
 - confirm Zabbix SIA as the signing organization;
 - stop before installation so that deployment remains a separate controlled change.
 
+The initial Agent `Server` authorization will be:
+
+```text
+127.0.0.1,172.19.0.0/16,172.20.0.0/16,192.168.65.0/24
+```
+
+The Windows Firewall rule will use the required Docker-related remote-address scope instead of allowing arbitrary remote systems. Its final scope will be validated after observing the effective source address used by Docker Desktop.
+
 ## Acceptance Criteria
 
 | Criterion | Status |
@@ -345,6 +385,9 @@ The package-verification controls completed before installation were:
 | Container-to-WSL-interface connectivity validated | Passed |
 | Container-to-Wi-Fi-interface connectivity validated | Passed |
 | Container-to-Windows IPv4 connectivity validated | Passed |
+| Docker backend network identified | Passed |
+| Docker monitoring network identified | Passed |
+| Initial passive-check authorization scope defined | Passed |
 | Official Zabbix Agent 2 package obtained | Passed |
 | Package SHA-256 recorded | Passed |
 | Package Authenticode signature validated | Passed |
@@ -365,7 +408,7 @@ The package-verification controls completed before installation were:
 
 ## Current Result
 
-The Windows workstation baseline, Docker-to-Windows IPv4 validation, and official Agent 2 package verification are complete.
+The Windows workstation baseline, Docker-to-Windows IPv4 validation, Docker network-scope discovery, and official Agent 2 package verification are complete.
 
 The target is a 64-bit Windows 11 Pro system with no existing Zabbix service, no listener on TCP port `10050`, and no Zabbix-specific Windows Firewall rule.
 
@@ -378,10 +421,12 @@ The Zabbix Server container successfully:
 
 The preferred monitoring destination is `host.docker.internal`.
 
+The Zabbix Server currently uses `172.19.0.3` on the backend network and `172.20.0.2` on the monitoring network. The initial Agent authorization will also account for Docker Desktop address translation through `192.168.65.0/24` and local validation through `127.0.0.1`.
+
 The official Zabbix Agent 2 `7.0.30` Windows AMD64 OpenSSL MSI was downloaded from the Zabbix content-delivery network. Its SHA-256 digest was recorded, and Windows reported a valid Authenticode signature from Zabbix SIA.
 
 No Agent installation, service creation, firewall modification, or Zabbix host registration has been performed during Stage 03.
 
 ## Next Steps
 
-The next activity will determine the narrow monitoring-source authorization and firewall scope required for passive checks before installing Agent 2 as a Windows service.
+The next activity will install Zabbix Agent 2 as a Windows service with the documented initial passive-check authorization. The service, configuration, firewall rule, TCP listener, and direct checks will then be validated before the scope is finalized.
