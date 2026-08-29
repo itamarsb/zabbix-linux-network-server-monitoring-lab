@@ -153,8 +153,7 @@ This validation confirms that the server can address:
 - the Zabbix frontend;
 - the PostgreSQL service;
 - the Windows host;
-
-through stable names available within its runtime environment.
+- through stable names available within its runtime environment.
 
 ## Available Diagnostic Utilities
 
