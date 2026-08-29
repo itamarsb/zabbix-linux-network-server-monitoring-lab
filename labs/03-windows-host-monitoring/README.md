@@ -10,7 +10,7 @@ Zabbix Agent 2 is installed as a native Windows service and configured for passi
 
 ## Current Status
 
-**In progress**
+**Completed**
 
 The following milestones are complete:
 
@@ -23,15 +23,17 @@ The following milestones are complete:
 - passive-check configuration applied and validated;
 - restricted Windows Firewall rule created;
 - TCP port `10050` listener validated;
-- direct checks from the Zabbix Server container completed successfully.
+- direct checks from the Zabbix Server container completed successfully;
+- Windows host group created in the Zabbix frontend;
+- Windows host registered with a DNS-based Agent interface;
+- `Windows by Zabbix agent` template assigned;
+- Agent availability and initial metric collection validated;
+- low-level discovery populated Windows resources;
+- controlled CPU activity generated and observed;
+- CPU recovery after the controlled workload validated;
+- final Stage 03 evidence selected and stored.
 
-The following activities remain pending:
-
-- register the Windows host in the Zabbix frontend;
-- assign the Windows monitoring template;
-- validate initial item discovery and data collection;
-- generate controlled Windows resource or service activity;
-- select and store meaningful technical evidence.
+Stage 03 implementation and validation are complete.
 
 ## Baseline Environment
 
@@ -377,6 +379,181 @@ These results confirm that:
 
 The evidence records the three successful `zabbix_get` checks, expected and returned values, exit codes, and the final container-to-Windows validation result.
 
+## Zabbix Frontend Registration
+
+A dedicated host group was created for Windows monitoring targets:
+
+```text
+Windows servers
+```
+
+The Windows workstation was then registered in the Zabbix frontend with the following configuration:
+
+| Property | Configured value |
+|---|---|
+| Host name | `NOTEACERITAMAR1` |
+| Visible name | `Windows Workstation - NOTEACERITAMAR1` |
+| Host group | `Windows servers` |
+| Template | `Windows by Zabbix agent` |
+| Interface type | Agent |
+| Connect to | DNS |
+| DNS name | `host.docker.internal` |
+| Port | `10050` |
+| Monitored by | Server |
+| Status | Active |
+
+The DNS-based interface preserves the Docker-managed Windows destination selected during network validation and avoids coupling the host configuration to the current Wi-Fi or WSL IPv4 address.
+
+After the configuration was corrected from the initial IP selection to DNS, the frontend displayed the interface as:
+
+```text
+host.docker.internal:10050
+```
+
+The `ZBX` availability indicator became active, confirming successful Agent communication through the registered interface.
+
+### Host-availability evidence
+
+![Windows host availability validation](../../docs/screenshots/stage-03-windows-host-availability-validation.png)
+
+The evidence provides a directly recognizable Zabbix view of the registered Windows and Linux monitoring targets, their interfaces, assigned templates, active status, and Agent availability.
+
+## Initial Discovery and Metric Collection
+
+The `Windows by Zabbix agent` template initiated collection and low-level discovery after host registration.
+
+The Windows host exposed `146` monitored values in the filtered latest-data view. The collected and discovered scope included:
+
+- Agent availability and ping;
+- host name and system description;
+- operating-system architecture and local time;
+- logical processor count and CPU utilization;
+- CPU queue, user, privileged, interrupt, and DPC time;
+- total and used physical memory;
+- swap capacity and utilization;
+- system uptime;
+- process and thread counts;
+- file systems and disk volumes;
+- network interfaces;
+- Windows services.
+
+Representative validated values were:
+
+| Item | Validated value |
+|---|---:|
+| Zabbix Agent ping | `Up (1)` |
+| Agent host name | `NOTEACERITAMAR1` |
+| System name | `NOTEACERITAMAR1` |
+| Operating-system architecture | `x64` |
+| Logical processors | `8` |
+| Total memory | `29.94 GB` |
+| Used memory | `22.39 GB` |
+| Memory utilization | `75.0632%` |
+| Uptime | `9 days, 20:03:29` |
+| CPU utilization at capture time | `25.213%` |
+| Running processes | `326` |
+| Threads | `6171` |
+
+The values had recent check timestamps and continued changing between collection cycles, confirming live metric ingestion rather than static configuration alone.
+
+### Latest-data evidence
+
+![Windows latest-data validation](../../docs/screenshots/stage-03-windows-latest-data-validation.png)
+
+The evidence records the monitored host, item names, recent check times, current values, value changes, component tags, and links to history or graphs.
+
+## Controlled CPU Validation
+
+A non-administrative PowerShell workload generated controlled CPU activity without modifying system configuration or creating persistent files.
+
+The workload used six background workers, representing approximately `75%` of the eight logical processors, for `120` seconds:
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+
+    $durationSeconds = 120
+    $logicalProcessors = [Environment]::ProcessorCount
+    $workerCount = [Math]::Max(
+        1,
+        [Math]::Ceiling($logicalProcessors * 0.75)
+    )
+
+    Write-Host "Controlled CPU validation"
+    Write-Host "Logical processors: $logicalProcessors"
+    Write-Host "Worker processes:   $workerCount"
+    Write-Host "Duration:           $durationSeconds seconds"
+    Write-Host ""
+    Write-Host "Starting controlled workload..."
+
+    $jobs = @()
+
+    try {
+        1..$workerCount | ForEach-Object {
+            $jobs += Start-Job -ScriptBlock {
+                param($seconds)
+
+                $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+                $value = 1.0
+
+                while ($stopwatch.Elapsed.TotalSeconds -lt $seconds) {
+                    $value = [Math]::Sqrt($value + 12345.6789)
+
+                    if ($value -gt 1000000) {
+                        $value = 1.0
+                    }
+                }
+
+                $stopwatch.Stop()
+            } -ArgumentList $durationSeconds
+        }
+
+        Wait-Job -Job $jobs | Out-Null
+        Receive-Job -Job $jobs | Out-Null
+
+        Write-Host ""
+        Write-Host "Controlled workload completed successfully."
+    }
+    finally {
+        if ($jobs.Count -gt 0) {
+            $jobs |
+                Where-Object State -eq "Running" |
+                Stop-Job -ErrorAction SilentlyContinue
+
+            $jobs |
+                Remove-Job -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+```
+
+The workload completed successfully and cleaned up its background jobs.
+
+### Controlled-workload evidence
+
+![Windows controlled CPU workload](../../docs/screenshots/stage-03-windows-controlled-cpu-workload.png)
+
+The evidence records the logical processor count, selected worker count, duration, successful completion, and return to the PowerShell prompt.
+
+### Monitoring response and recovery
+
+Zabbix recorded the full resource-change cycle:
+
+| Measurement | Observed value |
+|---|---:|
+| Normal range before the workload | Approximately `23%` to `34%` |
+| Maximum CPU utilization | `89.5912%` |
+| Template high-CPU threshold | Greater than `90%` |
+| CPU utilization after workload recovery | `36.6596%` |
+
+The workload approached but did not cross the template's high-CPU trigger threshold. This was intentional for Stage 03: the activity validated metric response and recovery without deliberately creating an incident. Trigger activation and incident handling remain part of later alerting and incident-response stages.
+
+### CPU-response evidence
+
+![Windows controlled CPU validation](../../docs/screenshots/stage-03-windows-controlled-cpu-validation.png)
+
+The graph shows the stable baseline, rapid utilization increase, recorded maximum, configured trigger threshold, workload termination, and return toward the pre-test range.
+
 ## Baseline Commands
 
 The Windows baseline inspected:
@@ -518,16 +695,21 @@ The Windows Firewall rule uses the required Docker-related remote-address scope 
 | Windows Firewall rule configured | Passed |
 | TCP port `10050` listening | Passed |
 | Direct passive checks succeed | Passed |
-| Windows host registered in Zabbix | Pending |
-| Windows template assigned | Pending |
-| Initial item discovery completed | Pending |
-| Initial metric collection confirmed | Pending |
-| Controlled activity validated | Pending |
-| Final Stage 03 evidence selected | Pending |
+| Windows host group created | Passed |
+| Windows host registered in Zabbix | Passed |
+| DNS-based Agent interface configured | Passed |
+| Windows template assigned | Passed |
+| Agent availability confirmed | Passed |
+| Initial item discovery completed | Passed |
+| Initial metric collection confirmed | Passed |
+| Controlled CPU activity completed | Passed |
+| CPU response observed in Zabbix | Passed |
+| Post-workload recovery confirmed | Passed |
+| Final Stage 03 evidence selected | Passed |
 
 ## Current Result
 
-The Windows workstation baseline, Docker-to-Windows IPv4 validation, Docker network-scope discovery, official Agent 2 package verification, controlled installation, and direct passive-check validation are complete.
+The Windows workstation baseline, Docker-to-Windows IPv4 validation, Docker network-scope discovery, official Agent 2 package verification, controlled installation, direct passive-check validation, frontend registration, initial discovery, metric collection, controlled CPU validation, and recovery confirmation are complete.
 
 The target is a 64-bit Windows 11 Pro system now running Zabbix Agent 2 `7.0.30` as a native Windows service.
 
@@ -546,8 +728,14 @@ The official Zabbix Agent 2 `7.0.30` Windows AMD64 OpenSSL MSI was downloaded fr
 
 The original Agent configuration was preserved, the passive-check configuration passed validation, the restricted firewall rule was created, and TCP port `10050` is listening. Direct checks from the Zabbix Server container returned `1`, `NOTEACERITAMAR1`, and `7.0.30` for `agent.ping`, `system.hostname`, and `agent.version`, respectively.
 
-The Windows host has not yet been registered in the Zabbix frontend.
+The Windows host is registered in the `Windows servers` group as `Windows Workstation - NOTEACERITAMAR1`. It uses `host.docker.internal:10050` as its DNS-based Agent interface and the `Windows by Zabbix agent` template.
+
+The frontend confirmed Agent availability and exposed `146` monitored values after initial discovery. Live data included Agent status, CPU, memory, swap, uptime, processes, threads, disks, file systems, network interfaces, and Windows services.
+
+A controlled two-minute CPU workload used six of the workstation's eight logical processors. Zabbix recorded an increase from the normal range to `89.5912%` and then a decrease to `36.6596%` after the workload ended. The monitoring path remained available throughout the test.
+
+Stage 03 acceptance criteria are satisfied.
 
 ## Next Steps
 
-The next activity will register the Windows host in the Zabbix frontend using `host.docker.internal` as its DNS-based Agent interface, assign the appropriate Windows template, and validate initial item discovery and metric collection.
+The next stage will introduce network, DNS, TCP, and HTTP service monitoring while preserving the validated Linux and Windows Agent monitoring paths.
