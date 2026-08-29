@@ -16,11 +16,11 @@ The following milestones are complete:
 
 - Windows host baseline collected before Agent 2 installation;
 - container-to-Windows IPv4 connectivity validated;
-- preferred Docker-to-Windows destination identified.
+- preferred Docker-to-Windows destination identified;
+- official Zabbix Agent 2 package downloaded and verified.
 
 The following activities remain pending:
 
-- download and verify the official Zabbix Agent 2 package;
 - install Zabbix Agent 2 as a Windows service;
 - configure passive-check authorization;
 - create the required Windows Firewall rule;
@@ -196,6 +196,46 @@ The baseline inspection confirmed:
 
 Because no existing Zabbix service, listener, or firewall rule was found, the workstation is ready for a controlled Agent 2 installation without conflicting with an earlier installation.
 
+## Official Agent 2 Package Verification
+
+The official Windows Zabbix Agent 2 package was downloaded directly from the Zabbix content-delivery network:
+
+```text
+https://cdn.zabbix.com/zabbix/binaries/stable/7.0/7.0.30/zabbix_agent2-7.0.30-windows-amd64-openssl.msi
+```
+
+Validated package information:
+
+| Property | Validated value |
+|---|---|
+| Product | Zabbix Agent 2 |
+| Version | `7.0.30` |
+| Platform | Windows AMD64 |
+| TLS implementation | OpenSSL |
+| Package type | MSI |
+| File size | `18,305,024 bytes` (`17.46 MB`) |
+| SHA-256 | `3BD05B4A2FF50179CB303CF84A834CF3736595C791884A14C0FB17907ABEEC16` |
+| Authenticode status | Valid |
+| Signer | Zabbix SIA |
+| Certificate issuer | SSL.com Code Signing Intermediate CA RSA R1 |
+| Certificate expiration | `11/05/2027 22:08:00` |
+
+The verified signer subject was:
+
+```text
+CN=Zabbix SIA, O=Zabbix SIA, L=Riga, C=LV
+```
+
+The SHA-256 digest provides a reproducible identifier for the exact package used in this stage. The valid Authenticode signature confirms that Windows recognized the package as signed by Zabbix SIA and that the signed content passed integrity verification.
+
+The package was only downloaded and inspected. It was not executed or installed during this activity.
+
+### Verification evidence
+
+![Zabbix Agent 2 package verification](../../docs/screenshots/stage-03-zabbix-agent2-package-verification.png)
+
+The evidence records the official download URL, package metadata, SHA-256 digest, valid Authenticode status, signer identity, and the explicit confirmation that installation had not yet occurred.
+
 ## Baseline Commands
 
 The Windows baseline inspected:
@@ -282,6 +322,16 @@ The Windows Agent 2 configuration will follow these controls:
 - preserve the original Agent 2 configuration before later modifications;
 - review all diagnostic evidence before committing it.
 
+The package-verification controls completed before installation were:
+
+- download over HTTPS from the official Zabbix content-delivery domain;
+- confirm the expected version, architecture, and package type;
+- reject an empty download;
+- calculate and record the SHA-256 digest;
+- require a valid Windows Authenticode signature;
+- confirm Zabbix SIA as the signing organization;
+- stop before installation so that deployment remains a separate controlled change.
+
 ## Acceptance Criteria
 
 | Criterion | Status |
@@ -295,8 +345,11 @@ The Windows Agent 2 configuration will follow these controls:
 | Container-to-WSL-interface connectivity validated | Passed |
 | Container-to-Wi-Fi-interface connectivity validated | Passed |
 | Container-to-Windows IPv4 connectivity validated | Passed |
-| Official Zabbix Agent 2 package obtained | Pending |
-| Package authenticity validated | Pending |
+| Official Zabbix Agent 2 package obtained | Passed |
+| Package SHA-256 recorded | Passed |
+| Package Authenticode signature validated | Passed |
+| Package signer identified as Zabbix SIA | Passed |
+| Package authenticity validated | Passed |
 | Zabbix Agent 2 installed | Pending |
 | Windows service active | Pending |
 | Passive-check configuration validated | Pending |
@@ -312,7 +365,7 @@ The Windows Agent 2 configuration will follow these controls:
 
 ## Current Result
 
-The Windows workstation baseline and Docker-to-Windows IPv4 validation are complete.
+The Windows workstation baseline, Docker-to-Windows IPv4 validation, and official Agent 2 package verification are complete.
 
 The target is a 64-bit Windows 11 Pro system with no existing Zabbix service, no listener on TCP port `10050`, and no Zabbix-specific Windows Firewall rule.
 
@@ -325,8 +378,10 @@ The Zabbix Server container successfully:
 
 The preferred monitoring destination is `host.docker.internal`.
 
-No state-changing action has been performed during Stage 03.
+The official Zabbix Agent 2 `7.0.30` Windows AMD64 OpenSSL MSI was downloaded from the Zabbix content-delivery network. Its SHA-256 digest was recorded, and Windows reported a valid Authenticode signature from Zabbix SIA.
+
+No Agent installation, service creation, firewall modification, or Zabbix host registration has been performed during Stage 03.
 
 ## Next Steps
 
-The next activity will obtain and verify the official Windows Zabbix Agent 2 package before installation.
+The next activity will determine the narrow monitoring-source authorization and firewall scope required for passive checks before installing Agent 2 as a Windows service.
