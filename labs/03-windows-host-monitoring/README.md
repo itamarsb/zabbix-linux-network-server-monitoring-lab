@@ -342,7 +342,7 @@ LocalPort:    10050
 Local Agent checks returned:
 
 | Check | Returned value | Exit code | Result |
-|---|---|---:|:---:|
+|---|:---:|:---:|:---:|
 | `agent.ping` | `1` | `0` | Passed |
 | `system.hostname` | `NOTEACERITAMAR1` | `0` | Passed |
 | Agent version | `7.0.30` | `0` | Passed |
@@ -358,7 +358,7 @@ host.docker.internal:10050
 The validated results were:
 
 | Item key | Expected value | Returned value | Exit code | Result |
-|---|---|---|---:|:---:|
+|---|:---:|:---:|:---:|:---:|
 | `agent.ping` | `1` | `1` | `0` | Passed |
 | `system.hostname` | `NOTEACERITAMAR1` | `NOTEACERITAMAR1` | `0` | Passed |
 | `agent.version` | `7.0.30` | `7.0.30` | `0` | Passed |
