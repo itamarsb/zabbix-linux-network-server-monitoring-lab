@@ -184,7 +184,7 @@ TCP port `10050` was subsequently validated through this destination after Agent
 The Zabbix Server container is attached to two Docker bridge networks:
 
 | Docker network | Container IPv4 | Prefix | Subnet | Gateway |
-|---|---|---:|---|---|
+|---|---|:---:|:---:|:---:|
 | `zabbix-noc-lab_backend` | `172.19.0.3` | `16` | `172.19.0.0/16` | `172.19.0.1` |
 | `zabbix-noc-lab_monitoring` | `172.20.0.2` | `16` | `172.20.0.0/16` | `172.20.0.1` |
 
@@ -308,7 +308,7 @@ The Agent configuration test completed successfully with exit code `0` before th
 The installation created a dedicated inbound Windows Firewall rule:
 
 | Property | Validated value |
-|---|---|
+|---|:---:|
 | Display name | `Zabbix Agent 2 - Passive Checks` |
 | Direction | Inbound |
 | Action | Allow |
