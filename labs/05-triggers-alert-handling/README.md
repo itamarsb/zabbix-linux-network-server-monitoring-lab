@@ -77,7 +77,7 @@ Severity is assigned according to the monitored service and expected impact rath
 The first trigger monitors the dedicated HTTP target created during Stage 04.
 
 | Property | Configured value |
-|---|---|
+|---|:---:|
 | Host | `Internal Services - Zabbix Lab` |
 | Trigger name | `Monitored web service is unavailable` |
 | Event name | `HTTP service unavailable on monitored-web` |
