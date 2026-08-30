@@ -4,7 +4,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Linux](https://img.shields.io/badge/Linux-Monitoring-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
 [![Windows](https://img.shields.io/badge/Windows-Monitoring-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
-[![Status](https://img.shields.io/badge/Status-Stage%2003%20Completed-brightgreen)](#implementation-roadmap)
+[![Status](https://img.shields.io/badge/Status-Stage%2004%20Completed-brightgreen)](#implementation-roadmap)
 
 A practical Network Operations Center lab focused on infrastructure monitoring, alert triage, troubleshooting, incident response, service recovery, and operational documentation.
 
@@ -108,8 +108,9 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 - [`labs/01-zabbix-platform/`](labs/01-zabbix-platform/) - reproducible Zabbix platform deployment, validation, troubleshooting, and evidence;
 - [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/) - Linux host monitoring with Zabbix Agent 2, controlled resource validation, lifecycle testing, and evidence;
 - [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/) - Windows host monitoring with Zabbix Agent 2, DNS-based Docker connectivity, metric discovery, controlled CPU validation, and evidence;
+- [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/) - ICMP, DNS, TCP, and HTTP service monitoring, controlled failure, recovery validation, troubleshooting, and evidence;
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - reusable read-only workstation validation;
-- [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, persistent storage, and isolated networks;
+- [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, the dedicated monitored HTTP service, persistent storage, and isolated networks;
 - [`.env.example`](.env.example) - versioned environment-variable template without operational credentials;
 - [`docs/screenshots/`](docs/screenshots/) - selected technical evidence from completed stages;
 - [`.gitignore`](.gitignore) - protection for secrets, runtime data, logs, local overrides, and temporary files.
@@ -124,7 +125,7 @@ Additional directories will be introduced only when they contain implemented and
 | 01 | Zabbix platform deployment and health validation | Completed |
 | 02 | Linux host monitoring with Zabbix Agent 2 | Completed |
 | 03 | Windows host monitoring with Zabbix Agent 2 | Completed |
-| 04 | Network, DNS, TCP, and HTTP service monitoring | Planned |
+| 04 | Network, DNS, TCP, and HTTP service monitoring | Completed |
 | 05 | Triggers, severities, events, and alert handling | Planned |
 | 06 | Incident response and service recovery | Planned |
 | 07 | Maintenance windows and operational reporting | Planned |
@@ -230,19 +231,43 @@ All acceptance criteria passed, and the Windows monitoring path remained availab
 
 See the complete documentation in [`labs/03-windows-host-monitoring/README.md`](labs/03-windows-host-monitoring/README.md).
 
+### Stage 04 - Network, DNS, TCP, and HTTP Service Monitoring
+
+Stage 04 extended host-level monitoring with native network and service availability checks.
+
+The implementation included:
+
+- ICMP availability, packet-loss, and response-time monitoring for `1.1.1.1`;
+- external DNS resolution monitoring through Zabbix Agent 2 and Cloudflare DNS;
+- internal TCP availability checks for PostgreSQL and a dedicated HTTP target;
+- a dedicated Nginx service isolated from the Zabbix platform and database;
+- an HTTP web scenario validating content, response code, response time, and download speed;
+- Docker DNS and cross-network connectivity validation;
+- a controlled interruption of only the monitored HTTP service;
+- observation of TCP availability changing from `1` to `0` and returning to `1`;
+- observation of the web-scenario failed step changing from `0` to `1` and returning to `0`;
+- preservation of PostgreSQL and the Zabbix platform throughout the failure;
+- error-history review and complete service-recovery validation;
+- selected normal-state, failure-state, error, and recovery evidence.
+
+All acceptance criteria passed. The stage confirmed that the monitoring platform could detect an isolated service outage, preserve diagnostic information, and verify recovery without affecting essential laboratory services.
+
+See the complete documentation in [`labs/04-network-service-monitoring/README.md`](labs/04-network-service-monitoring/README.md).
+
 ## Current Stage
 
-### Stage 04 - Network, DNS, TCP, and HTTP Service Monitoring
+### Stage 05 - Triggers, Severities, Events, and Alert Handling
 
 The next stage will introduce and validate:
 
-- ICMP reachability, response time, and packet-loss monitoring;
-- DNS resolution checks for selected targets;
-- TCP service availability checks;
-- HTTP service availability, response code, and response-time monitoring;
-- controlled network or service failures;
-- validation of metric changes during failure and recovery;
-- selected validation evidence.
+- triggers based on the availability signals established in Stage 04;
+- operational severity classification;
+- event and problem generation;
+- alert visibility and correlation in the Zabbix frontend;
+- problem acknowledgment and operator notes;
+- controlled trigger transitions from `OK` to `PROBLEM` and back to `OK`;
+- initial alert-handling and escalation decisions;
+- selected detection, acknowledgment, and recovery evidence.
 
 Implementation files will be committed only after configuration and validation succeed.
 
@@ -307,9 +332,9 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 
 ## Project Status
 
-Stages 00, 01, 02, and 03 are complete, validated, and documented.
+Stages 00, 01, 02, 03, and 04 are complete, validated, and documented.
 
-Stage 04 is the next planned implementation and will add network, DNS, TCP, and HTTP service monitoring.
+Stage 05 is the next planned implementation and will add triggers, severities, events, problem acknowledgment, and alert-handling workflows.
 
 ---
 
