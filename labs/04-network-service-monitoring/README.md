@@ -2,7 +2,7 @@
 
 ## Objective
 
-This stage introduces agentless network and service monitoring through the Zabbix Server.
+This stage introduces network and service monitoring through native Zabbix checks performed by the Zabbix Server and Zabbix Agent 2.
 
 The implementation validates:
 
@@ -20,9 +20,9 @@ The stage extends the host-level monitoring completed in Stages 02 and 03 with s
 
 ## Current Status
 
-Stage 04 is in progress.
+Stage 04 is complete.
 
-The connectivity baselines and the native ICMP, TCP, and HTTP monitoring activities have been completed.
+The connectivity baselines and the native ICMP, DNS, TCP, and HTTP monitoring activities have been completed.
 
 The implementation currently confirms:
 
@@ -35,14 +35,14 @@ The implementation currently confirms:
 - Docker DNS resolution from the Zabbix Server container;
 - access to internal Docker services through stable service names;
 - ICMP availability, packet-loss, and response-time collection for `1.1.1.1`;
+- external DNS resolution monitoring from the Windows host through Cloudflare DNS;
 - TCP availability monitoring for PostgreSQL and the dedicated HTTP target;
 - HTTP availability, response-code, response-time, and download-speed collection;
 - controlled HTTP service interruption;
 - monitoring-state changes during failure;
 - successful service recovery with a recorded `1 -> 0 -> 1` TCP transition;
-- preservation of PostgreSQL and the Zabbix platform throughout the controlled failure.
-
-A dedicated native DNS monitoring item remains to be configured before Stage 04 is closed.
+- preservation of PostgreSQL and the Zabbix platform throughout the controlled failure;
+- storage of the selected validation, failure, and recovery evidence.
 
 ## Monitoring Architecture
 
@@ -62,7 +62,7 @@ flowchart TD
     Server --> External
 ```
 
-The Zabbix Server performs the agentless network and service checks.
+The Zabbix Server performs the agentless ICMP, TCP, and HTTP checks. Zabbix Agent 2 on the Windows host performs the dedicated external DNS query.
 
 Internal services are addressed through Docker DNS names rather than transient container IP addresses.
 
@@ -77,7 +77,7 @@ Internal services are addressed through Docker DNS names rather than transient c
 | Internal TCP | `postgres:5432` | PostgreSQL service-port availability | Completed |
 | Internal TCP | `monitored-web:80` | Dedicated HTTP target port availability | Completed |
 | Internal HTTP | `http://monitored-web/` | HTTP content, status-code, and response-time validation | Completed |
-| Native DNS item | Selected DNS target | Dedicated DNS monitoring and metric collection | Pending |
+| External DNS | `1.1.1.1` resolving `example.com` | Dedicated DNS resolution availability | Completed |
 
 ## Windows-Side Connectivity Baseline
 
@@ -195,6 +195,23 @@ Normal-state validation confirmed:
 - packet loss of `0%`;
 - response-time collection in milliseconds.
 
+### External DNS resolution monitoring
+
+The item `External DNS resolution availability` was created on the host `Windows Workstation - NOTEACERITAMAR1` and collected through Zabbix Agent 2.
+
+| Setting | Value |
+|---|---|
+| Item type | Zabbix agent |
+| Key | `net.dns[1.1.1.1,example.com,A,2,1,udp]` |
+| DNS server | `1.1.1.1` |
+| Query name | `example.com` |
+| Record type | `A` |
+| Transport | UDP |
+| Update interval | `1m` |
+| Normal value | `1` |
+
+The item validates whether Cloudflare DNS can resolve the requested A record from the monitored Windows host. The direct item test returned `1`, and subsequent scheduled collections remained at `1`, confirming repeatable DNS resolution availability.
+
 ### Internal TCP monitoring
 
 The host `Zabbix Lab Internal Services` was created to represent services reached directly from the Zabbix Server through Docker networking.
@@ -283,7 +300,7 @@ Stage 04 uses native Zabbix capabilities wherever possible.
 | ICMP availability | ICMP Ping template | Completed |
 | Packet loss | `icmppingloss` | Completed |
 | Response time | `icmppingsec` | Completed |
-| DNS resolution | Dedicated native DNS item | Pending |
+| DNS resolution | Zabbix Agent 2 `net.dns` item | Completed |
 | TCP service availability | `net.tcp.service` | Completed |
 | HTTP availability | Web scenario | Completed |
 | HTTP response code | Web scenario response-code validation | Completed |
@@ -359,9 +376,15 @@ The evidence records the Docker DNS resolution failures observed while the dedic
 
 The graph confirms the full TCP availability transition from normal operation to failure and back to normal operation.
 
+### External DNS resolution validation
+
+![External DNS resolution validation](../../docs/screenshots/stage-04-dns-resolution-validation.png)
+
+The evidence confirms repeated successful DNS resolution collections with value `1` from the monitored Windows host.
+
 ## Acceptance Criteria
 
-Stage 04 will be considered complete when:
+Stage 04 is complete because:
 
 - [x] Windows-side connectivity baseline is completed;
 - [x] Zabbix Server network attachments are identified;
@@ -369,7 +392,7 @@ Stage 04 will be considered complete when:
 - [x] available diagnostic utilities are identified;
 - [x] ICMP availability monitoring is configured;
 - [x] packet-loss and response-time metrics are collected;
-- [ ] dedicated DNS resolution monitoring is configured;
+- [x] dedicated DNS resolution monitoring is configured;
 - [x] TCP service monitoring is configured;
 - [x] HTTP availability monitoring is configured;
 - [x] HTTP response-code validation is configured;
@@ -382,4 +405,4 @@ Stage 04 will be considered complete when:
 
 ## Next Steps
 
-The next activity will configure and validate a dedicated native DNS monitoring item. After successful collection and evidence review, Stage 04 can be marked complete.
+Stage 05 will introduce triggers, severity classification, incident visibility, acknowledgment, and operational response workflows based on the monitoring signals established in this stage.
