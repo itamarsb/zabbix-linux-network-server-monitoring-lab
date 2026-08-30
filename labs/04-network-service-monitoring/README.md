@@ -135,7 +135,7 @@ zabbix-noc-lab-zabbix-server-1
 ### Network attachments
 
 | Docker network | Zabbix Server address |
-|---|---|
+|---|:---:|
 | `zabbix-noc-lab_backend` | `172.19.0.3` |
 | `zabbix-noc-lab_monitoring` | `172.20.0.2` |
 
@@ -167,7 +167,7 @@ This validation confirms that the server can address:
 The Zabbix Server image contains the following utilities:
 
 | Utility | Availability | Purpose |
-|---|:---:|---|
+|:---:|:---:|---|
 | `getent` | Available | DNS and name-resolution validation |
 | `ping` | Available | ICMP connectivity validation |
 | `wget` | Available | Complementary HTTP validation |
@@ -200,7 +200,7 @@ Normal-state validation confirmed:
 The item `External DNS resolution availability` was created on the host `Windows Workstation - NOTEACERITAMAR1` and collected through Zabbix Agent 2.
 
 | Setting | Value |
-|---|---|
+|---|:---:|
 | Item type | Zabbix agent |
 | Key | `net.dns[1.1.1.1,example.com,A,2,1,udp]` |
 | DNS server | `1.1.1.1` |
@@ -245,7 +245,7 @@ Docker DNS and HTTP connectivity were validated from the Zabbix Server container
 The web scenario `Monitored web HTTP availability` contains one step named `Homepage`.
 
 | Setting | Value |
-|---|---|
+|---|:---:|
 | URL | `http://monitored-web/` |
 | Update interval | `1m` |
 | Attempts | `1` |
