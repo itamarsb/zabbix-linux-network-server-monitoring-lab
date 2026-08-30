@@ -4,7 +4,7 @@
 
 This stage introduces agentless network and service monitoring through the Zabbix Server.
 
-The implementation will validate:
+The implementation validates:
 
 - ICMP reachability;
 - ICMP response time and packet loss;
@@ -22,9 +22,9 @@ The stage extends the host-level monitoring completed in Stages 02 and 03 with s
 
 Stage 04 is in progress.
 
-The initial Windows-side and Docker-side connectivity baselines have been completed.
+The connectivity baselines and the native ICMP, TCP, and HTTP monitoring activities have been completed.
 
-The baseline confirmed:
+The implementation currently confirms:
 
 - local Zabbix Web availability on TCP port `8080`;
 - local Zabbix Server availability on TCP port `10051`;
@@ -34,9 +34,15 @@ The baseline confirmed:
 - functional local and external ICMP connectivity;
 - Docker DNS resolution from the Zabbix Server container;
 - access to internal Docker services through stable service names;
-- availability of the utilities required for complementary diagnostics.
+- ICMP availability, packet-loss, and response-time collection for `1.1.1.1`;
+- TCP availability monitoring for PostgreSQL and the dedicated HTTP target;
+- HTTP availability, response-code, response-time, and download-speed collection;
+- controlled HTTP service interruption;
+- monitoring-state changes during failure;
+- successful service recovery with a recorded `1 -> 0 -> 1` TCP transition;
+- preservation of PostgreSQL and the Zabbix platform throughout the controlled failure.
 
-Monitoring items, web scenarios, failure simulations, recovery validation, and final evidence remain to be implemented.
+A dedicated native DNS monitoring item remains to be configured before Stage 04 is closed.
 
 ## Monitoring Architecture
 
@@ -60,19 +66,18 @@ The Zabbix Server performs the agentless network and service checks.
 
 Internal services are addressed through Docker DNS names rather than transient container IP addresses.
 
-## Initial Monitoring Targets
+## Monitoring Targets
 
-| Monitoring area | Initial target | Validation purpose |
-|---|---|---|
-| ICMP | `1.1.1.1` | External IP reachability without DNS dependency |
-| ICMP and DNS | `example.com` | Name resolution and external reachability |
-| Internal DNS | `zabbix-web` | Docker service-name resolution |
-| Internal TCP | `postgres:5432` | Database service-port availability |
-| Windows TCP | `host.docker.internal:10050` | Windows Agent 2 service availability |
-| Internal HTTP | `http://zabbix-web:8080/` | Zabbix frontend availability and response validation |
-| Local HTTP | `http://127.0.0.1:8080/` | Windows-side frontend validation |
-
-The final target set may be adjusted after native Zabbix item and web-scenario validation.
+| Monitoring area | Target | Validation purpose | Status |
+|---|---|---|:---:|
+| ICMP | `1.1.1.1` | External reachability without DNS dependency | Completed |
+| ICMP packet loss | `1.1.1.1` | Packet-loss collection | Completed |
+| ICMP response time | `1.1.1.1` | Latency collection | Completed |
+| Internal DNS | `monitored-web` | Dedicated Docker service-name resolution | Baseline completed |
+| Internal TCP | `postgres:5432` | PostgreSQL service-port availability | Completed |
+| Internal TCP | `monitored-web:80` | Dedicated HTTP target port availability | Completed |
+| Internal HTTP | `http://monitored-web/` | HTTP content, status-code, and response-time validation | Completed |
+| Native DNS item | Selected DNS target | Dedicated DNS monitoring and metric collection | Pending |
 
 ## Windows-Side Connectivity Baseline
 
@@ -136,7 +141,7 @@ zabbix-noc-lab-zabbix-server-1
 
 The dual-network attachment allows the Zabbix Server to communicate with platform services through the backend network and monitored systems through the monitoring network.
 
-The addresses document the discovery-time state only. Monitoring configuration will use DNS names whenever possible instead of depending on these transient addresses.
+The addresses document the discovery-time state only. Monitoring configuration uses DNS names whenever possible instead of depending on these transient addresses.
 
 ### Docker DNS resolution
 
@@ -146,6 +151,7 @@ The Zabbix Server successfully resolved:
 zabbix-web           -> 172.19.0.4
 postgres             -> 172.19.0.2
 host.docker.internal -> fdc4:f303:9324::254
+monitored-web        -> 172.20.0.3
 ```
 
 This validation confirms that the server can address:
@@ -153,6 +159,7 @@ This validation confirms that the server can address:
 - the Zabbix frontend;
 - the PostgreSQL service;
 - the Windows host;
+- the dedicated monitored HTTP service;
 - through stable names available within its runtime environment.
 
 ## Available Diagnostic Utilities
@@ -168,28 +175,145 @@ The Zabbix Server image contains the following utilities:
 | `curl` | Not available | Not required for native Zabbix monitoring |
 | `nc` | Not available | Not required for native Zabbix monitoring |
 
-The absence of `curl` and `nc` does not block the stage. Zabbix simple checks and web scenarios will provide native TCP and HTTP monitoring.
+The absence of `curl` and `nc` did not block the stage. Zabbix simple checks and web scenarios provided native TCP and HTTP monitoring.
+
+## Native Monitoring Implementation
+
+### ICMP monitoring
+
+The host `Cloudflare DNS - 1.1.1.1` was created in the `Network services` host group and linked to the `ICMP Ping` template.
+
+The template collects:
+
+- ICMP availability;
+- ICMP packet loss;
+- ICMP response time.
+
+Normal-state validation confirmed:
+
+- availability value `1`;
+- packet loss of `0%`;
+- response-time collection in milliseconds.
+
+### Internal TCP monitoring
+
+The host `Zabbix Lab Internal Services` was created to represent services reached directly from the Zabbix Server through Docker networking.
+
+The following simple checks were configured:
+
+| Item | Key | Normal value |
+|---|---|:---:|
+| PostgreSQL TCP service availability | `net.tcp.service[tcp,postgres,5432]` | `1` |
+| Monitored web TCP service availability | `net.tcp.service[tcp,monitored-web,80]` | `1` |
+
+The PostgreSQL item confirms database-port reachability without interrupting or modifying the database used by Zabbix.
+
+### Dedicated HTTP monitoring target
+
+A dedicated Nginx service named `monitored-web` was added to the Docker Compose environment.
+
+The service:
+
+- uses the `nginx:1.28.0-alpine` image;
+- connects only to the monitoring network;
+- exposes TCP port `80` internally;
+- includes a container health check;
+- is not published directly to the Windows host;
+- can be safely stopped without affecting Zabbix or PostgreSQL.
+
+Docker DNS and HTTP connectivity were validated from the Zabbix Server container before the native checks were created.
+
+### HTTP web scenario
+
+The web scenario `Monitored web HTTP availability` contains one step named `Homepage`.
+
+| Setting | Value |
+|---|---|
+| URL | `http://monitored-web/` |
+| Update interval | `1m` |
+| Attempts | `1` |
+| Timeout | `5s` |
+| Required text | `Welcome to nginx!` |
+| Required HTTP status | `200` |
+
+The scenario collects:
+
+- scenario download speed;
+- step download speed;
+- failed-step status;
+- last error message;
+- HTTP response code;
+- HTTP response time.
+
+Normal-state collection confirmed failed step `0`, HTTP response code `200`, TCP availability `1`, and active response-time and download-speed metrics.
+
+## Controlled Failure and Recovery
+
+The dedicated HTTP target was stopped with Docker Compose while the Zabbix Server, Zabbix Web, PostgreSQL, Linux host, and Windows host remained operational.
+
+The controlled failure produced the following monitoring changes:
+
+| Signal | Normal state | Failure state | Recovered state |
+|---|:---:|:---:|:---:|
+| Monitored web TCP availability | `1` | `0` | `1` |
+| Failed web-scenario step | `0` | `1` | `0` |
+| Scenario download speed | Collected | `0 Bps` | Collected |
+| HTTP response code | `200` | No new successful response | `200` |
+| PostgreSQL TCP availability | `1` | `1` | `1` |
+
+During the outage, the web scenario recorded messages including:
+
+```text
+Could not resolve host: monitored-web
+Resolving timed out after 5000 milliseconds
+```
+
+This behavior is expected because a stopped Compose container is disconnected from its Docker network and its service name is temporarily removed from Docker DNS.
+
+After `monitored-web` was started again, Docker DNS registration returned, the HTTP scenario resumed successful collection, and the TCP graph recorded the complete `1 -> 0 -> 1` transition.
+
+The last-error item preserves the most recent recorded error after recovery. Recovery is therefore confirmed by the failed-step value returning to `0`, TCP availability returning to `1`, HTTP status `200`, and resumed response-time and download-speed collection.
 
 ## Monitoring Strategy
 
-Stage 04 will use native Zabbix capabilities wherever possible.
+Stage 04 uses native Zabbix capabilities wherever possible.
 
-Planned methods include:
+| Requirement | Zabbix method | Status |
+|---|---|:---:|
+| ICMP availability | ICMP Ping template | Completed |
+| Packet loss | `icmppingloss` | Completed |
+| Response time | `icmppingsec` | Completed |
+| DNS resolution | Dedicated native DNS item | Pending |
+| TCP service availability | `net.tcp.service` | Completed |
+| HTTP availability | Web scenario | Completed |
+| HTTP response code | Web scenario response-code validation | Completed |
+| HTTP response time | Web scenario response-time metric | Completed |
+| Failure validation | Controlled `monitored-web` interruption | Completed |
+| Recovery validation | Service restoration and metric confirmation | Completed |
 
-| Requirement | Zabbix method |
-|---|---|
-| ICMP availability | ICMP simple check or ICMP Ping template |
-| Packet loss | `icmppingloss` |
-| Response time | `icmppingsec` |
-| DNS resolution | `net.dns` or equivalent native check |
-| TCP service availability | `net.tcp.service` |
-| HTTP availability | HTTP service check or web scenario |
-| HTTP response code | Web scenario response-code validation |
-| HTTP response time | Web scenario response-time metric |
-| Failure validation | Controlled target-service interruption |
-| Recovery validation | Service restoration and metric confirmation |
+Triggers, severities, acknowledgment, and complete incident handling remain primarily within Stages 05 and 06. Stage 04 records the availability-state changes required to validate the monitoring items.
 
-Triggers, severities, acknowledgment, and complete incident handling remain primarily within Stages 05 and 06. Stage 04 may still observe availability-state changes required to validate the monitoring items.
+## Troubleshooting Notes
+
+### Missing operational environment file
+
+Docker Compose initially rejected the new service because the operational `.env` file was absent. The file is intentionally excluded from Git and was therefore not restored through repository synchronization.
+
+The operational file was reconstructed from `.env.example`. The existing PostgreSQL password was retrieved from the running PostgreSQL container without being printed, and the reconstructed `.env` remained excluded by `.gitignore`.
+
+Validation then succeeded with:
+
+```text
+docker compose --env-file .env config --quiet
+```
+
+### Diagnostic utility limitations
+
+The Zabbix Server image does not include `curl` or `nc`. Native Zabbix simple checks and web scenarios were used for monitoring, while `wget`, `getent`, and `ping` remained available for complementary validation.
+
+### Controlled failure isolation
+
+PostgreSQL was not selected as the failure target because it stores the Zabbix database. The isolated `monitored-web` service allowed the failure and recovery workflow to be tested without compromising the monitoring platform.
 
 ## Evidence
 
@@ -199,7 +323,41 @@ Triggers, severities, acknowledgment, and complete incident handling remain prim
 
 The evidence confirms internal Docker DNS resolution and identifies the diagnostic utilities available inside the Zabbix Server container.
 
-Additional evidence will be selected after native Zabbix checks begin collecting data.
+### ICMP latest-data validation
+
+![ICMP latest-data validation](../../docs/screenshots/stage-04-icmp-latest-data-validation.png)
+
+The evidence confirms ICMP availability, zero packet loss, and response-time collection for the external target.
+
+### PostgreSQL TCP availability
+
+![PostgreSQL TCP availability](../../docs/screenshots/stage-04-postgresql-tcp-availability.png)
+
+The evidence confirms successful TCP service monitoring for PostgreSQL through the internal Docker backend network.
+
+### HTTP latest-data validation
+
+![HTTP latest-data validation](../../docs/screenshots/stage-04-http-latest-data-validation.png)
+
+The evidence confirms normal-state HTTP status, failed-step, response-time, download-speed, and TCP availability collection.
+
+### Controlled HTTP failure
+
+![Controlled HTTP failure](../../docs/screenshots/stage-04-controlled-http-failure.png)
+
+The evidence confirms TCP availability `0`, failed step `1`, scenario download speed `0 Bps`, and preserved PostgreSQL availability.
+
+### HTTP failure error history
+
+![HTTP failure error history](../../docs/screenshots/stage-04-http-failure-error-history.png)
+
+The evidence records the Docker DNS resolution failures observed while the dedicated target was stopped.
+
+### Controlled HTTP failure recovery
+
+![Controlled HTTP failure recovery](../../docs/screenshots/stage-04-controlled-http-failure-recovery.png)
+
+The graph confirms the full TCP availability transition from normal operation to failure and back to normal operation.
 
 ## Acceptance Criteria
 
@@ -209,19 +367,19 @@ Stage 04 will be considered complete when:
 - [x] Zabbix Server network attachments are identified;
 - [x] internal Docker DNS resolution is validated;
 - [x] available diagnostic utilities are identified;
-- [ ] ICMP availability monitoring is configured;
-- [ ] packet-loss and response-time metrics are collected;
-- [ ] DNS resolution monitoring is configured;
-- [ ] TCP service monitoring is configured;
-- [ ] HTTP availability monitoring is configured;
-- [ ] HTTP response-code validation is configured;
-- [ ] HTTP response-time data is collected;
-- [ ] a controlled service failure is performed;
-- [ ] monitoring changes during failure are validated;
-- [ ] service recovery is confirmed;
-- [ ] selected Stage 04 evidence is stored;
-- [ ] final troubleshooting notes and results are documented.
+- [x] ICMP availability monitoring is configured;
+- [x] packet-loss and response-time metrics are collected;
+- [ ] dedicated DNS resolution monitoring is configured;
+- [x] TCP service monitoring is configured;
+- [x] HTTP availability monitoring is configured;
+- [x] HTTP response-code validation is configured;
+- [x] HTTP response-time data is collected;
+- [x] a controlled service failure is performed;
+- [x] monitoring changes during failure are validated;
+- [x] service recovery is confirmed;
+- [x] selected Stage 04 evidence is stored;
+- [x] final troubleshooting notes and results are documented.
 
 ## Next Steps
 
-The next activity will create the first native Zabbix network-monitoring target and validate ICMP availability, packet loss, and response-time collection.
+The next activity will configure and validate a dedicated native DNS monitoring item. After successful collection and evidence review, Stage 04 can be marked complete.
