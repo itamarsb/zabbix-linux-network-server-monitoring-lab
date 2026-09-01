@@ -69,7 +69,7 @@ Internal services are addressed through Docker DNS names rather than transient c
 ## Monitoring Targets
 
 | Monitoring area | Target | Validation purpose | Status |
-|---|---|---|:---:|
+|---|:---:|---|:---:|
 | ICMP | `1.1.1.1` | External reachability without DNS dependency | Completed |
 | ICMP packet loss | `1.1.1.1` | Packet-loss collection | Completed |
 | ICMP response time | `1.1.1.1` | Latency collection | Completed |
