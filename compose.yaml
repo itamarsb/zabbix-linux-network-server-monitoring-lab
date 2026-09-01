@@ -103,6 +103,21 @@ services:
         max-size: 10m
         max-file: "3"
 
+  mailpit:
+    image: ${MAILPIT_IMAGE:?MAILPIT_IMAGE must be set}
+    ports:
+      - "127.0.0.1:${MAILPIT_WEB_HTTP_PORT:?MAILPIT_WEB_HTTP_PORT must be set}:8025"
+    networks:
+      - monitoring
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 10s
+    logging:
+      driver: local
+      options:
+        max-size: 10m
+        max-file: "3"
+
 volumes:
   postgres-data:
 
