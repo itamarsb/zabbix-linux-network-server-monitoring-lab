@@ -134,7 +134,7 @@ zabbix-noc-lab-zabbix-server-1
 
 ### Network attachments
 
-| Docker network | Zabbix Server address |
+| Docker Docker network | Zabbix Server address |
 |---|:---:|
 | `zabbix-noc-lab_backend` | `172.19.0.3` |
 | `zabbix-noc-lab_monitoring` | `172.20.0.2` |
@@ -308,7 +308,7 @@ Stage 04 uses native Zabbix capabilities wherever possible.
 | Failure validation | Controlled `monitored-web` interruption | Completed |
 | Recovery validation | Service restoration and metric confirmation | Completed |
 
-Triggers, severities, acknowledgment, and complete incident handling remain primarily within Stages 05 and 06. Stage 04 records the availability-state changes required to validate the monitoring items.
+Stage 05 subsequently used these availability-state changes to implement triggers, severity classification, acknowledgment, and complete incident-handling lifecycles. Stage 04 remains the monitoring baseline that validated the underlying service signals.
 
 ## Troubleshooting Notes
 
@@ -405,4 +405,4 @@ Stage 04 is complete because:
 
 ## Next Steps
 
-Stage 05 will introduce triggers, severity classification, incident visibility, acknowledgment, and operational response workflows based on the monitoring signals established in this stage.
+Stage 05 subsequently introduced triggers, severity classification, incident visibility, acknowledgment, and operational response workflows based on the monitoring signals established in this stage.
