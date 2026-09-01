@@ -83,7 +83,7 @@ Severity is assigned according to the monitored service and expected impact rath
 The first trigger monitors the dedicated HTTP target created during Stage 04.
 
 | Property | Configured value |
-|---|---|
+|---|:---:|
 | Host | `Internal Services - Zabbix Lab` |
 | Trigger name | `Monitored web service is unavailable` |
 | Event name | `HTTP service unavailable on monitored-web` |
@@ -115,7 +115,7 @@ Current TCP availability: {ITEM.LASTVALUE1}
 Expected values:
 
 | Value | Meaning |
-|:---:|---|
+|:---:|:---:|
 | `1` | TCP port is reachable |
 | `0` | TCP port is unavailable |
 
@@ -193,7 +193,7 @@ The evidence confirms the isolated interruption and preservation of the essentia
 After the sustained two-minute failure condition was satisfied, Zabbix generated the expected problem event.
 
 | Event property | Observed value |
-|---|---|
+|---|:---:|
 | Problem time | `21:57:19` |
 | Host | `Zabbix Lab Internal Services` |
 | Event | `HTTP service unavailable on monitored-web` |
@@ -271,7 +271,7 @@ The evidence confirms the final healthy state of the restored service and the co
 After the monitored TCP value returned to `1`, the trigger expression automatically returned to its normal state.
 
 | Recovery property | Observed value |
-|---|---|
+|---|:---:|
 | Problem time | `21:57:19` |
 | Recovery time | `22:29:15` |
 | Final status | `RESOLVED` |
@@ -360,7 +360,7 @@ These events were not modified during the HTTP test because they were outside th
 ## Evidence Summary
 
 | Evidence | File |
-|---|---|
+|---|:---:|
 | Initial trigger in `OK` state | `stage-05-http-trigger-initial-ok.png` |
 | Controlled service interruption | `stage-05-controlled-http-service-stop.png` |
 | High-severity problem detection | `stage-05-http-problem-detected.png` |
