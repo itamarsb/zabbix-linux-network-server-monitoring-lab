@@ -293,45 +293,6 @@ Notification failures will be investigated in the following order:
 
 A failed notification attempt will be documented when it provides a meaningful troubleshooting result.
 
-## Evidence Plan
-
-Selected evidence may include:
-
-- notification-service availability;
-- Zabbix media-type configuration without credentials;
-- operator media assignment;
-- trigger-action conditions;
-- problem-operation configuration;
-- recovery-operation configuration;
-- received problem notification;
-- received recovery notification;
-- Zabbix action or notification history;
-- controlled HTTP failure;
-- controlled HTTP recovery;
-- severity-based DNS notification;
-- final healthy platform state.
-
-Evidence filenames should follow the existing repository convention:
-
-```text
-stage-06-<activity>-<result>.png
-```
-
-Provisional filenames include:
-
-```text
-stage-06-notification-service-validation.png
-stage-06-media-type-configuration.png
-stage-06-trigger-action-configuration.png
-stage-06-http-problem-notification.png
-stage-06-http-recovery-notification.png
-stage-06-notification-history.png
-stage-06-dns-severity-notification.png
-stage-06-final-platform-health.png
-```
-
-Only screenshots that demonstrate meaningful configuration, delivery, troubleshooting, or recovery results should be committed.
-
 ## Acceptance Criteria
 
 Stage 06 will be complete when:
