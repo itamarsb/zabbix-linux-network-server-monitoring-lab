@@ -50,7 +50,7 @@ The laboratory successfully validated:
 ## Laboratory Scope
 
 | Component | Role in this stage |
-|---|---|
+|:---:|---|
 | Zabbix Server | Evaluates collected values and trigger expressions |
 | Zabbix Web | Displays triggers, incidents, acknowledgments, and history |
 | PostgreSQL | Stores Zabbix configuration and monitoring history |
@@ -88,7 +88,7 @@ The objective is not only to display a problem. The stage demonstrates the compl
 The laboratory uses the Zabbix severity levels according to expected operational impact.
 
 | Severity | Intended use |
-|---|---|
+|:---:|---|
 | Not classified | Conditions without an established operational classification |
 | Information | Informational state changes that do not require immediate action |
 | Warning | Degraded behavior or an early indication of possible impact |
@@ -99,7 +99,7 @@ The laboratory uses the Zabbix severity levels according to expected operational
 Two severities were explicitly demonstrated during this stage:
 
 | Trigger | Severity | Operational reasoning |
-|---|---|---|
+|---|:---:|---|
 | HTTP service unavailable | High | Represents direct unavailability of the dedicated monitored service |
 | External DNS resolution unavailable | Average | Represents loss of one external dependency while the workstation and monitoring platform remain operational |
 
