@@ -4,7 +4,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Linux](https://img.shields.io/badge/Linux-Monitoring-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
 [![Windows](https://img.shields.io/badge/Windows-Monitoring-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
-[![Status](https://img.shields.io/badge/Status-Stage%2004%20Completed-brightgreen)](#implementation-roadmap)
+[![Status](https://img.shields.io/badge/Status-Stage%2005%20Completed-brightgreen)](#implementation-roadmap)
 
 A practical Network Operations Center lab focused on infrastructure monitoring, alert triage, troubleshooting, incident response, service recovery, and operational documentation.
 
@@ -109,6 +109,7 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 - [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/) - Linux host monitoring with Zabbix Agent 2, controlled resource validation, lifecycle testing, and evidence;
 - [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/) - Windows host monitoring with Zabbix Agent 2, DNS-based Docker connectivity, metric discovery, controlled CPU validation, and evidence;
 - [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/) - ICMP, DNS, TCP, and HTTP service monitoring, controlled failure, recovery validation, troubleshooting, and evidence;
+- [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/) - sustained trigger conditions, severity classification, HTTP and DNS incidents, acknowledgment, recovery, historical validation, and evidence;
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - reusable read-only workstation validation;
 - [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, the dedicated monitored HTTP service, persistent storage, and isolated networks;
 - [`.env.example`](.env.example) - versioned environment-variable template without operational credentials;
@@ -126,8 +127,8 @@ Additional directories will be introduced only when they contain implemented and
 | 02 | Linux host monitoring with Zabbix Agent 2 | Completed |
 | 03 | Windows host monitoring with Zabbix Agent 2 | Completed |
 | 04 | Network, DNS, TCP, and HTTP service monitoring | Completed |
-| 05 | Triggers, severities, events, and alert handling | Planned |
-| 06 | Incident response and service recovery | Planned |
+| 05 | Triggers, severities, events, and alert handling | Completed |
+| 06 | Alert delivery, actions, and notifications | Planned |
 | 07 | Maintenance windows and operational reporting | Planned |
 | 08 | Introductory SNMP and optional Grafana integration | Planned |
 
@@ -254,20 +255,42 @@ All acceptance criteria passed. The stage confirmed that the monitoring platform
 
 See the complete documentation in [`labs/04-network-service-monitoring/README.md`](labs/04-network-service-monitoring/README.md).
 
+### Stage 05 - Triggers, Severities, Events, and Alert Handling
+
+Stage 05 converted the monitoring signals established in the previous stages into actionable incidents and complete operational lifecycles.
+
+The implementation included:
+
+- a sustained HTTP service-availability trigger with High severity;
+- controlled interruption and restoration of the dedicated `monitored-web` service;
+- HTTP problem generation, acknowledgment, investigation notes, and escalation decisions;
+- automatic HTTP event resolution and preservation of the complete event history;
+- an additional external DNS resolution trigger with Average severity;
+- validation and rejection of an ineffective initial fault-injection attempt;
+- deterministic DNS failure through a controlled temporary target change;
+- observation of the monitored DNS value changing from `1` to `0` and returning to `1`;
+- automatic DNS incident recovery and historical validation;
+- removal of temporary Windows Firewall rules used during troubleshooting;
+- selected HTTP and DNS detection, acknowledgment, failure, recovery, and history evidence.
+
+All acceptance criteria passed. The stage demonstrated severity-based incident classification, operator accountability, controlled troubleshooting, automatic recovery, and complete historical preservation for two distinct monitoring signals.
+
+See the complete documentation in [`labs/05-triggers-alert-handling/README.md`](labs/05-triggers-alert-handling/README.md).
+
 ## Current Stage
 
-### Stage 05 - Triggers, Severities, Events, and Alert Handling
+### Stage 06 - Alert Delivery, Actions, and Notifications
 
 The next stage will introduce and validate:
 
-- triggers based on the availability signals established in Stage 04;
-- operational severity classification;
-- event and problem generation;
-- alert visibility and correlation in the Zabbix frontend;
-- problem acknowledgment and operator notes;
-- controlled trigger transitions from `OK` to `PROBLEM` and back to `OK`;
-- initial alert-handling and escalation decisions;
-- selected detection, acknowledgment, and recovery evidence.
+- a notification channel suitable for the controlled laboratory;
+- Zabbix actions linked to trigger and severity conditions;
+- action conditions and operation steps;
+- problem-notification message content;
+- recovery-notification message content;
+- controlled delivery validation for problem and recovery events;
+- notification troubleshooting and delivery-history review;
+- selected action, message, delivery, and recovery evidence.
 
 Implementation files will be committed only after configuration and validation succeed.
 
@@ -332,9 +355,9 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 
 ## Project Status
 
-Stages 00, 01, 02, 03, and 04 are complete, validated, and documented.
+Stages 00, 01, 02, 03, 04, and 05 are complete, validated, and documented.
 
-Stage 05 is the next planned implementation and will add triggers, severities, events, problem acknowledgment, and alert-handling workflows.
+Stage 06 is the next planned implementation and will add alert delivery, Zabbix actions, message content, and problem and recovery notification workflows.
 
 ---
 
@@ -353,3 +376,5 @@ This repository is a controlled laboratory environment intended for technical pr
     />
   </a>
 </p>
+
+
