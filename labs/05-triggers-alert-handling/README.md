@@ -118,7 +118,7 @@ net.tcp.service[tcp,monitored-web,80]
 Expected values:
 
 | Value | Meaning |
-|---:|---|
+|:---:|---|
 | `1` | TCP service is reachable |
 | `0` | TCP service is unavailable |
 
