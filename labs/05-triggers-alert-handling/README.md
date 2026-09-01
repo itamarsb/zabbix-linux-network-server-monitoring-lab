@@ -21,18 +21,24 @@ The implementation uses the monitoring signals established in the previous stage
 
 Stage 05 is in progress.
 
-The initial HTTP service-availability trigger has been created and remains in the normal `OK` state.
+The first complete trigger and alert-handling lifecycle has been successfully validated.
 
-The next activities will validate:
+The controlled HTTP incident demonstrated:
 
-- controlled transition from `OK` to `PROBLEM`;
-- severity visibility in the monitoring interface;
-- problem acknowledgment;
-- operational notes;
-- initial triage and escalation decisions;
-- service recovery;
-- automatic transition from `PROBLEM` back to `OK`;
-- preservation of the complete event history.
+- initial trigger state `OK`;
+- isolated interruption of the dedicated HTTP target;
+- sustained failure detection;
+- automatic transition from `OK` to `PROBLEM`;
+- high-severity incident visibility;
+- operator acknowledgment;
+- operational triage documentation;
+- explicit escalation decision;
+- controlled service restoration;
+- successful container health validation;
+- automatic transition from `PROBLEM` to `RESOLVED`;
+- preservation of the incident and action history.
+
+Additional trigger and severity scenarios will be introduced before the stage is marked as complete.
 
 ## Operational Context
 
@@ -40,7 +46,7 @@ Monitoring items collect values, but a Network Operations Center requires define
 
 A trigger converts collected monitoring data into an event when its expression evaluates to true.
 
-The initial workflow follows this sequence:
+The validated workflow follows this sequence:
 
 ```text
 Normal monitoring
@@ -51,11 +57,11 @@ Normal monitoring
     -> Acknowledgment
     -> Investigation
     -> Recovery action
-    -> OK event
+    -> RESOLVED event
     -> Operational record
 ```
 
-The objective is not only to display a problem. The stage must demonstrate the complete alert lifecycle from detection through recovery.
+The objective is not only to display a problem. The stage demonstrates the complete alert lifecycle from detection through recovery.
 
 ## Severity Model
 
@@ -72,12 +78,12 @@ The laboratory uses the Zabbix severity levels according to expected operational
 
 Severity is assigned according to the monitored service and expected impact rather than only the technical type of failure.
 
-## Initial Trigger
+## Initial HTTP Trigger
 
 The first trigger monitors the dedicated HTTP target created during Stage 04.
 
 | Property | Configured value |
-|---|:---:|
+|---|---|
 | Host | `Internal Services - Zabbix Lab` |
 | Trigger name | `Monitored web service is unavailable` |
 | Event name | `HTTP service unavailable on monitored-web` |
@@ -134,61 +140,234 @@ Initial results:
 - the monitored TCP item is valid;
 - severity is configured as `High`;
 - the trigger is enabled;
-- the current trigger value is `OK`;
+- the initial trigger value was `OK`;
 - automatic expression-based recovery is enabled;
 - incident generation mode is set to `Single`.
 
-## Planned Controlled Incident
+### Initial trigger evidence
 
-The dedicated `monitored-web` container will be used as the controlled failure target.
+![Initial HTTP trigger in OK state](../../docs/screenshots/stage-05-http-trigger-initial-ok.png)
 
-This target is appropriate because:
+The evidence confirms the enabled trigger, `High` severity, sustained-condition expression, and initial `OK` state.
+
+## Controlled HTTP Incident
+
+The dedicated `monitored-web` container was selected as the controlled failure target.
+
+This target was appropriate because:
 
 - it is isolated from the Zabbix platform;
 - it does not store monitoring data;
 - it can be stopped without interrupting PostgreSQL;
 - it can be restored independently;
-- its failure is already monitored through TCP and HTTP checks.
+- its failure is monitored through TCP and HTTP checks.
 
-The controlled incident must preserve:
+The controlled interruption was performed with:
 
-- PostgreSQL availability;
-- Zabbix Server availability;
-- Zabbix Web availability;
-- Windows and Linux host monitoring;
-- unrelated Docker resources.
+```powershell
+docker compose --env-file .env stop monitored-web
+```
 
-## Planned Alert-Handling Workflow
+The environment was then validated with:
 
-The controlled validation will include:
+```powershell
+docker compose --env-file .env ps
+```
 
-1. confirm the trigger is enabled and currently `OK`;
-2. stop only the `monitored-web` service;
-3. wait for the sustained failure condition;
-4. confirm creation of the `PROBLEM` event;
-5. validate the displayed severity and operational data;
-6. acknowledge the problem;
-7. add an operational investigation note;
-8. validate related monitoring data;
-9. restore the dedicated HTTP service;
-10. confirm automatic recovery to `OK`;
-11. review the complete event and acknowledgment history;
-12. preserve selected technical evidence.
+The resulting state confirmed:
 
-## Evidence Plan
+- `monitored-web` was stopped;
+- PostgreSQL remained healthy;
+- Zabbix Server remained operational;
+- Zabbix Web remained healthy;
+- no unrelated container was interrupted.
 
-Only evidence that demonstrates meaningful operational results will be committed.
+### Controlled service-stop evidence
 
-Planned evidence includes:
+![Controlled HTTP service stop](../../docs/screenshots/stage-05-controlled-http-service-stop.png)
 
-- the active trigger in the normal `OK` state;
-- the trigger-generated `PROBLEM` event;
-- the acknowledged problem with an operational note;
-- related TCP and HTTP monitoring data during the incident;
-- the automatic recovery event;
-- the complete problem and recovery history.
+The evidence confirms the isolated interruption and preservation of the essential monitoring platform services.
 
-Screenshots containing credentials, personal information, unrelated desktop content, or unnecessary interface elements must not be committed.
+## Problem Detection
+
+After the sustained two-minute failure condition was satisfied, Zabbix generated the expected problem event.
+
+| Event property | Observed value |
+|---|---|
+| Problem time | `21:57:19` |
+| Host | `Zabbix Lab Internal Services` |
+| Event | `HTTP service unavailable on monitored-web` |
+| Severity | `High` |
+| Initial status | `PROBLEM` |
+| Acknowledgment state | Not acknowledged |
+| Monitored service | `monitored-web:80` |
+
+The event confirmed that the trigger converted the TCP availability signal into an actionable high-severity incident.
+
+### Problem-detection evidence
+
+![HTTP problem detected](../../docs/screenshots/stage-05-http-problem-detected.png)
+
+The evidence confirms the high-severity `PROBLEM` event created by the controlled service interruption.
+
+## Acknowledgment and Operational Triage
+
+The incident was acknowledged by the operator after validating its scope and platform impact.
+
+The following operational note was recorded:
+
+```text
+Initial triage completed. The dedicated monitored-web service is confirmed unavailable during a controlled laboratory test. PostgreSQL, Zabbix Server, and Zabbix Web remain operational. Investigation is limited to the isolated HTTP target. Escalation is not required, and service recovery is authorized within the laboratory scope.
+```
+
+The note records:
+
+- confirmation that the service was unavailable;
+- validation that the failure was isolated;
+- preservation of PostgreSQL and Zabbix services;
+- limitation of the investigation scope;
+- the decision not to escalate;
+- authorization to restore the service.
+
+No manual incident closure was performed. Recovery remained dependent on the trigger expression returning to its normal state.
+
+### Acknowledgment evidence
+
+![Acknowledged HTTP problem and operational note](../../docs/screenshots/stage-05-http-problem-acknowledged.png)
+
+The evidence preserves the operator, timestamp, acknowledgment action, and complete operational triage note.
+
+## Controlled Service Recovery
+
+The dedicated HTTP target was restored with:
+
+```powershell
+docker compose --env-file .env start monitored-web
+```
+
+The immediate Compose state showed that the container had started and its health check was initializing.
+
+### Service-recovery initiation evidence
+
+![Controlled HTTP service recovery](../../docs/screenshots/stage-05-controlled-http-service-recovery.png)
+
+The evidence records the controlled start of `monitored-web` and preservation of the other platform services during recovery.
+
+A subsequent Compose validation confirmed:
+
+- `monitored-web` was running and healthy;
+- PostgreSQL remained healthy;
+- Zabbix Server remained operational;
+- Zabbix Web remained healthy.
+
+### Final service-health evidence
+
+![HTTP service health validation](../../docs/screenshots/stage-05-http-service-health-validation.png)
+
+The evidence confirms the final healthy state of the restored service and the complete Docker Compose platform.
+
+## Automatic Trigger Recovery
+
+After the monitored TCP value returned to `1`, the trigger expression automatically returned to its normal state.
+
+| Recovery property | Observed value |
+|---|---|
+| Problem time | `21:57:19` |
+| Recovery time | `22:29:15` |
+| Final status | `RESOLVED` |
+| Recorded duration | `31m 56s` |
+| Recovery method | Automatic trigger-expression recovery |
+| Manual closure | Not used |
+| Acknowledgment preserved | Yes |
+| Operational note preserved | Yes |
+
+The incident lifecycle therefore completed as:
+
+```text
+OK -> PROBLEM -> ACKNOWLEDGED -> RESOLVED
+```
+
+### Automatic-recovery evidence
+
+![HTTP problem automatically recovered](../../docs/screenshots/stage-05-http-problem-recovered.png)
+
+The evidence confirms the recovery timestamp, final `RESOLVED` state, event duration, and preserved acknowledgment indicators.
+
+## Validated Alert-Handling Workflow
+
+The completed validation included:
+
+1. confirmation that the trigger was enabled and initially `OK`;
+2. isolated interruption of the `monitored-web` service;
+3. sustained failure detection;
+4. creation of the high-severity `PROBLEM` event;
+5. validation of the incident scope;
+6. acknowledgment by the operator;
+7. recording of an operational investigation note;
+8. documentation of the escalation decision;
+9. controlled restoration of the HTTP service;
+10. validation of the container health check;
+11. automatic transition to `RESOLVED`;
+12. preservation of the complete event history;
+13. storage of selected technical evidence.
+
+## Troubleshooting Notes
+
+### Host-name validation
+
+The visible host name and the internal host name used by trigger expressions were not identical.
+
+The expression initially referenced:
+
+```text
+Zabbix Lab Internal Services
+```
+
+Zabbix rejected that manual expression because the internal host name is:
+
+```text
+Internal Services - Zabbix Lab
+```
+
+The expression builder was used to select the monitored item and generate the correct expression automatically.
+
+This approach prevents invalid expressions caused by differences between visible and internal host names.
+
+### Recovery health transition
+
+Immediately after the container was started, Docker Compose reported:
+
+```text
+health: starting
+```
+
+This state was expected while the Nginx health check initialized.
+
+A later validation confirmed:
+
+```text
+healthy
+```
+
+Zabbix independently confirmed service recovery when the monitored TCP value returned to `1` and the incident changed automatically to `RESOLVED`.
+
+### Unrelated existing incidents
+
+The Zabbix problem view also displayed unrelated Windows service and historical Linux Agent incidents.
+
+These events were not modified during the HTTP test because they were outside the controlled incident scope.
+
+## Evidence Summary
+
+| Evidence | File |
+|---|---|
+| Initial trigger in `OK` state | `stage-05-http-trigger-initial-ok.png` |
+| Controlled service interruption | `stage-05-controlled-http-service-stop.png` |
+| High-severity problem detection | `stage-05-http-problem-detected.png` |
+| Acknowledgment and operational note | `stage-05-http-problem-acknowledged.png` |
+| Controlled service-recovery initiation | `stage-05-controlled-http-service-recovery.png` |
+| Final healthy container state | `stage-05-http-service-health-validation.png` |
+| Automatic trigger recovery | `stage-05-http-problem-recovered.png` |
 
 ## Acceptance Criteria
 
@@ -198,18 +377,22 @@ Stage 05 will be complete when:
 - [x] the trigger uses a sustained two-minute failure condition;
 - [x] the trigger is assigned `High` severity;
 - [x] the trigger is enabled and initially reports `OK`;
-- [ ] a controlled service failure generates a `PROBLEM` event;
-- [ ] the problem appears with the expected severity;
-- [ ] the event displays the current operational value;
-- [ ] the problem is acknowledged;
-- [ ] an operational investigation note is recorded;
-- [ ] an initial escalation decision is documented;
-- [ ] the monitored service is restored;
-- [ ] the trigger automatically returns to `OK`;
-- [ ] the event history preserves the failure and recovery lifecycle;
-- [ ] selected Stage 05 evidence is stored;
-- [ ] final troubleshooting notes and results are documented.
+- [x] a controlled service failure generates a `PROBLEM` event;
+- [x] the problem appears with the expected severity;
+- [x] the event identifies the affected host and service;
+- [x] the problem is acknowledged;
+- [x] an operational investigation note is recorded;
+- [x] an initial escalation decision is documented;
+- [x] the monitored service is restored;
+- [x] the container returns to a healthy state;
+- [x] the trigger automatically returns to its normal state;
+- [x] the incident is displayed as `RESOLVED`;
+- [x] the event history preserves the failure and recovery lifecycle;
+- [x] selected HTTP incident evidence is stored;
+- [ ] an additional trigger with a different severity is configured;
+- [ ] the additional trigger behavior is validated;
+- [ ] final Stage 05 results are documented.
 
 ## Next Steps
 
-The next activity will perform a controlled interruption of only the `monitored-web` service and validate the transition from `OK` to `PROBLEM`.
+The next activity will configure an additional service trigger with a different operational severity to demonstrate severity classification beyond the initial high-severity HTTP outage.
