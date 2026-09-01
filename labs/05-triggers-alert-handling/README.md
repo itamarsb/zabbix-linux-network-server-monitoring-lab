@@ -291,7 +291,7 @@ net.dns[1.1.1.1,example.com,A,2,1,udp]
 Parameters:
 
 | Parameter | Value |
-|---|---|
+|---|:---:|
 | DNS server | `1.1.1.1` |
 | Queried domain | `example.com` |
 | Record type | `A` |
@@ -302,7 +302,7 @@ Parameters:
 Expected values:
 
 | Value | Meaning |
-|---:|---|
+|:---:|---|
 | `1` | DNS resolution succeeded |
 | `0` | DNS resolution failed |
 
@@ -496,7 +496,7 @@ The event initially disappeared from the recent-incidents view after recovery. T
 ## HTTP Validation
 
 | Validation | Result |
-|---|---|
+|---|:---:|
 | Trigger created | Passed |
 | Trigger initially `OK` | Passed |
 | Severity classified as High | Passed |
@@ -516,7 +516,7 @@ The event initially disappeared from the recent-incidents view after recovery. T
 ## DNS Validation
 
 | Validation | Result |
-|---|---|
+|---|:---:|
 | Trigger created | Passed |
 | Trigger initially `OK` | Passed |
 | Severity classified as Average | Passed |
