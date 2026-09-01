@@ -477,7 +477,7 @@ After the original DNS target was restored, Zabbix automatically closed the inci
 The event history recorded:
 
 | Field | Result |
-|---|---|
+|---|:---:|
 | Problem time | `19:15:24` |
 | Recovery time | `19:34:22` |
 | Duration | `18m 58s` |
