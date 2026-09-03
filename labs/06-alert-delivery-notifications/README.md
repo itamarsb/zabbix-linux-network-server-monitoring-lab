@@ -167,7 +167,7 @@ noc-operator@zabbix-lab.local
 The `Mailpit Local SMTP` media type was assigned to the Zabbix administrator used as the laboratory operator.
 
 | Setting | Value |
-|---|---|
+|---|:---:|
 | User | Admin |
 | Recipient | `noc-operator@zabbix-lab.local` |
 | Media type | `Mailpit Local SMTP` |
@@ -193,7 +193,7 @@ NOC Lab - Mailpit problem notifications
 The action uses these conditions:
 
 | Condition | Value |
-|---|---|
+|:---:|---|
 | A | Trigger equals the external DNS resolution trigger |
 | B | Trigger equals the monitored HTTP service trigger |
 | C | Trigger severity is greater than or equal to Average |
