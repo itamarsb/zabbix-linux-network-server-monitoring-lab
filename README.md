@@ -4,22 +4,22 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Linux](https://img.shields.io/badge/Linux-Monitoring-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
 [![Windows](https://img.shields.io/badge/Windows-Monitoring-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
-[![Status](https://img.shields.io/badge/Status-Stage%2005%20Completed-brightgreen)](#implementation-roadmap)
+[![Status](https://img.shields.io/badge/Status-Stage%2006%20Completed-brightgreen)](#implementation-roadmap)
 
-A practical Network Operations Center lab focused on infrastructure monitoring, alert triage, troubleshooting, incident response, service recovery, and operational documentation.
+A practical Network Operations Center lab focused on infrastructure monitoring, alert delivery, triage, troubleshooting, incident response, service recovery, and operational documentation.
 
-Zabbix is the central monitoring platform. The project reproduces common NOC workflows across Linux, Windows, network connectivity, and HTTP services.
+Zabbix is the central monitoring platform. The project reproduces common NOC workflows across Linux, Windows, network connectivity, HTTP services, incident handling, and operator notifications.
 
 ## Project Purpose
 
 This repository demonstrates a complete monitoring and incident-handling cycle:
 
 ```text
-Monitor -> Detect -> Validate -> Acknowledge -> Investigate
+Monitor -> Detect -> Notify -> Validate -> Acknowledge -> Investigate
         -> Escalate or Restore -> Confirm Recovery -> Document
 ```
 
-The objective is not limited to installing Zabbix. Each stage includes implementation, validation, failure simulation, troubleshooting, recovery, and selected technical evidence.
+The objective is not limited to installing Zabbix. Each stage includes implementation, validation, controlled failure simulation, troubleshooting, recovery, and selected technical evidence.
 
 ## Core Objectives
 
@@ -28,6 +28,7 @@ The objective is not limited to installing Zabbix. Each stage includes implement
 - Monitor host availability, system resources, processes, and services.
 - Validate ICMP, DNS, TCP port, and HTTP availability.
 - Configure items, triggers, events, problems, severities, and actions.
+- Deliver automated problem and recovery notifications.
 - Practice alert acknowledgment, investigation, escalation, and recovery.
 - Simulate infrastructure, network, and application incidents.
 - Create reusable troubleshooting runbooks.
@@ -44,36 +45,40 @@ flowchart TD
     Server["Zabbix Server"]
     Database["PostgreSQL"]
     Targets["Linux, Windows and Services"]
+    Mail["Mailpit SMTP Capture"]
 
     Operator --> Web
     Web --> Server
     Server --> Database
     Server <--> Targets
+    Server --> Mail
+    Mail --> Operator
 ```
 
-The initial platform runs locally through Docker Desktop and WSL 2.
+The platform runs locally through Docker Desktop and WSL 2.
 
-PostgreSQL remains inside the Docker network. Only the interfaces required for administration and monitoring are exposed to the workstation.
+PostgreSQL remains inside the Docker network. Mailpit provides isolated SMTP capture for notification validation. Only the interfaces required for administration, monitoring, and local message inspection are exposed to the workstation.
 
 ## Monitoring Scope
 
-| Area | Planned coverage |
+| Area | Coverage |
 |---|---|
-| Host availability | Agent availability, ICMP reachability and response time |
-| Linux | CPU, memory, disk, processes, services, logs and network interfaces |
-| Windows | CPU, memory, disk, services, event information and Agent 2 |
-| Network | ICMP, packet loss, latency, DNS resolution and TCP connectivity |
-| HTTP services | Availability, status code, response time and service failure |
-| Zabbix operations | Hosts, templates, items, triggers, events, problems and actions |
-| Incident handling | Triage, acknowledgment, notes, severity, escalation and recovery |
-| Maintenance | Planned downtime, alert suppression and recovery validation |
-| Reporting | Incident tickets, operational checklists and shift reports |
+| Host availability | Agent availability, ICMP reachability, and response time |
+| Linux | CPU, memory, disk, processes, services, logs, and network interfaces |
+| Windows | CPU, memory, disk, services, event information, and Agent 2 |
+| Network | ICMP, packet loss, latency, DNS resolution, and TCP connectivity |
+| HTTP services | Availability, status code, response time, and controlled service failure |
+| Zabbix operations | Hosts, templates, items, triggers, events, problems, actions, and media types |
+| Alert delivery | SMTP capture, problem notifications, recovery notifications, and delivery history |
+| Incident handling | Triage, acknowledgment, notes, severity, escalation, and recovery |
+| Maintenance | Planned downtime, alert suppression, and recovery validation |
+| Reporting | Incident tickets, operational checklists, and shift reports |
 | Network devices | Introductory SNMP monitoring |
 | Visualization | Native Zabbix dashboards and optional Grafana integration |
 
 ## Incident Scenarios
 
-The laboratory will reproduce scenarios commonly handled by NOC and infrastructure teams:
+The laboratory reproduces scenarios commonly handled by NOC and infrastructure teams:
 
 - monitored host unavailable;
 - Zabbix Agent 2 unavailable;
@@ -97,10 +102,11 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 3. Determine the impact, scope, and severity.
 4. Check connectivity, resources, services, ports, and logs.
 5. Compare recent changes and related events.
-6. Apply the documented recovery procedure when authorized.
-7. Escalate when the issue exceeds the operator's access or responsibility.
-8. Confirm recovery from both the system and monitoring perspectives.
-9. Record actions, timestamps, findings, and follow-up recommendations.
+6. Verify action execution and notification delivery when applicable.
+7. Apply the documented recovery procedure when authorized.
+8. Escalate when the issue exceeds the operator's access or responsibility.
+9. Confirm recovery from both the system and monitoring perspectives.
+10. Record actions, timestamps, findings, and follow-up recommendations.
 
 ## Current Repository Contents
 
@@ -110,8 +116,9 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 - [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/) - Windows host monitoring with Zabbix Agent 2, DNS-based Docker connectivity, metric discovery, controlled CPU validation, and evidence;
 - [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/) - ICMP, DNS, TCP, and HTTP service monitoring, controlled failure, recovery validation, troubleshooting, and evidence;
 - [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/) - sustained trigger conditions, severity classification, HTTP and DNS incidents, acknowledgment, recovery, historical validation, and evidence;
+- [`labs/06-alert-delivery-notifications/`](labs/06-alert-delivery-notifications/) - Mailpit SMTP capture, Zabbix media type, severity-aware action, problem and recovery notifications, delivery troubleshooting, and evidence;
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - reusable read-only workstation validation;
-- [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, the dedicated monitored HTTP service, persistent storage, and isolated networks;
+- [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, dedicated monitored HTTP service, Mailpit, persistent storage, and isolated networks;
 - [`.env.example`](.env.example) - versioned environment-variable template without operational credentials;
 - [`docs/screenshots/`](docs/screenshots/) - selected technical evidence from completed stages;
 - [`.gitignore`](.gitignore) - protection for secrets, runtime data, logs, local overrides, and temporary files.
@@ -128,7 +135,7 @@ Additional directories will be introduced only when they contain implemented and
 | 03 | Windows host monitoring with Zabbix Agent 2 | Completed |
 | 04 | Network, DNS, TCP, and HTTP service monitoring | Completed |
 | 05 | Triggers, severities, events, and alert handling | Completed |
-| 06 | Alert delivery, actions, and notifications | Planned |
+| 06 | Alert delivery, actions, and notifications | Completed |
 | 07 | Maintenance windows and operational reporting | Planned |
 | 08 | Introductory SNMP and optional Grafana integration | Planned |
 
@@ -277,20 +284,52 @@ All acceptance criteria passed. The stage demonstrated severity-based incident c
 
 See the complete documentation in [`labs/05-triggers-alert-handling/README.md`](labs/05-triggers-alert-handling/README.md).
 
+### Stage 06 - Alert Delivery, Actions, and Notifications
+
+Stage 06 converted the Stage 05 monitoring events into complete operator-notification workflows.
+
+The implementation included:
+
+- deployment of Mailpit as a local SMTP capture service;
+- a loopback-only Mailpit web interface;
+- creation of the `Mailpit Local SMTP` Zabbix media type;
+- assignment of the laboratory recipient `noc-operator@zabbix-lab.local`;
+- activation of notification delivery for Average, High, and Disaster severities;
+- creation of the `NOC Lab - Mailpit problem notifications` trigger action;
+- action conditions restricted to the selected HTTP and DNS triggers;
+- a minimum action severity of Average;
+- custom problem and recovery message templates;
+- direct media-type delivery validation;
+- a controlled High-severity HTTP failure and recovery lifecycle;
+- successful HTTP problem and recovery email delivery;
+- an Average-severity DNS failure generated through a deterministic temporary target change;
+- successful DNS problem and recovery email delivery;
+- validation of action execution and delivery status through the Zabbix action log;
+- diagnosis and correction of missing media-type message templates;
+- restoration of the HTTP service and original DNS item key;
+- selected platform, message, action, problem, and recovery evidence.
+
+All acceptance criteria passed. The stage demonstrated severity-aware notification processing, automated problem and recovery delivery, local SMTP validation, delivery-history analysis, and systematic troubleshooting of a failed notification path.
+
+See the complete documentation in [`labs/06-alert-delivery-notifications/README.md`](labs/06-alert-delivery-notifications/README.md).
+
 ## Current Stage
 
-### Stage 06 - Alert Delivery, Actions, and Notifications
+### Stage 07 - Maintenance Windows and Operational Reporting
 
 The next stage will introduce and validate:
 
-- a notification channel suitable for the controlled laboratory;
-- Zabbix actions linked to trigger and severity conditions;
-- action conditions and operation steps;
-- problem-notification message content;
-- recovery-notification message content;
-- controlled delivery validation for problem and recovery events;
-- notification troubleshooting and delivery-history review;
-- selected action, message, delivery, and recovery evidence.
+- planned maintenance periods;
+- host or service association with maintenance;
+- alert and notification behavior during planned work;
+- problem collection with or without data collection;
+- suppression of unnecessary operational notifications;
+- maintenance start and end validation;
+- post-maintenance health and recovery checks;
+- an operational incident record;
+- a shift-oriented monitoring report;
+- troubleshooting and lessons learned;
+- selected maintenance and reporting evidence.
 
 Implementation files will be committed only after configuration and validation succeed.
 
@@ -306,6 +345,8 @@ Relevant evidence may include:
 - metric graphs showing controlled change and recovery;
 - trigger transition from `OK` to `PROBLEM`;
 - acknowledged incident with an operational note;
+- notification received by the configured operator;
+- successful problem and recovery action history;
 - diagnostic command output;
 - confirmed service recovery;
 - trigger transition back to `OK`;
@@ -318,11 +359,14 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 
 - Secrets and credentials are excluded from version control.
 - PostgreSQL is not published directly to the Windows host.
+- Mailpit is used only as a controlled local SMTP capture service.
+- Administrative and notification interfaces are bound to loopback where applicable.
 - Environment-specific values remain outside tracked configuration.
 - Example files use placeholders instead of real passwords.
 - Private keys and certificates are ignored by Git.
 - Diagnostic evidence is reviewed before publication.
 - Existing resources from unrelated projects are preserved.
+- Temporary test changes are removed after validation.
 
 ## Technology Stack
 
@@ -335,6 +379,8 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 - Linux
 - Windows PowerShell
 - Nginx
+- Mailpit
+- SMTP
 - SNMP
 - Grafana as an optional final-stage visualization layer
 
@@ -344,6 +390,11 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 - NOC alert triage;
 - Linux and Windows administration;
 - network connectivity validation;
+- Zabbix media-type and action configuration;
+- severity-aware alert delivery;
+- SMTP notification validation;
+- problem and recovery message design;
+- notification troubleshooting;
 - incident response;
 - troubleshooting methodology;
 - service restoration;
@@ -355,9 +406,9 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 
 ## Project Status
 
-Stages 00, 01, 02, 03, 04, and 05 are complete, validated, and documented.
+Stages 00, 01, 02, 03, 04, 05, and 06 are complete, validated, and documented.
 
-Stage 06 is the next planned implementation and will add alert delivery, Zabbix actions, message content, and problem and recovery notification workflows.
+Stage 07 is the next planned implementation and will add maintenance-window validation, alert-suppression analysis, post-maintenance verification, and operational reporting workflows.
 
 ---
 
@@ -376,5 +427,3 @@ This repository is a controlled laboratory environment intended for technical pr
     />
   </a>
 </p>
-
-
