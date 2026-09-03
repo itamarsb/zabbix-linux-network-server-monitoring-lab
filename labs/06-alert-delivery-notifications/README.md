@@ -121,7 +121,7 @@ The service provides:
 ### Mailpit service configuration
 
 | Setting | Value |
-|---|---|
+|---|:---:|
 | Container image | `axllent/mailpit:v1.30` |
 | SMTP service name | `mailpit` |
 | SMTP port | `1025` |
@@ -141,7 +141,7 @@ Mailpit Local SMTP
 ### Media-type settings
 
 | Setting | Value |
-|---|---|
+|---|:---:|
 | Type | Email |
 | SMTP server | `mailpit` |
 | SMTP server port | `1025` |
