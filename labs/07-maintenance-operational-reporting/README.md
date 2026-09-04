@@ -303,7 +303,7 @@ The shift-handover report documents:
 ## Evidence Index
 
 | Evidence | Repository file |
-|---|---|
+|:---:|---|
 | Active maintenance period | `docs/screenshots/stage-07-active-maintenance-period.png` |
 | Controlled HTTP unavailability | `docs/screenshots/stage-07-controlled-http-unavailability.png` |
 | Suppressed HTTP problem | `docs/screenshots/stage-07-suppressed-http-problem.png` |
