@@ -49,7 +49,7 @@ The final implementation confirmed:
 ## Laboratory Components
 
 | Component | Purpose | Maintenance impact |
-|---|---|---|
+|:---:|---|:---:|
 | PostgreSQL | Zabbix configuration and history database | Remained available |
 | Zabbix Server | Monitoring and event processing | Remained available |
 | Zabbix Web | Configuration and incident validation | Remained available |
