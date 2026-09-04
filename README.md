@@ -51,7 +51,7 @@ PostgreSQL remains inside the Docker network. Mailpit provides isolated SMTP cap
 ## Monitoring Scope
 
 | Area | Coverage |
-|---|---|
+|:---:|---|
 | Host availability | Agent availability, ICMP reachability, and response time |
 | Linux | CPU, memory, disk, processes, services, logs, and network interfaces |
 | Windows | CPU, memory, disk, services, event information, and Agent 2 |
