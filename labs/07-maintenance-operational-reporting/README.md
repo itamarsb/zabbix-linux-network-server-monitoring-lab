@@ -67,7 +67,7 @@ The maintenance validation will follow this sequence:
 ## Maintenance Target
 
 | Field | Value |
-|---|---|
+|---|:---:|
 | Zabbix host | `Zabbix Lab Internal Services` |
 | Service | `monitored-web` |
 | Monitoring signal | HTTP service availability |
