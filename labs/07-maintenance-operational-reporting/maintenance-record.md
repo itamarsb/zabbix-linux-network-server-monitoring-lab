@@ -5,7 +5,7 @@
 ## Change Summary
 
 | Field | Value |
-|---|---|
+|---|:---:|
 | Change ID | `CHG-LAB-007` |
 | Change type | Planned maintenance |
 | Environment | Zabbix NOC Operations Lab |
