@@ -36,7 +36,7 @@ The objective is not limited to installing Zabbix. Each stage includes implement
 ## Architecture Overview
 
 | Layer | Component | Relationship |
-|---|---|---|
+|:---:|:---:|---|
 | Operations | NOC operator | Uses the Zabbix frontend and reviews captured notifications |
 | Presentation | Zabbix Web | Provides configuration, monitoring, incident, and maintenance views |
 | Processing | Zabbix Server | Collects data, evaluates triggers, processes events, and executes actions |
