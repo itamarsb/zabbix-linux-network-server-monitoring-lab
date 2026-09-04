@@ -77,7 +77,7 @@ Unrelated Windows service and Ubuntu WSL agent incidents were present in the env
 ## Maintenance Target
 
 | Field | Value |
-|---|---|
+|---|:---:|
 | Change identifier | `CHG-LAB-007` |
 | Zabbix host | `Zabbix Lab Internal Services` |
 | Service | `monitored-web` |
@@ -93,7 +93,7 @@ Unrelated Windows service and Ubuntu WSL agent incidents were present in the env
 A dedicated Zabbix maintenance period was created for the controlled activity.
 
 | Setting | Value |
-|---|---|
+|:---:|---|
 | Name | `NOC Lab - Monitored Web Planned Maintenance` |
 | Maintenance type | With data collection |
 | Associated host | `Zabbix Lab Internal Services` |
