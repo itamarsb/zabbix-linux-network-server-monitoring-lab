@@ -64,7 +64,7 @@ The activity was designed to confirm that:
 ## Risk Assessment
 
 | Risk | Expected impact | Mitigation |
-|---|---|---|
+|:---:|---|---|
 | HTTP monitoring becomes unavailable | Limited to the laboratory `monitored-web` service | Only the target container was stopped |
 | Unintended alert notification | A maintenance-related message could reach Mailpit | Suppressed-incident operations were paused in the trigger action |
 | Monitoring data loss | Maintenance behavior could not be validated | Maintenance was configured with data collection |
@@ -93,7 +93,7 @@ Before the controlled interruption, the following conditions were confirmed:
 The following maintenance period was created in Zabbix:
 
 | Setting | Value |
-|---|---|
+|:---:|---|
 | Name | `NOC Lab - Monitored Web Planned Maintenance` |
 | Maintenance type | With data collection |
 | Host | `Zabbix Lab Internal Services` |
