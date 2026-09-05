@@ -1,1 +1,14 @@
+agentAddress udp:161
 
+sysName ${SNMP_SYSTEM_NAME}
+sysLocation ${SNMP_SYSTEM_LOCATION}
+sysContact ${SNMP_SYSTEM_CONTACT}
+sysServices 72
+
+view zabbixLabView included .1.3.6.1.2.1.1
+view zabbixLabView included .1.3.6.1.2.1.2
+view zabbixLabView included .1.3.6.1.2.1.31
+
+rocommunity ${SNMP_COMMUNITY} ${SNMP_ALLOWED_NETWORK} -V zabbixLabView
+
+dontLogTCPWrappersConnects yes
