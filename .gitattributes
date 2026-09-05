@@ -1,1 +1,17 @@
+# Linux shell scripts must retain Unix line endings
+*.sh text eol=lf
 
+# Container build definitions must retain Unix line endings
+Dockerfile text eol=lf
+**/Dockerfile text eol=lf
+
+# SNMP configuration files must retain Unix line endings
+*.conf text eol=lf
+*.template text eol=lf
+
+# Docker Compose files must retain Unix line endings
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# PowerShell scripts use native Windows line endings
+*.ps1 text eol=crlf
