@@ -119,7 +119,7 @@ The laboratory community value will be environment-specific and must not be comm
 The initial implementation will use SNMPv2c.
 
 | Setting | Planned value |
-|---|---|
+|:---:|---|
 | Protocol | SNMP |
 | Version | SNMPv2c |
 | Transport | UDP |
