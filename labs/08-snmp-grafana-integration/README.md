@@ -172,7 +172,7 @@ Direct SNMPv2c queries succeeded against the controlled target.
 Validated information included:
 
 | Signal | Validated result |
-|---|---|
+|---|:---:|
 | System name | `zabbix-lab-snmp-target` |
 | System location | `Docker-based NOC Operations Lab` |
 | System contact | `NOC Lab Administrator` |
@@ -188,7 +188,7 @@ These results confirmed that the agent was responding before registration in Zab
 The SNMP target was registered with the following configuration:
 
 | Field | Value |
-|---|---|
+|---|:---:|
 | Host name | `zabbix-lab-snmp-target` |
 | Visible name | `SNMP Lab Target - Docker` |
 | Host group | `Network services` |
