@@ -103,6 +103,37 @@ services:
         max-size: 10m
         max-file: "3"
 
+  snmp-target:
+    build:
+      context: .
+      dockerfile: snmp/Dockerfile
+    environment:
+      SNMP_COMMUNITY: ${SNMP_COMMUNITY:?SNMP_COMMUNITY must be set}
+      SNMP_ALLOWED_NETWORK: ${SNMP_ALLOWED_NETWORK:?SNMP_ALLOWED_NETWORK must be set}
+      SNMP_SYSTEM_NAME: ${SNMP_SYSTEM_NAME:?SNMP_SYSTEM_NAME must be set}
+      SNMP_SYSTEM_LOCATION: ${SNMP_SYSTEM_LOCATION:?SNMP_SYSTEM_LOCATION must be set}
+      SNMP_SYSTEM_CONTACT: ${SNMP_SYSTEM_CONTACT:?SNMP_SYSTEM_CONTACT must be set}
+    ports:
+      - "127.0.0.1:${SNMP_AGENT_PORT:?SNMP_AGENT_PORT must be set}:161/udp"
+    networks:
+      - monitoring
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - snmpget -v2c -c "$${SNMP_COMMUNITY}" -t 2 -r 1 "$$(hostname -i | awk '{print $$1}')" 1.3.6.1.2.1.1.3.0 >/dev/null 2>&1 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 10s
+    logging:
+      driver: local
+      options:
+        max-size: 10m
+        max-file: "3"
+
   mailpit:
     image: ${MAILPIT_IMAGE:?MAILPIT_IMAGE must be set}
     ports:
