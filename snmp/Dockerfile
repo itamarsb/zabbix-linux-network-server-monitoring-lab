@@ -8,7 +8,10 @@ RUN apk add --no-cache \
 COPY snmp/snmpd.conf.template /etc/snmp/snmpd.conf.template
 COPY snmp/entrypoint.sh /usr/local/bin/snmp-entrypoint.sh
 
-RUN chmod 0755 /usr/local/bin/snmp-entrypoint.sh
+RUN sed -i 's/\r$//' \
+        /etc/snmp/snmpd.conf.template \
+        /usr/local/bin/snmp-entrypoint.sh \
+    && chmod 0755 /usr/local/bin/snmp-entrypoint.sh
 
 EXPOSE 161/udp
 
