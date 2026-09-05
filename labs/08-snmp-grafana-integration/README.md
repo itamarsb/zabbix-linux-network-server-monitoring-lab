@@ -64,7 +64,7 @@ This sequence ensures that:
 ## Planned Architecture
 
 | Component | Responsibility |
-|---|---|
+|:---:|---|
 | Controlled SNMP target | Exposes deterministic system and interface information through UDP `161` |
 | Zabbix Server | Polls SNMP OIDs and processes monitoring values |
 | Zabbix Web | Configures the SNMP host, items, triggers, and native graphs |
