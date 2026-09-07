@@ -14,7 +14,7 @@ Zabbix is the central monitoring platform. The project reproduces common NOC wor
 
 This repository demonstrates a complete monitoring and incident-handling cycle:
 
-**Monitor â†’ Detect â†’ Notify â†’ Validate â†’ Acknowledge â†’ Investigate â†’ Escalate or Restore â†’ Confirm Recovery â†’ Document**
+**Monitor -> Detect -> Notify -> Validate -> Acknowledge -> Investigate -> Escalate or Restore -> Confirm Recovery -> Document**
 
 The objective is not limited to installing Zabbix. Each stage includes implementation, validation, controlled failure simulation, troubleshooting, recovery, and selected technical evidence.
 
