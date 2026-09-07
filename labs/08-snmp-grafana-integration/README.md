@@ -231,7 +231,7 @@ The test sequence was:
 8. confirm automatic event recovery.
 
 | Signal | Normal state | Failure state | Recovery state |
-|---|---|---|---|
+|---|:---:|:---:|:---:|
 | SNMP target container | Healthy | Healthy | Healthy |
 | Zabbix SNMP authentication | Valid | Invalid | Valid |
 | SNMP availability | Available | Unavailable | Available |
