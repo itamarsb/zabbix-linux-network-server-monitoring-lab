@@ -471,7 +471,7 @@ This repository is a controlled laboratory environment intended for technical pr
 
 ---
 
-## ðŸ“ˆ Repository Metrics
+## Repository Metrics
 
 <p align="center">
   <a href="https://info.flagcounter.com/iBrN">
