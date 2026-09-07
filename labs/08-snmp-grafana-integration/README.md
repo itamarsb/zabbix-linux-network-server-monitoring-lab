@@ -170,7 +170,7 @@ These results separated target-side SNMP validation from Zabbix-side configurati
 The SNMP target was registered with the following final configuration:
 
 | Field | Value |
-|---|---|
+|---|:---:|
 | Host name | `zabbix-lab-snmp-target` |
 | Visible name | `SNMP Lab Target - Docker` |
 | Host group | `Network services` |
