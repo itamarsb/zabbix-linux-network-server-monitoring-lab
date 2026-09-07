@@ -4,7 +4,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Linux](https://img.shields.io/badge/Linux-Monitoring-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
 [![Windows](https://img.shields.io/badge/Windows-Monitoring-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
-[![Status](https://img.shields.io/badge/Status-Stage%2007%20Completed-brightgreen)](#implementation-roadmap)
+[![Status](https://img.shields.io/badge/Status-Stage%2008%20Completed-brightgreen)](#implementation-roadmap)
 
 A practical Network Operations Center lab focused on infrastructure monitoring, alert delivery, triage, troubleshooting, incident response, service recovery, maintenance coordination, and operational documentation.
 
@@ -14,7 +14,7 @@ Zabbix is the central monitoring platform. The project reproduces common NOC wor
 
 This repository demonstrates a complete monitoring and incident-handling cycle:
 
-**Monitor → Detect → Notify → Validate → Acknowledge → Investigate → Escalate or Restore → Confirm Recovery → Document**
+**Monitor â†’ Detect â†’ Notify â†’ Validate â†’ Acknowledge â†’ Investigate â†’ Escalate or Restore â†’ Confirm Recovery â†’ Document**
 
 The objective is not limited to installing Zabbix. Each stage includes implementation, validation, controlled failure simulation, troubleshooting, recovery, and selected technical evidence.
 
@@ -41,7 +41,7 @@ The objective is not limited to installing Zabbix. Each stage includes implement
 | Presentation | Zabbix Web | Provides configuration, monitoring, incident, and maintenance views |
 | Processing | Zabbix Server | Collects data, evaluates triggers, processes events, and executes actions |
 | Persistence | PostgreSQL | Stores Zabbix configuration, history, trends, and events |
-| Monitoring targets | Linux, Windows, and internal services | Provide host, resource, network, TCP, DNS, and HTTP signals |
+| Monitoring targets | Linux, Windows, internal services, and a controlled SNMP target | Provide host, resource, network, TCP, DNS, HTTP, SNMP system, interface, and traffic signals |
 | Notification | Mailpit | Captures local SMTP problem and recovery notifications |
 
 The platform runs locally through Docker Desktop and WSL 2.
@@ -62,8 +62,8 @@ PostgreSQL remains inside the Docker network. Mailpit provides isolated SMTP cap
 | Incident handling | Triage, acknowledgment, notes, severity, escalation, and recovery |
 | Maintenance | Planned downtime, event suppression, notification suppression, and recovery validation |
 | Reporting | Maintenance records, operational checklists, and shift-handover reports |
-| Network devices | Introductory SNMP monitoring |
-| Visualization | Native Zabbix dashboards and optional Grafana integration |
+| Network devices | SNMPv2c system polling, interface discovery, operational status, and traffic monitoring |
+| Visualization | Native Zabbix dashboards and graphs; Grafana evaluated and intentionally deferred |
 
 ## Incident Scenarios
 
@@ -107,8 +107,10 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 - [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/) - sustained trigger conditions, severity classification, HTTP and DNS incidents, acknowledgment, recovery, historical validation, and evidence;
 - [`labs/06-alert-delivery-notifications/`](labs/06-alert-delivery-notifications/) - Mailpit SMTP capture, Zabbix media type, severity-aware action, problem and recovery notifications, delivery troubleshooting, and evidence;
 - [`labs/07-maintenance-operational-reporting/`](labs/07-maintenance-operational-reporting/) - planned maintenance, continued data collection, problem and notification suppression, controlled recovery, maintenance closure, operational reporting, and evidence;
+- [`labs/08-snmp-grafana-integration/`](labs/08-snmp-grafana-integration/) - reproducible SNMPv2c target, secure community handling, interface discovery, traffic monitoring, controlled authentication failure, recovery, visualization decision, and evidence;
+- [`snmp/`](snmp/) - controlled Net-SNMP target configuration and container entrypoint;
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - reusable read-only workstation validation;
-- [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, dedicated monitored HTTP service, Mailpit, persistent storage, and isolated networks;
+- [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, dedicated HTTP and SNMP targets, Mailpit, persistent storage, and isolated networks;
 - [`.env.example`](.env.example) - versioned environment-variable template without operational credentials;
 - [`docs/screenshots/`](docs/screenshots/) - selected technical evidence from completed stages;
 - [`.gitignore`](.gitignore) - protection for secrets, runtime data, logs, local overrides, and temporary files.
@@ -127,7 +129,7 @@ Additional directories will be introduced only when they contain implemented and
 | 05 | Triggers, severities, events, and alert handling | Completed |
 | 06 | Alert delivery, actions, and notifications | Completed |
 | 07 | Maintenance windows and operational reporting | Completed |
-| 08 | Introductory SNMP and optional Grafana integration | Planned |
+| 08 | SNMP network monitoring and Grafana decision | Completed |
 
 A stage is marked as completed only after its implementation, validation, troubleshooting notes, and relevant evidence are committed.
 
@@ -338,26 +340,35 @@ Stage 07 documentation:
 - [Planned maintenance record](labs/07-maintenance-operational-reporting/maintenance-record.md)
 - [Shift handover report](labs/07-maintenance-operational-reporting/shift-handover-report.md)
 
-## Current Stage
+### Stage 08 - SNMP Network Monitoring and Grafana Decision
 
-### Stage 08 - Introductory SNMP and Optional Grafana Integration
+Stage 08 extended the laboratory with a reproducible network-oriented monitoring target using SNMPv2c.
 
-The next stage will introduce and validate:
+The implementation included:
 
-- basic SNMP concepts used in network monitoring;
-- SNMP polling from the Zabbix platform;
-- a controlled SNMP-enabled laboratory target;
-- host registration through an SNMP interface;
-- standard system and interface OIDs;
-- SNMP items and value interpretation;
-- interface availability and traffic monitoring;
-- trigger behavior for an SNMP-monitored condition;
-- native Zabbix visualization for SNMP data;
-- optional Grafana integration after the native Zabbix workflow is complete;
-- troubleshooting of SNMP connectivity and community configuration;
-- selected SNMP and visualization evidence.
+- a dedicated Alpine Linux container running Net-SNMP;
+- environment-based SNMP community injection without committing the operational secret;
+- container health validation and Docker network integration;
+- diagnosis and correction of Windows CRLF line endings in the Linux entrypoint;
+- direct SNMP polling before Zabbix host registration;
+- creation of the `SNMP Lab Target - Docker` host with an SNMP interface on UDP port `161`;
+- storage of the operational community in a secret Zabbix host macro;
+- evaluation and replacement of the initial generic template with `Linux by SNMP`;
+- collection through `53` items, `15` triggers, `8` graphs, and `5` low-level discovery rules;
+- discovery of the `eth0` interface and validation of inbound and outbound traffic data;
+- native Zabbix graphs for system and interface monitoring;
+- controlled SNMP authentication failure through a temporary invalid community;
+- generation of the `Linux: No SNMP data collection` problem;
+- restoration of the correct community and automatic problem recovery;
+- rotation of the operational SNMP community after evidence review;
+- investigation of a dedicated Mailpit notification action that did not execute for the SNMP event;
+- disablement of the unvalidated SNMP action while preserving the proven Stage 06 Mailpit workflow;
+- evaluation and intentional deferral of Grafana because native Zabbix visualization satisfied the stage objectives without duplicating the portfolio's observability scope;
+- selected availability, collection, traffic, problem, and recovery evidence.
 
-Implementation files will be committed only after configuration and validation succeed.
+All core SNMP acceptance criteria passed. The final target is healthy, the rotated community is synchronized securely, and the unvalidated Stage 08 notification action remains disabled.
+
+See the complete documentation in [`labs/08-snmp-grafana-integration/README.md`](labs/08-snmp-grafana-integration/README.md).
 
 ## Evidence Policy
 
@@ -379,7 +390,8 @@ Relevant evidence may include:
 - maintenance period configuration;
 - completed maintenance or shift report;
 - SNMP item collection;
-- interface traffic visualization.
+- interface traffic visualization;
+- controlled SNMP authentication failure and recovery;
 
 Screenshots containing credentials, tokens, personal information, or unrelated desktop content must not be committed.
 
@@ -396,6 +408,9 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 - Existing resources from unrelated projects are preserved.
 - Temporary test changes are removed after validation.
 - Maintenance periods are closed after controlled operational work.
+- Operational SNMP communities remain outside version control.
+- Sensitive Zabbix macros are configured as secret text.
+- Exposed laboratory secrets are rotated and synchronized before closure.
 
 ## Technology Stack
 
@@ -410,8 +425,10 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 - Nginx
 - Mailpit
 - SMTP
-- SNMP
-- Grafana as an optional final-stage visualization layer
+- SNMPv2c
+- Net-SNMP
+- Alpine Linux
+- Grafana evaluated and deferred
 
 ## Skills Demonstrated
 
@@ -434,13 +451,19 @@ Screenshots containing credentials, tokens, personal information, or unrelated d
 - shift-handover preparation;
 - technical documentation;
 - monitoring-as-code fundamentals;
-- Docker-based environment management.
+- Docker-based environment management;
+- SNMPv2c polling and OID validation;
+- low-level interface discovery;
+- network traffic monitoring;
+- secret rotation and configuration synchronization;
+- Windows and Linux line-ending troubleshooting;
+- evidence review and security hygiene.
 
 ## Project Status
 
-Stages 00, 01, 02, 03, 04, 05, 06, and 07 are complete, validated, and documented.
+Stages 00 through 08 are complete, validated, and documented.
 
-Stage 08 is the next planned implementation and will introduce SNMP monitoring for a controlled network-oriented target. Native Zabbix monitoring and visualization will be completed before any optional Grafana integration is considered.
+The repository now covers host, service, network, incident, notification, maintenance, reporting, and SNMP monitoring workflows. Grafana was evaluated during Stage 08 and intentionally deferred because native Zabbix visualization fulfilled the validated requirements without adding redundant portfolio scope.
 
 ---
 
@@ -448,7 +471,7 @@ This repository is a controlled laboratory environment intended for technical pr
 
 ---
 
-## 📈 Repository Metrics
+## ðŸ“ˆ Repository Metrics
 
 <p align="center">
   <a href="https://info.flagcounter.com/iBrN">
