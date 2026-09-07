@@ -94,7 +94,7 @@ The `.env` file is excluded by `.gitignore` and must never be committed, include
 The controlled target uses SNMPv2c.
 
 | Setting | Implemented value |
-|:---:|---|
+|:---:|:---:|
 | Protocol | SNMP |
 | Version | SNMPv2c |
 | Transport | UDP |
