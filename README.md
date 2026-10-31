@@ -154,7 +154,7 @@ The validation covered:
 Final validation result:
 
 | Result | Count |
-|---|:---:|
+|:---:|:---:|
 | Passed | `20` |
 | Warnings | `0` |
 | Failed | `0` |
