@@ -112,6 +112,7 @@ Each completed scenario must contain detection evidence, diagnostic steps, corre
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - reusable read-only workstation validation;
 - [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, dedicated HTTP and SNMP targets, Mailpit, persistent storage, and isolated networks;
 - [`.env.example`](.env.example) - versioned environment-variable template without operational credentials;
+- [`docs/noc-alert-triage-checklist.md`](docs/noc-alert-triage-checklist.md) - reusable NOC quick-reference for alert validation, severity assessment, diagnosis, escalation, recovery, and shift handover;
 - [`docs/screenshots/`](docs/screenshots/) - selected technical evidence from completed stages;
 - [`.gitignore`](.gitignore) - protection for secrets, runtime data, logs, local overrides, and temporary files.
 
