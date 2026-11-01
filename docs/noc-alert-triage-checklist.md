@@ -26,7 +26,7 @@
 - [ ] Prioritize using the organization's response policy. Escalate promptly for critical service impact even when the trigger severity is lower.
 
 | Zabbix trigger severity | Initial operator action |
-|---|---|
+|:---:|:---|
 | **Disaster / High** | Prioritize immediate validation and escalation according to impact and the response policy. |
 | **Average** | Investigate promptly, check service impact, and escalate if the incident expands or exceeds authority. |
 | **Warning** | Validate the signal and trend; assess whether service degradation or a preventive action is required. |
