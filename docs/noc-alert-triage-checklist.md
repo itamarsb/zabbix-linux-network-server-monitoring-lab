@@ -41,7 +41,7 @@
 - [ ] Select relevant read-only checks; record results and timestamps before any intervention.
 
 | Symptom | First checks | Related lab |
-|---|---|---|
+|:---:|:---|:---:|
 | HTTP or TCP failure | Response code, failed step, port reachability, service/container status | [Stage 04](../labs/04-network-service-monitoring/README.md) |
 | DNS failure | Name resolution, resolver, target, recent changes; compare monitored value | [Stage 05](../labs/05-triggers-alert-handling/README.md) |
 | Host or agent unavailable | Agent status, network path, recent data, dependent services | [Stages 02–03](../labs/02-linux-host-monitoring/README.md) |
