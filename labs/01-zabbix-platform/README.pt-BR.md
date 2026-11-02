@@ -51,7 +51,7 @@ flowchart LR
 A plataforma utiliza três redes Docker com responsabilidades distintas.
 
 | Rede | Finalidade |
-|:---:|---|
+|:---:|:---:|
 | `backend` | Comunicação isolada entre PostgreSQL, Zabbix Server e Zabbix Web |
 | `frontend` | Acesso à interface web do Zabbix |
 | `monitoring` | Comunicação entre o Zabbix Server e os serviços monitorados |
@@ -61,7 +61,7 @@ A rede `backend` é interna. O PostgreSQL não é publicado na estação de trab
 Somente as seguintes portas são publicadas:
 
 | Endpoint da estação de trabalho | Endpoint do contêiner | Finalidade |
-|:---:|---|---|
+|:---:|:---:|:---:|
 | `127.0.0.1:8080` | `zabbix-web:8080` | Interface web local do Zabbix |
 | `127.0.0.1:10051` | `zabbix-server:10051` | Comunicação com o Zabbix Server |
 
