@@ -103,7 +103,7 @@ Cada cenário concluído deve conter evidências de detecção, etapas de diagn�
 
 - [`labs/00-workstation-validation/`](labs/00-workstation-validation/README.pt-BR.md) - configuração inicial da estação de trabalho, critérios de aceitação, constatações e resultados;
 - [`labs/01-zabbix-platform/`](labs/01-zabbix-platform/README.pt-BR.md) - implantação reproduzível da plataforma Zabbix, validação, diagnóstico e evidências;
-- [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/) - monitoramento de host Linux com Zabbix Agent 2, validação controlada de recursos, testes do ciclo de vida e evidências;
+- [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/README.pt-BR.md) - monitoramento de host Linux com Zabbix Agent 2, validação controlada de recursos, testes do ciclo de vida e evidências;
 - [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/) - monitoramento de host Windows com Zabbix Agent 2, conectividade Docker baseada em DNS, descoberta de métricas, validação controlada de CPU e evidências;
 - [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/) - monitoramento de serviços ICMP, DNS, TCP e HTTP, falha controlada, validação da recuperação, diagnóstico e evidências;
 - [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/) - condições persistentes de *triggers*, classificação de severidade, incidentes HTTP e DNS, reconhecimento, recuperação, validação do histórico e evidências;
@@ -203,7 +203,7 @@ A implementação incluiu:
 
 Todos os critérios de aceitação foram atendidos, e o host Linux monitorado permaneceu operacional após os testes de ciclo de vida e de recursos.
 
-Consulte a documentação completa em [`labs/02-linux-host-monitoring/README.md`](labs/02-linux-host-monitoring/README.md).
+Consulte a documentação completa em [`labs/02-linux-host-monitoring/README.md`](labs/02-linux-host-monitoring/README.pt-BR.md).
 
 ### Etapa 03 - Monitoramento de host Windows
 
