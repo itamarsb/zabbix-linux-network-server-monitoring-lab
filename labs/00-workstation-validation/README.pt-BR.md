@@ -155,7 +155,7 @@ Uma verificação opcional pode gerar um aviso sem reprovar a estação de traba
 ## Resultados da validação
 
 | Área de validação | Resultado |
-|---|:---:|
+|:---:|:---:|
 | Arquitetura do Windows | Aprovado |
 | Processadores lógicos | Aprovado |
 | Memória física | Aprovado |
