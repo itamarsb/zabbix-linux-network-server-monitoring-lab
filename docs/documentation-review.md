@@ -2,9 +2,9 @@
 
 This register captures possible documentation inconsistencies identified while preparing Portuguese translations. It is separate from the translated documents and from validated laboratory evidence.
 
-**Scope reviewed:** main `README.md`, full Stage 00–02 documentation (`labs/00-workstation-validation/README.md`, `labs/01-zabbix-platform/README.md`, `labs/02-linux-host-monitoring/README.md`), the Stage 00 validation script (`scripts/powershell/validate-workstation.ps1`), current `compose.yaml`, `.env.example`, and completed-stage summaries.
+**Scope reviewed:** main `README.md`, full Stage 00–03 documentation (`labs/00-workstation-validation/README.md`, `labs/01-zabbix-platform/README.md`, `labs/02-linux-host-monitoring/README.md`, `labs/03-windows-host-monitoring/README.md`), the Stage 00 validation script (`scripts/powershell/validate-workstation.ps1`), current `compose.yaml`, `.env.example`, and completed-stage summaries.
 
-**Review date:** 2026-11-01
+**Review date:** 2026-11-01 (updated with Stage 03)
 
 **Review status:** findings recorded for later technical verification; no corrective changes made to the original English documentation.
 
@@ -22,6 +22,10 @@ This register captures possible documentation inconsistencies identified while p
 | DOC-009 | `labs/02-linux-host-monitoring/README.md` — Zabbix Repository Installation / Troubleshooting | The commands use an absolute user-specific path (`/home/itamarsbt/zabbix-release.deb`). This accurately describes the original workstation but is not directly portable for readers with different Linux usernames. | Keep the historical commands unchanged; add a tested portable alternative or explicit instruction to substitute the Linux home directory in a separate revision. | Review pending |
 | DOC-010 | `labs/02-linux-host-monitoring/README.md` — Controlled Resource Validation / CPU activity | The CPU-load cleanup uses `pkill yes`, which selects processes named `yes` beyond the four started by this exercise; on a shared host, it could terminate unrelated workload. | Document the scope limitation and, in a separately tested lab update, track and terminate only the process IDs started by the test. No historical claims should be rewritten. | Review pending |
 | DOC-011 | `labs/02-linux-host-monitoring/README.md` — Memory activity | The narrative states that available memory fell from `13.33 GB` to `12.21 GB`, "reached a minimum of approximately 83.60%", and later recovered. The percentage is not explicitly tied to a named metric, which can confuse absolute available memory with available-memory percentage. | Inspect the original graph/item name and identify the percentage metric (e.g., available-memory percentage if confirmed) in a future clarifying revision. | Review pending |
+
+| DOC-012 | `labs/03-windows-host-monitoring/README.md` — Next Steps | The closing paragraph says Stage 04 "will introduce" network, DNS, TCP and HTTP monitoring, although Stage 04 is already completed and documented. This is historical wording, but can be misread as current work remaining. | In a separately approved source revision, label the next step as planned at the time of Stage 03 and link to the subsequently completed Stage 04. | Review pending |
+| DOC-013 | `labs/03-windows-host-monitoring/README.md` — Docker Network Scope Discovery / Current Result | Runtime values for `host.docker.internal`, Docker bridge IPs (`172.19.0.3`, `172.20.0.2`), subnets and Windows interface addresses are described partly in present tense. Such addresses can differ after Docker/Desktop/WSL network changes and should not be assumed to match a fresh reproduction. | Mark the values as historical observations from the Stage 03 execution, with instructions to rediscover live addresses and revalidate access scopes before reproduction. Preserve the recorded evidence. | Review pending |
+| DOC-014 | `labs/03-windows-host-monitoring/README.md` — Windows Firewall Configuration / Troubleshooting | "The installation created a dedicated inbound Windows Firewall rule" can sound like a side effect of installing the MSI. The later troubleshooting section explicitly says installation succeeded but the configuration-editing function stopped before creation of that firewall rule. The documentation supports eventual creation, but its sequencing merits clarification. | Distinguish MSI installation from the subsequent controlled firewall-configuration step, without changing the historical validation results. | Review pending |
 
 ## Review rules
 
