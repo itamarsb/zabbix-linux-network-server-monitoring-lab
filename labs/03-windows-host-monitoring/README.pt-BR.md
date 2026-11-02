@@ -544,7 +544,7 @@ A evidência registra a quantidade de processadores lógicos, o número selecion
 O Zabbix registrou o ciclo completo de alteração dos recursos:
 
 | Medição | Valor observado |
-|---|---:|
+|:---:|---:|
 | Intervalo normal antes da carga de trabalho | Aproximadamente `23%` a `34%` |
 | Utilização máxima de CPU | `89.5912%` |
 | Limite do template para CPU elevada | Maior que `90%` |
@@ -675,7 +675,7 @@ A regra do Firewall do Windows utiliza o escopo necessário de endereços remoto
 ## Critérios de aceitação
 
 | Critério | Estado |
-|---|:---:|
+|:---:|:---:|
 | Configuração inicial do host Windows coletada | Aprovado |
 | Instalação existente do Zabbix verificada | Aprovado |
 | Disponibilidade da porta TCP `10050` verificada | Aprovado |
