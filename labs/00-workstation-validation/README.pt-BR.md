@@ -135,7 +135,7 @@ O script realiza testes de DNS de saída e de TCP 443 somente para os destinos d
 ## Critérios de aceitação
 
 | Requisito | Condição de aceitação |
-|---|---|
+|:---:|:---:|
 | Sistema operacional | Windows de 64 bits |
 | Processador | Pelo menos 4 processadores lógicos |
 | Memória física | Pelo menos 8 GB |
