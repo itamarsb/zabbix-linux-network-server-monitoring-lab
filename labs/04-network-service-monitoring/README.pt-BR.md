@@ -90,7 +90,7 @@ A validação inicial foi executada a partir da estação de trabalho Windows.
 ### Resultados TCP
 
 | Serviço | Destino | Resultado |
-|---|---|:---:|
+|:---:|:---:|:---:|
 | Zabbix Web | `127.0.0.1:8080` | Acessível |
 | Zabbix Server | `127.0.0.1:10051` | Acessível |
 | Windows Agent 2 | `127.0.0.1:10050` | Acessível |
