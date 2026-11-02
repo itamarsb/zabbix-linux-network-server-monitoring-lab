@@ -272,7 +272,7 @@ A imagem não contém credenciais nem conteúdo não relacionado da área de tra
 ## Critérios de aceitação
 
 | Requisito | Condição de aceitação | Resultado |
-|---|---|:---:|
+|:---:|:---:|:---:|
 | Modelo Compose | Configuração renderizada sem variáveis ausentes | Aprovado |
 | PostgreSQL | Contêiner inicia e apresenta estado saudável | Aprovado |
 | Isolamento do banco de dados | PostgreSQL não possui porta publicada no host | Aprovado |
