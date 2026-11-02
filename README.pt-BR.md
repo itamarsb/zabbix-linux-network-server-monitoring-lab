@@ -106,7 +106,7 @@ Cada cenário concluído deve conter evidências de detecção, etapas de diagn�
 - [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/README.pt-BR.md) - monitoramento de host Linux com Zabbix Agent 2, validação controlada de recursos, testes do ciclo de vida e evidências;
 - [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/README.pt-BR.md) - monitoramento de host Windows com Zabbix Agent 2, conectividade Docker baseada em DNS, descoberta de métricas, validação controlada de CPU e evidências;
 - [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/README.pt-BR.md) - monitoramento de serviços ICMP, DNS, TCP e HTTP, falha controlada, validação da recuperação, diagnóstico e evidências;
-- [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/) - condições persistentes de *triggers*, classificação de severidade, incidentes HTTP e DNS, reconhecimento, recuperação, validação do histórico e evidências;
+- [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/README.pt-BR.md) - condições persistentes de *triggers*, classificação de severidade, incidentes HTTP e DNS, reconhecimento, recuperação, validação do histórico e evidências;
 - [`labs/06-alert-delivery-notifications/`](labs/06-alert-delivery-notifications/) - captura SMTP com Mailpit, tipo de mídia do Zabbix, ação sensível à severidade, notificações de problema e recuperação, diagnóstico de falhas na entrega e evidências;
 - [`labs/07-maintenance-operational-reporting/`](labs/07-maintenance-operational-reporting/) - manutenção planejada, coleta contínua de dados, supressão de problemas e notificações, recuperação controlada, encerramento da manutenção, relatórios operacionais e evidências;
 - [`labs/08-snmp-grafana-integration/`](labs/08-snmp-grafana-integration/) - alvo SNMPv2c reproduzível, tratamento seguro da comunidade SNMP, descoberta de interfaces, monitoramento de tráfego, falha controlada de autenticação, recuperação, decisão sobre a visualização e evidências;
@@ -276,7 +276,7 @@ A implementação incluiu:
 
 Todos os critérios de aceitação foram atendidos. A etapa demonstrou classificação de incidentes por severidade, responsabilização operacional do operador, diagnóstico controlado, recuperação automática e preservação completa do histórico de dois sinais distintos de monitoramento.
 
-Consulte a documentação completa em [`labs/05-triggers-alert-handling/README.md`](labs/05-triggers-alert-handling/README.md).
+Consulte a documentação completa em [`labs/05-triggers-alert-handling/README.md`](labs/05-triggers-alert-handling/README.pt-BR.md).
 
 ### Etapa 06 - Entrega de alertas, ações e notificações
 
