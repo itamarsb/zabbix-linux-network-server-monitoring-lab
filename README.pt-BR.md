@@ -105,7 +105,7 @@ Cada cenário concluído deve conter evidências de detecção, etapas de diagn�
 - [`labs/01-zabbix-platform/`](labs/01-zabbix-platform/README.pt-BR.md) - implantação reproduzível da plataforma Zabbix, validação, diagnóstico e evidências;
 - [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/README.pt-BR.md) - monitoramento de host Linux com Zabbix Agent 2, validação controlada de recursos, testes do ciclo de vida e evidências;
 - [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/README.pt-BR.md) - monitoramento de host Windows com Zabbix Agent 2, conectividade Docker baseada em DNS, descoberta de métricas, validação controlada de CPU e evidências;
-- [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/) - monitoramento de serviços ICMP, DNS, TCP e HTTP, falha controlada, validação da recuperação, diagnóstico e evidências;
+- [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/README.pt-BR.md) - monitoramento de serviços ICMP, DNS, TCP e HTTP, falha controlada, validação da recuperação, diagnóstico e evidências;
 - [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/) - condições persistentes de *triggers*, classificação de severidade, incidentes HTTP e DNS, reconhecimento, recuperação, validação do histórico e evidências;
 - [`labs/06-alert-delivery-notifications/`](labs/06-alert-delivery-notifications/) - captura SMTP com Mailpit, tipo de mídia do Zabbix, ação sensível à severidade, notificações de problema e recuperação, diagnóstico de falhas na entrega e evidências;
 - [`labs/07-maintenance-operational-reporting/`](labs/07-maintenance-operational-reporting/) - manutenção planejada, coleta contínua de dados, supressão de problemas e notificações, recuperação controlada, encerramento da manutenção, relatórios operacionais e evidências;
@@ -254,7 +254,7 @@ A implementação incluiu:
 
 Todos os critérios de aceitação foram atendidos. A etapa confirmou que a plataforma de monitoramento poderia detectar a interrupção de um serviço isolado, preservar informações de diagnóstico e verificar a recuperação sem afetar os serviços essenciais do laboratório.
 
-Consulte a documentação completa em [`labs/04-network-service-monitoring/README.md`](labs/04-network-service-monitoring/README.md).
+Consulte a documentação completa em [`labs/04-network-service-monitoring/README.md`](labs/04-network-service-monitoring/README.pt-BR.md).
 
 ### Etapa 05 - Triggers, severidades, eventos e tratamento de alertas
 
