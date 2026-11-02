@@ -87,7 +87,7 @@ A estação de trabalho possui capacidade suficiente para executar a plataforma 
 ## Portas necessárias
 
 | Porta | Protocolo | Finalidade planejada | Resultado da validação inicial |
-|:---:|:---:|---|:---:|
+|:---:|:---:|:---:|:---:|
 | 8080 | TCP | Interface web do Zabbix | Disponível |
 | 8443 | TCP | Interface HTTPS opcional | Disponível |
 | 10050 | TCP | Zabbix Agent 2 | Disponível |
