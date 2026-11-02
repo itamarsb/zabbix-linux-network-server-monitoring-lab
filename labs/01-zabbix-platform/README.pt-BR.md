@@ -31,7 +31,7 @@ Após concluir este laboratório, o operador será capaz de:
 ## Componentes da plataforma
 
 | Componente | Imagem | Finalidade |
-|:---:|---|---|
+|:---:|:---:|:---:|
 | PostgreSQL | `postgres:16.15-alpine3.24` | Banco de dados persistente de configuração e monitoramento do Zabbix |
 | Zabbix Server | `zabbix/zabbix-server-pgsql:ubuntu-7.0.30` | Coleta de dados, avaliação de *triggers*, processamento de eventos e lógica de monitoramento |
 | Zabbix Web | `zabbix/zabbix-web-nginx-pgsql:ubuntu-7.0.30` | Interface web de administração e operações de NOC |
