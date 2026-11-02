@@ -180,12 +180,12 @@ ListenIP=0.0.0.0
 Os parâmetros têm as seguintes finalidades:
 
 | Parâmetro | Finalidade |
-|---|---|
-| `Server` | Autoriza verificações passivas provenientes das redes privadas do Docker e do WSL |
-| `ServerActive` | Desabilitado durante a implementação inicial das verificações passivas |
-| `Hostname` | Define a identidade técnica do host utilizada pelo agente |
-| `ListenIP` | Faz o agente escutar nas interfaces de rede do WSL |
-| `ListenPort` | Utiliza a porta padrão do Agent 2, TCP `10050` |
+|:---:|:---|
+| `Server` | Autoriza verificações passivas provenientes das redes privadas do Docker e do WSL. |
+| `ServerActive` | Desabilitado durante a implementação inicial das verificações passivas. |
+| `Hostname` | Define a identidade técnica do host utilizada pelo agente. |
+| `ListenIP` | Faz o agente escutar nas interfaces de rede do WSL. |
+| `ListenPort` | Utiliza a porta padrão do Agent 2, TCP `10050`. |
 
 A configuração foi validada antes de reiniciar o serviço:
 
