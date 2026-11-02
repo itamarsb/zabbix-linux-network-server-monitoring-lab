@@ -278,7 +278,7 @@ docker exec $serverContainer zabbix_get `
 As respostas validadas foram:
 
 | Chave do item | Resultado |
-|---|:---:|
+|:---:|:---:|
 | `agent.ping` | `1` |
 | `system.hostname` | `NoteAcerItamar1` |
 | `agent.version` | `7.0.30` |
