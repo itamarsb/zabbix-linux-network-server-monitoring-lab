@@ -221,7 +221,7 @@ A evidência registra as duas redes Docker, os endereços atuais do Zabbix Serve
 A inspeção inicial confirmou:
 
 | Verificação | Resultado |
-|---|:---:|
+|:---:|:---:|
 | Serviço Zabbix existente no Windows | Não encontrado |
 | Porta TCP `10050` já em uso | Não |
 | Regra de Firewall do Windows específica do Zabbix | Não encontrada |
@@ -245,7 +245,7 @@ https://cdn.zabbix.com/zabbix/binaries/stable/7.0/7.0.30/zabbix_agent2-7.0.30-wi
 Informações validadas do pacote:
 
 | Propriedade | Valor validado |
-|---|---|
+|:---:|:---:|
 | Produto | Zabbix Agent 2 |
 | Versão | `7.0.30` |
 | Plataforma | Windows AMD64 |
