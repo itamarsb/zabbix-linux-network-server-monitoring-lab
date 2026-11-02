@@ -8,7 +8,7 @@
 [![Windows](https://img.shields.io/badge/Windows-Monitoring-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
 [![Status](https://img.shields.io/badge/Status-Stage%2008%20Completed-brightgreen)](#roteiro-de-implementação)
 
-Laboratório prático de Centro de Operações de Rede (NOC, *Network Operations Center*), voltado ao monitoramento de infraestrutura, à entrega de alertas, à triagem, ao diagnóstico e à resolução de problemas (*troubleshooting*), à resposta a incidentes, à recuperação de serviços, à coordenação de manutenções e à documentação operacional.
+Laboratório prático de Centro de Operações de Rede (NOC - *Network Operations Center*), voltado ao monitoramento de infraestrutura, à entrega de alertas, à triagem, ao diagnóstico e à resolução de problemas (*troubleshooting*), à resposta a incidentes, à recuperação de serviços, à coordenação de manutenções e à documentação operacional.
 
 O Zabbix é a plataforma central de monitoramento. O projeto reproduz fluxos de trabalho comuns de um NOC envolvendo Linux, Windows, conectividade de rede, serviços HTTP, tratamento de incidentes, notificações aos operadores e manutenções planejadas.
 
