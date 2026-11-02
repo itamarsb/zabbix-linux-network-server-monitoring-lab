@@ -171,7 +171,7 @@ Essa validação confirma que o servidor pode acessar:
 A imagem do Zabbix Server contém os seguintes utilitários:
 
 | Utilitário | Disponibilidade | Finalidade |
-|:---:|:---:|---|
+|:---:|:---:|:---:|
 | `getent` | Disponível | Validação de DNS e resolução de nomes |
 | `ping` | Disponível | Validação de conectividade ICMP |
 | `wget` | Disponível | Validação HTTP complementar |
@@ -204,7 +204,7 @@ A validação em estado normal confirmou:
 O item `External DNS resolution availability` foi criado no host `Windows Workstation - NOTEACERITAMAR1` e coletado pelo Zabbix Agent 2.
 
 | Configuração | Valor |
-|---|:---:|
+|:---:|:---:|
 | Tipo de item | Zabbix agent |
 | Chave | `net.dns[1.1.1.1,example.com,A,2,1,udp]` |
 | Servidor DNS | `1.1.1.1` |
