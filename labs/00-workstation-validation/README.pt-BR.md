@@ -48,7 +48,7 @@ A validação da estação de trabalho abrange:
 ## Configuração inicial do ambiente
 
 | Componente | Configuração detectada |
-|---|---|
+|:---:|:---:|
 | Sistema operacional da estação | Windows 11 Pro, 64 bits |
 | Build do Windows | 26200.9168 |
 | Processador | AMD Ryzen 5 3500U |
