@@ -275,7 +275,7 @@ O alvo HTTP dedicado foi interrompido com o Docker Compose enquanto o Zabbix Ser
 A falha controlada produziu as seguintes alterações de monitoramento:
 
 | Sinal | Estado normal | Estado de falha | Estado recuperado |
-|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | Disponibilidade TCP da aplicação web monitorada | `1` | `0` | `1` |
 | Etapa com falha no cenário web | `0` | `1` | `0` |
 | Velocidade de download do cenário | Coletada | `0 Bps` | Coletada |
@@ -300,7 +300,7 @@ O item de último erro preserva o erro registrado mais recentemente após a recu
 A etapa 04 utiliza recursos nativos do Zabbix sempre que possível.
 
 | Requisito | Método do Zabbix | Estado |
-|---|---|:---:|
+|:---:|:---:|:---:|
 | Disponibilidade ICMP | Template ICMP Ping | Concluído |
 | Perda de pacotes | `icmppingloss` | Concluído |
 | Tempo de resposta | `icmppingsec` | Concluído |
