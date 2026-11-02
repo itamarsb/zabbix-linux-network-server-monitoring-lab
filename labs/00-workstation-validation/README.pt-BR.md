@@ -72,7 +72,7 @@ A configuração inicial foi registrada em 26 de agosto de 2026. O espaço dispo
 ## Alocação planejada para a plataforma
 
 | Componente | Abordagem inicial |
-|---|---|
+|:---:|:---:|
 | PostgreSQL | Serviço Docker interno com armazenamento persistente |
 | Zabbix Server | Carga de trabalho local com utilização conservadora de recursos |
 | Zabbix Web | Uma instância de interface web (*frontend*) |
