@@ -2,7 +2,7 @@
 
 This register captures possible documentation inconsistencies identified while preparing Portuguese translations. It is separate from the translated documents and from validated laboratory evidence.
 
-**Scope reviewed:** main `README.md`, with cross-checks against Stage 00 and Stage 01 documentation and the completed-stage summaries.
+**Scope reviewed:** main `README.md`, full Stage 00 documentation (`labs/00-workstation-validation/README.md`), the associated validation script (`scripts/powershell/validate-workstation.ps1`), and cross-checks against Stage 01 and completed-stage summaries.
 
 **Review date:** 2026-11-01
 
@@ -14,6 +14,8 @@ This register captures possible documentation inconsistencies identified while p
 | DOC-002 | `README.md` — Incident Scenarios | "The laboratory reproduces scenarios" introduces a list including low disk space, packet loss, and false positives. The completed-stage summaries do not clearly establish controlled reproduction of every listed scenario. The list can be read as a completion claim rather than an overview of supported or planned scenarios. | Verify each scenario against lab evidence; separate validated scenarios from examples or planned exercises. | Review pending |
 | DOC-003 | `labs/00-workstation-validation/README.md` — Planned Platform Allocation | The initial allocation lists the Linux monitored host as a "Lightweight container", whereas the implemented Stage 02 uses Ubuntu 24.04 LTS under WSL 2. This is explainable as a change between planning and implementation, but it could confuse readers. | Preserve the historical baseline and explicitly note the subsequently implemented WSL 2 approach if a revision is approved. | Review pending |
 
+| DOC-004 | `labs/00-workstation-validation/README.md` — Required Ports | The table reports baseline availability for TCP `8080`, `8443`, `10050`, `10051`, `5432`, `80`, and `443`. The tracked `validate-workstation.ps1` checks local listening ports only for `8080`, `8443`, `10050`, and `10051`; its outbound TCP `443` test measures remote connectivity, not local port availability. The other baseline port claims may have been verified separately, but that evidence was not identified in the script. | Confirm whether the additional local port checks were performed separately, document their evidence or clarify the table as a planning inventory; do not retroactively change historical results without verification. | Review pending |
+| DOC-005 | `labs/00-workstation-validation/README.md` — Evidence | The evidence section states that the Git repository was "clean and synchronized". The tracked script checks whether it is inside a repository and records the current branch, but does not run a working-tree cleanliness or remote-sync check. Additional manual evidence may exist. | Confirm separate evidence of clean/synchronized state or narrow this claim to what the script demonstrably checked. | Review pending |
 ## Review rules
 
 - The original English files and the Portuguese translation remain unchanged by these findings.
