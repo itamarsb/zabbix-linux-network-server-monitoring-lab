@@ -73,7 +73,7 @@ Os serviços internos são acessados por nomes DNS do Docker, e não por endere�
 ## Alvos de monitoramento
 
 | Área de monitoramento | Alvo | Finalidade da validação | Estado |
-|---|:---:|---|:---:|
+|:---:|:---:|:---:|:---:|
 | ICMP | `1.1.1.1` | Acessibilidade externa sem dependência de DNS | Concluído |
 | Perda de pacotes ICMP | `1.1.1.1` | Coleta de perda de pacotes | Concluído |
 | Tempo de resposta ICMP | `1.1.1.1` | Coleta de latência | Concluído |
