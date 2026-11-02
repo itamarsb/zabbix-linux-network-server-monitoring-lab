@@ -35,7 +35,7 @@ Os seguintes marcos foram concluídos:
 ## Ambiente
 
 | Componente | Valor |
-|---|---|
+|:---:|:---:|
 | Plataforma de monitoramento | Zabbix 7.0 LTS |
 | Zabbix Server | Executado em contêiner |
 | Banco de dados | PostgreSQL |
