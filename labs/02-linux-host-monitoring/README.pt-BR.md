@@ -497,7 +497,7 @@ wsl.exe -d Ubuntu-24.04 -- systemctl is-active zabbix-agent2
 Após a reinicialização, o systemd restaurou automaticamente o Zabbix Agent 2 ao estado `active`, e a porta TCP `10050` voltou a ficar em estado de escuta. As verificações diretas pelo Zabbix Server retornaram:
 
 | Chave do item | Resultado |
-|---|:---:|
+|:---:|:---:|
 | `agent.ping` | `1` |
 | `system.hostname` | `NoteAcerItamar1` |
 | `agent.version` | `7.0.30` |
@@ -513,7 +513,7 @@ O endereço permaneceu `172.31.111.15` durante o teste controlado de encerrament
 ## Critérios de aceitação
 
 | Critério | Estado |
-|---|:---:|
+|:---:|:---:|
 | Ubuntu 24.04 no WSL selecionado como host monitorado | Aprovado |
 | Repositório oficial do Zabbix configurado | Aprovado |
 | Zabbix Agent 2 instalado | Aprovado |
