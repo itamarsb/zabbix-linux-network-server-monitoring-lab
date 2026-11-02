@@ -223,7 +223,7 @@ O host `Zabbix Lab Internal Services` foi criado para representar os serviços a
 Foram configuradas as seguintes verificações simples:
 
 | Item | Chave | Valor normal |
-|---|---|:---:|
+|:---:|:---:|:---:|
 | Disponibilidade do serviço TCP do PostgreSQL | `net.tcp.service[tcp,postgres,5432]` | `1` |
 | Disponibilidade do serviço TCP da aplicação web monitorada | `net.tcp.service[tcp,monitored-web,80]` | `1` |
 
