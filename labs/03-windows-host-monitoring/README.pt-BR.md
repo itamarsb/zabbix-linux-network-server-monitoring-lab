@@ -348,7 +348,7 @@ LocalPort:    10050
 As verificações locais do agente retornaram:
 
 | Verificação | Valor retornado | Código de saída | Resultado |
-|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | `agent.ping` | `1` | `0` | Aprovado |
 | `system.hostname` | `NOTEACERITAMAR1` | `0` | Aprovado |
 | Versão do agente | `7.0.30` | `0` | Aprovado |
@@ -364,7 +364,7 @@ host.docker.internal:10050
 Os resultados validados foram:
 
 | Chave do item | Valor esperado | Valor retornado | Código de saída | Resultado |
-|---|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|:---:|
 | `agent.ping` | `1` | `1` | `0` | Aprovado |
 | `system.hostname` | `NOTEACERITAMAR1` | `NOTEACERITAMAR1` | `0` | Aprovado |
 | `agent.version` | `7.0.30` | `7.0.30` | `0` | Aprovado |
@@ -394,7 +394,7 @@ Windows servers
 Em seguida, a estação de trabalho Windows foi cadastrada na interface web do Zabbix com a seguinte configuração:
 
 | Propriedade | Valor configurado |
-|---|---|
+|:---:|:---:|
 | Nome do host | `NOTEACERITAMAR1` |
 | Nome visível | `Windows Workstation - NOTEACERITAMAR1` |
 | Grupo de hosts | `Windows servers` |
