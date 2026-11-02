@@ -444,7 +444,7 @@ O host Windows apresentou `146` valores monitorados na visualização filtrada d
 Valores representativos validados:
 
 | Item | Valor validado |
-|---|---:|
+|:---:|:---:|
 | Ping do Zabbix Agent | `Up (1)` |
 | Nome do host no agente | `NOTEACERITAMAR1` |
 | Nome do sistema | `NOTEACERITAMAR1` |
