@@ -249,7 +249,7 @@ A resolução DNS do Docker e a conectividade HTTP foram validadas a partir do c
 O cenário web `Monitored web HTTP availability` contém uma etapa denominada `Homepage`.
 
 | Configuração | Valor |
-|---|:---:|
+|:---:|:---:|
 | URL | `http://monitored-web/` |
 | Intervalo de atualização | `1m` |
 | Tentativas | `1` |
