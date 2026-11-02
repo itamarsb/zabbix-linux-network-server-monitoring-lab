@@ -281,7 +281,7 @@ O MSI previamente verificado foi instalado silenciosamente com o Windows Install
 Detalhes validados da instalação:
 
 | Propriedade | Valor validado |
-|---|---|
+|:---:|:---:|
 | Produto | Zabbix Agent 2 |
 | Versão | `7.0.30` |
 | Diretório de instalação | `C:\Program Files\Zabbix Agent 2` |
@@ -314,7 +314,7 @@ O teste de configuração do agente foi concluído com sucesso, com código de s
 A instalação criou uma regra dedicada de entrada no Firewall do Windows:
 
 | Propriedade | Valor validado |
-|---|:---:|
+|:---:|:---:|
 | Nome de exibição | `Zabbix Agent 2 - Passive Checks` |
 | Direção | Entrada |
 | Ação | Permitir |
