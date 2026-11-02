@@ -296,7 +296,7 @@ Esses resultados confirmaram:
 O host monitorado foi cadastrado na interface web do Zabbix com as seguintes configurações:
 
 | Campo | Valor |
-|---|---|
+|:---:|:---:|
 | Nome do host | `linux-wsl-01` |
 | Nome visível | `Ubuntu 24.04 WSL - NoteAcerItamar1` |
 | Grupo de hosts | `Linux servers` |
