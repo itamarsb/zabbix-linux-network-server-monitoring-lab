@@ -121,7 +121,7 @@ A resolução foi posteriormente confirmada a partir do contêiner do Zabbix Ser
 ### Resultados ICMP
 
 | Alvo | Resultado |
-|---|:---:|
+|:---:|:---:|
 | `127.0.0.1` | Acessível |
 | `1.1.1.1` | Acessível |
 | `example.com` | Acessível |
@@ -139,7 +139,7 @@ zabbix-noc-lab-zabbix-server-1
 ### Conexões com redes
 
 | Rede Docker | Endereço do Zabbix Server |
-|---|:---:|
+|:---:|:---:|
 | `zabbix-noc-lab_backend` | `172.19.0.3` |
 | `zabbix-noc-lab_monitoring` | `172.20.0.2` |
 
