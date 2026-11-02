@@ -168,7 +168,7 @@ O comando foi concluído com código de saída `0`.
 Foram avaliados os três caminhos relevantes:
 
 | Destino | Finalidade | Resultado |
-|---|---|:---:|
+|:---:|:---:|:---:|
 | `host.docker.internal` | Destino Windows gerenciado pelo Docker | Resolvido para IPv4 |
 | `172.31.96.1` | Interface virtual do WSL no Windows | Acessível |
 | `192.168.0.179` | Interface Wi-Fi do Windows | Acessível |
@@ -190,7 +190,7 @@ A porta TCP `10050` foi validada posteriormente por esse destino, após a instal
 O contêiner Zabbix Server está conectado a duas redes bridge do Docker:
 
 | Rede Docker | IPv4 do contêiner | Prefixo | Sub-rede | Gateway |
-|---|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|:---:|
 | `zabbix-noc-lab_backend` | `172.19.0.3` | `16` | `172.19.0.0/16` | `172.19.0.1` |
 | `zabbix-noc-lab_monitoring` | `172.20.0.2` | `16` | `172.20.0.0/16` | `172.20.0.1` |
 
