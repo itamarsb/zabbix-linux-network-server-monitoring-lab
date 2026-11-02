@@ -42,7 +42,7 @@ A implementação e a validação da etapa 03 estão concluídas.
 ## Configuração inicial do ambiente
 
 | Componente | Valor validado |
-|---|---|
+|:---:|:---:|
 | Sistema operacional | Microsoft Windows 11 Pro |
 | Versão do sistema operacional | `10.0.26200` |
 | Número do build | `26200` |
@@ -70,7 +70,7 @@ A última inicialização da estação de trabalho informada durante a validaç�
 Foram identificadas duas interfaces IPv4 ativas:
 
 | Interface | Endereço IPv4 | Gateway padrão |
-|---|---|---|
+|:---:|:---:|:---:|
 | `vEthernet (WSL (Hyper-V firewall))` | `172.31.96.1` | Nenhum |
 | `Wi-Fi` | `192.168.0.179` | `192.168.0.1` |
 
