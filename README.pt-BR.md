@@ -102,7 +102,7 @@ Cada cenário concluído deve conter evidências de detecção, etapas de diagn�
 ## Conteúdo atual do repositório
 
 - [`labs/00-workstation-validation/`](labs/00-workstation-validation/README.pt-BR.md) - configuração inicial da estação de trabalho, critérios de aceitação, constatações e resultados;
-- [`labs/01-zabbix-platform/`](labs/01-zabbix-platform/) - implantação reproduzível da plataforma Zabbix, validação, diagnóstico e evidências;
+- [`labs/01-zabbix-platform/`](labs/01-zabbix-platform/README.pt-BR.md) - implantação reproduzível da plataforma Zabbix, validação, diagnóstico e evidências;
 - [`labs/02-linux-host-monitoring/`](labs/02-linux-host-monitoring/) - monitoramento de host Linux com Zabbix Agent 2, validação controlada de recursos, testes do ciclo de vida e evidências;
 - [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/) - monitoramento de host Windows com Zabbix Agent 2, conectividade Docker baseada em DNS, descoberta de métricas, validação controlada de CPU e evidências;
 - [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/) - monitoramento de serviços ICMP, DNS, TCP e HTTP, falha controlada, validação da recuperação, diagnóstico e evidências;
@@ -182,7 +182,7 @@ A implementação incluiu:
 - investigação e correção de uma associação inadequada de template;
 - confirmação da recuperação da plataforma, sem problemas ativos naquele momento.
 
-Consulte a documentação completa em [`labs/01-zabbix-platform/README.md`](labs/01-zabbix-platform/README.md).
+Consulte a documentação completa em [`labs/01-zabbix-platform/README.md`](labs/01-zabbix-platform/README.pt-BR.md).
 
 ### Etapa 02 - Monitoramento de host Linux
 
