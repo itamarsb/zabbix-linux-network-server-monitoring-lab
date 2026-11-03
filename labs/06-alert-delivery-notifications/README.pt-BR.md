@@ -49,7 +49,7 @@ Não foi necessário utilizar contas pessoais de e-mail, provedores SMTP externo
 A etapa 05 estabeleceu o ciclo de incidentes reutilizado nesta etapa.
 
 | Sinal de monitoramento | Severidade | Comportamento durante o problema | Comportamento durante a recuperação |
-|---|:---:|---|---|
+|:---:|:---:|:---:|:---:|
 | Disponibilidade do serviço HTTP dedicado | High | A falha persistente do serviço gera um evento de problema | A restauração do serviço faz a *trigger* retornar a `OK` |
 | Disponibilidade da resolução DNS externa | Average | A falha persistente de DNS gera um evento de problema | A restauração do DNS faz a *trigger* retornar a `OK` |
 
