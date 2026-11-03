@@ -169,7 +169,7 @@ noc-operator@zabbix-lab.local
 O tipo de mídia `Mailpit Local SMTP` foi associado ao administrador do Zabbix utilizado como operador do laboratório.
 
 | Configuração | Valor |
-|---|:---:|
+|:---:|:---:|
 | Usuário | Admin |
 | Destinatário | `noc-operator@zabbix-lab.local` |
 | Tipo de mídia | `Mailpit Local SMTP` |
