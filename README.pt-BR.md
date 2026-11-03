@@ -107,7 +107,7 @@ Cada cenário concluído deve conter evidências de detecção, etapas de diagn�
 - [`labs/03-windows-host-monitoring/`](labs/03-windows-host-monitoring/README.pt-BR.md) - monitoramento de host Windows com Zabbix Agent 2, conectividade Docker baseada em DNS, descoberta de métricas, validação controlada de CPU e evidências;
 - [`labs/04-network-service-monitoring/`](labs/04-network-service-monitoring/README.pt-BR.md) - monitoramento de serviços ICMP, DNS, TCP e HTTP, falha controlada, validação da recuperação, diagnóstico e evidências;
 - [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/README.pt-BR.md) - condições persistentes de *triggers*, classificação de severidade, incidentes HTTP e DNS, reconhecimento, recuperação, validação do histórico e evidências;
-- [`labs/06-alert-delivery-notifications/`](labs/06-alert-delivery-notifications/) - captura SMTP com Mailpit, tipo de mídia do Zabbix, ação sensível à severidade, notificações de problema e recuperação, diagnóstico de falhas na entrega e evidências;
+- [`labs/06-alert-delivery-notifications/`](labs/06-alert-delivery-notifications/README.pt-BR.md) - captura SMTP com Mailpit, tipo de mídia do Zabbix, ação sensível à severidade, notificações de problema e recuperação, diagnóstico de falhas na entrega e evidências;
 - [`labs/07-maintenance-operational-reporting/`](labs/07-maintenance-operational-reporting/) - manutenção planejada, coleta contínua de dados, supressão de problemas e notificações, recuperação controlada, encerramento da manutenção, relatórios operacionais e evidências;
 - [`labs/08-snmp-grafana-integration/`](labs/08-snmp-grafana-integration/) - alvo SNMPv2c reproduzível, tratamento seguro da comunidade SNMP, descoberta de interfaces, monitoramento de tráfego, falha controlada de autenticação, recuperação, decisão sobre a visualização e evidências;
 - [`snmp/`](snmp/) - configuração do alvo Net-SNMP controlado e script de inicialização do contêiner;
@@ -305,7 +305,7 @@ A implementação incluiu:
 
 Todos os critérios de aceitação foram atendidos. A etapa demonstrou o processamento de notificações conforme a severidade, o envio automático de avisos de problema e recuperação, a validação SMTP local, a análise do histórico de entrega e o diagnóstico sistemático de uma falha no caminho de notificação.
 
-Consulte a documentação completa em [`labs/06-alert-delivery-notifications/README.md`](labs/06-alert-delivery-notifications/README.md).
+Consulte a documentação completa em [`labs/06-alert-delivery-notifications/README.md`](labs/06-alert-delivery-notifications/README.pt-BR.md).
 
 ### Etapa 07 - Janelas de manutenção e relatórios operacionais
 
