@@ -143,7 +143,7 @@ Mailpit Local SMTP
 ### Configurações do tipo de mídia
 
 | Configuração | Valor |
-|---|:---:|
+|:---:|:---:|
 | Tipo | E-mail |
 | Servidor SMTP | `mailpit` |
 | Porta do servidor SMTP | `1025` |
