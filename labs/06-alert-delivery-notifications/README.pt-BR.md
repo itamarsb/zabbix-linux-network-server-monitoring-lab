@@ -371,7 +371,7 @@ O incidente DNS controlado permaneceu ativo por aproximadamente seis minutos, e 
 ## Resultados da validação
 
 | Validação | Resultado esperado | Resultado observado | Estado |
-|---|---|---|:---:|
+|:---:|:---:|:---:|:---:|
 | Estado inicial da plataforma | Serviços centrais permanecem operacionais | Plataforma permaneceu disponível | Aprovado |
 | Disponibilidade do Mailpit | Serviço local de captura SMTP está acessível | Serviço saudável e interface web acessível | Aprovado |
 | Teste do tipo de mídia | E-mail de teste chega ao Mailpit | E-mail de validação recebido | Aprovado |
