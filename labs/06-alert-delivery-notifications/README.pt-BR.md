@@ -80,7 +80,7 @@ A ação configurada avalia as condições da *trigger* e da severidade, selecio
 ## Componentes do laboratório
 
 | Componente | Finalidade | Acesso |
-|---|---|---|
+|:---:|:---:|:---:|
 | Zabbix Server | Processamento de eventos e execução de ações | Rede interna do Docker |
 | Zabbix Web | Configuração e validação operacional | `http://127.0.0.1:8080` |
 | PostgreSQL | Banco de dados de configuração e histórico do Zabbix | Rede interna do Docker |
