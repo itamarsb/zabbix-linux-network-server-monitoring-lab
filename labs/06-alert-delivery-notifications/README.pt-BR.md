@@ -442,7 +442,7 @@ O Mailpit é adequado ao desenvolvimento e à validação em ambientes controlad
 ## Evidências
 
 | Evidência | Resultado demonstrado |
-|---|---|
+|:---:|:---:|
 | [Validação inicial da plataforma](../../docs/screenshots/stage-06-platform-baseline-validation.png) | Serviços centrais do Docker e Zabbix funcionando normalmente |
 | [Notificação de teste do Mailpit](../../docs/screenshots/stage-06-mailpit-test-notification.png) | Teste direto do tipo de mídia recebido com sucesso |
 | [Notificação de problema HTTP](../../docs/screenshots/stage-06-http-problem-notification.png) | E-mail de problema com severidade High entregue |
