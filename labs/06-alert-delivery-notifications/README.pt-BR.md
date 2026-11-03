@@ -123,7 +123,7 @@ O serviço oferece:
 ### Configuração do serviço Mailpit
 
 | Configuração | Valor |
-|---|:---:|
+|:---:|:---:|
 | Imagem do contêiner | `axllent/mailpit:v1.30` |
 | Nome do serviço SMTP | `mailpit` |
 | Porta SMTP | `1025` |
