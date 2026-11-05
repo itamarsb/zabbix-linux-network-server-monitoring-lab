@@ -140,7 +140,7 @@ Somente o serviço HTTP monitorado foi interrompido com o comando `docker compos
 A interrupção produziu as condições de monitoramento esperadas:
 
 | Sinal de monitoramento | Valor esperado | Valor observado | Resultado |
-|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | Disponibilidade TCP de monitored-web | `0` | `0` | Aprovado |
 | Etapa com falha do cenário HTTP | `1` | `1` | Aprovado |
 | Disponibilidade TCP do PostgreSQL | `1` | `1` | Aprovado |
