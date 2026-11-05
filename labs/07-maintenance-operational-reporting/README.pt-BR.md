@@ -79,7 +79,7 @@ Havia incidentes não relacionados envolvendo um serviço Windows e o agente Ubu
 ## Alvo da manutenção
 
 | Campo | Valor |
-|---|:---:|
+|:---:|:---:|
 | Identificador da mudança | `CHG-LAB-007` |
 | Host no Zabbix | `Zabbix Lab Internal Services` |
 | Serviço | `monitored-web` |
@@ -95,7 +95,7 @@ Havia incidentes não relacionados envolvendo um serviço Windows e o agente Ubu
 Um período de manutenção dedicado foi criado no Zabbix para a atividade controlada.
 
 | Configuração | Valor |
-|:---:|---|
+|:---:|:---:|
 | Nome | `NOC Lab - Monitored Web Planned Maintenance` |
 | Tipo de manutenção | Com coleta de dados |
 | Host associado | `Zabbix Lab Internal Services` |
