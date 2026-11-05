@@ -82,7 +82,7 @@ As seguintes atividades foram concluídas:
 ## Estado atual do monitoramento
 
 | Sinal de monitoramento | Valor atual | Valor esperado | Estado |
-|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | Disponibilidade TCP de monitored-web | `1` | `1` | Normal |
 | Etapa com falha no cenário HTTP | `0` | `0` | Normal |
 | Código de resposta HTTP | `200` | `200` | Normal |
