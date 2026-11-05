@@ -199,7 +199,7 @@ A visualização do incidente confirmou que:
 O Mailpit foi consultado antes e depois do intervalo de falha.
 
 | Medição | Valor |
-|---|:---:|
+|:---:|:---:|
 | Mensagens antes da interrupção | `0` |
 | Mensagens após a geração do problema | `0` |
 | Novas mensagens durante a manutenção | `0` |
