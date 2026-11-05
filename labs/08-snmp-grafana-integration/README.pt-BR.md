@@ -172,7 +172,7 @@ Esses resultados permitiram separar a validação do SNMP no alvo da configuraç
 O alvo SNMP foi cadastrado com a seguinte configuração final:
 
 | Campo | Valor |
-|---|:---:|
+|:---:|:---:|
 | Nome do host | `zabbix-lab-snmp-target` |
 | Nome visível | `SNMP Lab Target - Docker` |
 | Grupo de hosts | `Network services` |
