@@ -7,7 +7,7 @@
 ## Resumo da mudança
 
 | Campo | Valor |
-|---|:---:|
+|:---:|:---:|
 | ID da mudança | `CHG-LAB-007` |
 | Tipo de mudança | Manutenção planejada |
 | Ambiente | Zabbix NOC Operations Lab |
