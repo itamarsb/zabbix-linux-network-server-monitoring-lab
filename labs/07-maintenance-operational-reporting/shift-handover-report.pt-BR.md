@@ -56,7 +56,7 @@ As seguintes atividades foram concluídas:
 ## Linha do tempo da mudança
 
 | Horário | Evento | Resultado operacional |
-|:---:|---|---|
+|:---:|:---:|:---:|
 | 19:25 | Manutenção tornou-se ativa | Host entrou em manutenção planejada |
 | 19:46:05 | Teste controlado iniciado | Contagem inicial do Mailpit registrada como zero |
 | 19:46 | `monitored-web` foi interrompido | Início da interrupção controlada do serviço |
