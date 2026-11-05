@@ -156,7 +156,7 @@ O contêiner SNMP recriado passou a apresentar estado saudável e permaneceu est
 As consultas diretas SNMPv2c ao alvo controlado foram bem-sucedidas antes do cadastro no Zabbix.
 
 | Sinal | Resultado validado |
-|---|---|
+|:---:|:---:|
 | Nome do sistema | `zabbix-lab-snmp-target` |
 | Localização do sistema | `Docker-based NOC Operations Lab` |
 | Contato do sistema | `NOC Lab Administrator` |
