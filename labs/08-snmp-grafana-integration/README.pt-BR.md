@@ -233,7 +233,7 @@ A sequência do teste foi:
 8. confirmar a recuperação automática do evento.
 
 | Sinal | Estado normal | Estado de falha | Estado de recuperação |
-|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | Contêiner do alvo SNMP | Healthy | Healthy | Healthy |
 | Autenticação SNMP no Zabbix | Válida | Inválida | Válida |
 | Disponibilidade SNMP | Disponível | Indisponível | Disponível |
