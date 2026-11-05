@@ -114,7 +114,7 @@ Cada cenário concluído deve conter evidências de detecção, etapas de diagn�
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - validação reutilizável da estação de trabalho, somente leitura;
 - [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, alvos HTTP e SNMP dedicados, Mailpit, armazenamento persistente e redes isoladas;
 - [`.env.example`](.env.example) - modelo versionado de variáveis de ambiente sem credenciais operacionais;
-- [`docs/noc-alert-triage-checklist.md`](docs/noc-alert-triage-checklist.md) - guia rápido reutilizável para NOC, com validação de alertas, avaliação de severidade, diagnóstico, escalonamento, recuperação e passagem de turno;
+- [`docs/noc-alert-triage-checklist.pt-BR.md`](docs/noc-alert-triage-checklist.pt-BR.md) - guia rápido reutilizável para NOC, com validação de alertas, avaliação de severidade, diagnóstico, escalonamento, recuperação e passagem de turno;
 - [`docs/screenshots/`](docs/screenshots/) - evidências técnicas selecionadas das etapas concluídas;
 - [`.gitignore`](.gitignore) - proteção de segredos, dados de execução, logs, configurações locais e arquivos temporários.
 
@@ -340,8 +340,8 @@ Todos os critérios de aceitação foram atendidos. A etapa demonstrou que o Zab
 Documentação da etapa 07:
 
 - [Visão geral da etapa 07](labs/07-maintenance-operational-reporting/README.pt-BR.md)
-- [Registro de manutenção planejada](labs/07-maintenance-operational-reporting/maintenance-record.md)
-- [Relatório de passagem de turno](labs/07-maintenance-operational-reporting/shift-handover-report.md)
+- [Registro de manutenção planejada](labs/07-maintenance-operational-reporting/maintenance-record.pt-BR.md)
+- [Relatório de passagem de turno](labs/07-maintenance-operational-reporting/shift-handover-report.pt-BR.md)
 
 ### Etapa 08 - Monitoramento SNMP de rede e decisão sobre o Grafana
 
