@@ -71,7 +71,7 @@ As seguintes atividades foram concluídas:
 ## Estado atual da plataforma
 
 | Componente | Estado atual | Observação operacional |
-|---|:---:|---|
+|:---:|:---:|:---:|
 | PostgreSQL | Healthy | Serviço de banco de dados permaneceu disponível |
 | Zabbix Server | Running | Processamento de eventos permaneceu operacional |
 | Zabbix Web | Healthy | Interface web retornou status HTTP `200` |
