@@ -109,7 +109,7 @@ Cada cenário concluído deve conter evidências de detecção, etapas de diagn�
 - [`labs/05-triggers-alert-handling/`](labs/05-triggers-alert-handling/README.pt-BR.md) - condições persistentes de *triggers*, classificação de severidade, incidentes HTTP e DNS, reconhecimento, recuperação, validação do histórico e evidências;
 - [`labs/06-alert-delivery-notifications/`](labs/06-alert-delivery-notifications/README.pt-BR.md) - captura SMTP com Mailpit, tipo de mídia do Zabbix, ação sensível à severidade, notificações de problema e recuperação, diagnóstico de falhas na entrega e evidências;
 - [`labs/07-maintenance-operational-reporting/`](labs/07-maintenance-operational-reporting/README.pt-BR.md) - manutenção planejada, coleta contínua de dados, supressão de problemas e notificações, recuperação controlada, encerramento da manutenção, relatórios operacionais e evidências;
-- [`labs/08-snmp-grafana-integration/`](labs/08-snmp-grafana-integration/) - alvo SNMPv2c reproduzível, tratamento seguro da comunidade SNMP, descoberta de interfaces, monitoramento de tráfego, falha controlada de autenticação, recuperação, decisão sobre a visualização e evidências;
+- [`labs/08-snmp-grafana-integration/`](labs/08-snmp-grafana-integration/README.pt-BR.md) - alvo SNMPv2c reproduzível, tratamento seguro da comunidade SNMP, descoberta de interfaces, monitoramento de tráfego, falha controlada de autenticação, recuperação, decisão sobre a visualização e evidências;
 - [`snmp/`](snmp/) - configuração do alvo Net-SNMP controlado e script de inicialização do contêiner;
 - [`scripts/powershell/validate-workstation.ps1`](scripts/powershell/validate-workstation.ps1) - validação reutilizável da estação de trabalho, somente leitura;
 - [`compose.yaml`](compose.yaml) - PostgreSQL, Zabbix Server, Zabbix Web, alvos HTTP e SNMP dedicados, Mailpit, armazenamento persistente e redes isoladas;
@@ -371,7 +371,7 @@ A implementação incluiu:
 
 Todos os critérios principais de aceitação do SNMP foram atendidos. O alvo final está saudável, a comunidade rotacionada foi sincronizada com segurança e a ação de notificação não validada da etapa 08 permanece desativada.
 
-Consulte a documentação completa em [`labs/08-snmp-grafana-integration/README.md`](labs/08-snmp-grafana-integration/README.md).
+Consulte a documentação completa em [`labs/08-snmp-grafana-integration/README.md`](labs/08-snmp-grafana-integration/README.pt-BR.md).
 
 ## Política de evidências
 
