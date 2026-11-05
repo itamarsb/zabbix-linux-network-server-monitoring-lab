@@ -145,7 +145,7 @@ A seguinte sequência foi concluída:
 ## Linha do tempo da execução
 
 | Horário | Atividade | Resultado |
-|:---:|---|---|
+|:---:|:---:|:---:|
 | 19:25 | A manutenção tornou-se ativa | Host entrou em manutenção planejada |
 | 19:46:05 | Início do teste controlado | Mailpit continha zero mensagens |
 | 19:46 | `monitored-web` foi interrompido | Início da interrupção controlada |
@@ -164,7 +164,7 @@ Apenas o serviço `monitored-web` foi interrompido.
 A interrupção produziu o comportamento esperado do monitoramento:
 
 | Sinal de monitoramento | Esperado durante a falha | Observado | Resultado |
-|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | Disponibilidade TCP de monitored-web | `0` | `0` | Aprovado |
 | Etapa com falha no cenário HTTP | `1` | `1` | Aprovado |
 | Disponibilidade TCP do PostgreSQL | `1` | `1` | Aprovado |
