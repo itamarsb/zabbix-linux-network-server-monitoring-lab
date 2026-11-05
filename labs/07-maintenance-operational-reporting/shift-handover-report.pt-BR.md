@@ -116,7 +116,7 @@ O ciclo de vida do incidente permanece disponível no histórico do Zabbix para 
 ## Resumo das notificações
 
 | Medição do Mailpit | Valor |
-|---|:---:|
+|:---:|:---:|
 | Mensagens antes da interrupção | `0` |
 | Mensagens durante a falha | `0` |
 | Mensagens após a restauração do serviço | `0` |
