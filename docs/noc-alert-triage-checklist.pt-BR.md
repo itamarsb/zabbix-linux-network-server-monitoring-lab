@@ -43,7 +43,7 @@
 - [ ] Selecione verificações pertinentes que sejam somente de leitura; registre os resultados e horários antes de qualquer intervenção.
 
 | Sintoma | Primeiras verificações | Laboratório relacionado |
-|:---:|:---|:---:|
+|:---:|:---:|:---:|
 | Falha HTTP ou TCP | Código de resposta, etapa com falha, acessibilidade da porta, estado do serviço/contêiner | [Stage 04](../labs/04-network-service-monitoring/README.pt-BR.md) |
 | Falha DNS | Resolução de nomes, resolvedor, alvo, mudanças recentes; comparar o valor monitorado | [Stage 05](../labs/05-triggers-alert-handling/README.pt-BR.md) |
 | Host ou agente indisponível | Estado do agente, caminho de rede, dados recentes, serviços dependentes | [Stages 02–03](../labs/02-linux-host-monitoring/README.pt-BR.md) |
