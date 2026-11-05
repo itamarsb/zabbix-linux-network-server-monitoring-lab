@@ -40,7 +40,7 @@ A implementação final inclui:
 ## Arquitetura implementada
 
 | Componente | Responsabilidade |
-|:---:|---|
+|:---:|:---:|
 | Alvo SNMP controlado | Disponibiliza dados de sistema Linux e de interfaces por UDP `161`, de maneira reproduzível |
 | Zabbix Server | Consulta OIDs SNMP, descobre interfaces, armazena valores e avalia *triggers* |
 | Zabbix Web | Configura o host SNMP e disponibiliza itens, incidentes e gráficos nativos |
