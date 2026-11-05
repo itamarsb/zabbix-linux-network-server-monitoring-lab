@@ -95,7 +95,7 @@ Antes da interrupção controlada, foram confirmadas as seguintes condições:
 O seguinte período de manutenção foi criado no Zabbix:
 
 | Configuração | Valor |
-|:---:|---|
+|:---:|:---:|
 | Nome | `NOC Lab - Monitored Web Planned Maintenance` |
 | Tipo de manutenção | Com coleta de dados |
 | Host | `Zabbix Lab Internal Services` |
