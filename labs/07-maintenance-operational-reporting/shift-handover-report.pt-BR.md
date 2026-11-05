@@ -7,7 +7,7 @@
 ## Resumo da passagem de turno
 
 | Campo | Valor |
-|---|---|
+|:---:|:---:|
 | Ambiente | Zabbix NOC Operations Lab |
 | Data da passagem de turno | 4 de setembro de 2026 |
 | Mudança relacionada | `CHG-LAB-007` |
