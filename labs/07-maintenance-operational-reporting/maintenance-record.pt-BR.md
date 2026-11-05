@@ -121,7 +121,7 @@ Essa configuração permitiu que o Zabbix criasse e preservasse o evento de prob
 ## Linha do tempo da execução
 
 | Horário | Atividade | Resultado |
-|:---:|---|---|
+|:---:|:---:|:---:|
 | 19:25 | Janela de manutenção tornou-se ativa | Host entrou em manutenção planejada |
 | 19:46:05 | Teste controlado iniciado | Mailpit continha zero mensagens |
 | 19:46 | `monitored-web` foi interrompido | Contêiner-alvo entrou no estado de parado |
