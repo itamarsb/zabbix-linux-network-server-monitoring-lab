@@ -66,7 +66,7 @@ A atividade foi planejada para confirmar que:
 ## Avaliação de riscos
 
 | Risco | Impacto esperado | Mitigação |
-|:---:|---|---|
+|:---:|:---:|:---:|
 | Monitoramento HTTP fica indisponível | Limitado ao serviço `monitored-web` do laboratório | Somente o contêiner-alvo foi interrompido |
 | Notificação de alerta indesejada | Uma mensagem relacionada à manutenção poderia chegar ao Mailpit | As operações de incidentes suprimidos foram pausadas na ação de *trigger* |
 | Perda de dados de monitoramento | O comportamento da manutenção não poderia ser validado | A manutenção foi configurada com coleta de dados |
