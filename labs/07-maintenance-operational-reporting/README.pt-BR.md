@@ -51,7 +51,7 @@ A implementação final confirmou:
 ## Componentes do laboratório
 
 | Componente | Finalidade | Impacto da manutenção |
-|:---:|---|:---:|
+|:---:|:---:|:---:|
 | PostgreSQL | Banco de dados de configuração e histórico do Zabbix | Permaneceu disponível |
 | Zabbix Server | Monitoramento e processamento de eventos | Permaneceu disponível |
 | Zabbix Web | Configuração e validação de incidentes | Permaneceu disponível |
