@@ -28,7 +28,7 @@
 - [ ] Priorize conforme a política de resposta da organização. Escalone rapidamente situações com impacto crítico no serviço, mesmo que a severidade da *trigger* seja inferior.
 
 | Severidade da trigger no Zabbix | Ação inicial do operador |
-|:---:|:---|
+|:---:|:---:|
 | **Disaster / High** | Priorizar validação e escalonamento imediatos conforme o impacto e a política de resposta. |
 | **Average** | Investigar prontamente, avaliar o impacto no serviço e escalonar caso o incidente se amplie ou exceda a autoridade do operador. |
 | **Warning** | Validar o sinal e sua tendência; avaliar se há degradação do serviço ou necessidade de ação preventiva. |
