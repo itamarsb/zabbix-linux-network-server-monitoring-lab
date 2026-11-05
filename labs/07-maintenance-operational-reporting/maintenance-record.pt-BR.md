@@ -175,7 +175,7 @@ A visualização de incidentes confirmou que:
 O Mailpit foi consultado antes e depois da interrupção controlada.
 
 | Medição | Valor |
-|---|:---:|
+|:---:|:---:|
 | Mensagens antes da interrupção | `0` |
 | Mensagens após a ativação da *trigger* | `0` |
 | Novas mensagens durante a manutenção | `0` |
@@ -218,7 +218,7 @@ Isso confirmou que o host não estava mais em manutenção e que os incidentes f
 A validação final da plataforma confirmou:
 
 | Validação | Esperado | Observado | Resultado |
-|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | Contêiner PostgreSQL | Healthy | Healthy | Aprovado |
 | Contêiner Zabbix Server | Running | Running | Aprovado |
 | Contêiner Zabbix Web | Healthy | Healthy | Aprovado |
