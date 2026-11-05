@@ -247,7 +247,7 @@ Isso confirmou que:
 A validação final da plataforma confirmou:
 
 | Validação | Esperado | Observado | Resultado |
-|---|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|
 | Contêiner PostgreSQL | Healthy | Healthy | Aprovado |
 | Contêiner Zabbix Server | Running | Running | Aprovado |
 | Contêiner Zabbix Web | Healthy | Healthy | Aprovado |
