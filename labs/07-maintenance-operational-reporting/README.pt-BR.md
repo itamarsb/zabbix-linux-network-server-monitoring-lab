@@ -284,7 +284,7 @@ O registro de manutenção documenta:
 - encerramento da manutenção;
 - resultado final.
 
-[Consultar o registro de manutenção planejada](maintenance-record.md)
+[Consultar o registro de manutenção planejada](maintenance-record.pt-BR.md)
 
 ### Relatório de passagem de turno
 
@@ -300,7 +300,7 @@ O relatório de passagem de turno documenta:
 - estado do rollback;
 - índice de evidências.
 
-[Consultar o relatório de passagem de turno](shift-handover-report.md)
+[Consultar o relatório de passagem de turno](shift-handover-report.pt-BR.md)
 
 ## Índice de evidências
 
