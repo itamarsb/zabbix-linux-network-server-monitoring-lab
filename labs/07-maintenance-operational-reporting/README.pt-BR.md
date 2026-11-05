@@ -305,7 +305,7 @@ O relatório de passagem de turno documenta:
 ## Índice de evidências
 
 | Evidência | Arquivo no repositório |
-|:---:|---|
+|:---:|:---:|
 | Período de manutenção ativo | `docs/screenshots/stage-07-active-maintenance-period.png` |
 | Indisponibilidade HTTP controlada | `docs/screenshots/stage-07-controlled-http-unavailability.png` |
 | Problema HTTP suprimido | `docs/screenshots/stage-07-suppressed-http-problem.png` |
