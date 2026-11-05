@@ -99,7 +99,7 @@ O host `Zabbix Lab Internal Services` não apresenta mais o indicador de manuten
 A interrupção controlada gerou o incidente esperado:
 
 | Campo | Valor |
-|---|---|
+|:---:|:---:|
 | Incidente | `HTTP service unavailable on monitored-web` |
 | Severidade | High |
 | Horário do problema | 19:47:19 |
