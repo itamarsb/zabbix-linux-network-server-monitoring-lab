@@ -195,7 +195,7 @@ A macro `{$SNMP_COMMUNITY}` contém o mesmo valor privado armazenado no arquivo 
 Após a inicialização do template e a descoberta, o host disponibilizou:
 
 | Recurso do Zabbix | Quantidade observada |
-|---|:---:|
+|:---:|:---:|
 | Itens | `53` |
 | Triggers | `15` |
 | Gráficos | `8` |
