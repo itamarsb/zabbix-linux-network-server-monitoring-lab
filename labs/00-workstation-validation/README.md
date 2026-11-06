@@ -86,15 +86,17 @@ The workstation has sufficient capacity to run the planned stack while preservin
 
 ## Required Ports
 
-| Port | Protocol | Planned purpose | Baseline result |
-|:---:|:---:|---|:---:|
-| 8080 | TCP | Zabbix web interface | Available |
-| 8443 | TCP | Optional HTTPS interface | Available |
-| 10050 | TCP | Zabbix Agent 2 | Available |
-| 10051 | TCP | Zabbix Server | Available |
-| 5432 | TCP | PostgreSQL internal service | Available; host publication not planned |
-| 80 | TCP | Optional HTTP test service | Available |
-| 443 | TCP | Outbound HTTPS and optional TLS service | Available |
+| Port | Protocol | Planned purpose | Baseline result | Verification method |
+|:---:|:---:|---|:---:|---|
+| 8080 | TCP | Zabbix web interface | Available | Local Windows listener check (`Get-NetTCPConnection`) |
+| 8443 | TCP | Optional HTTPS interface | Available | Local Windows listener check (`Get-NetTCPConnection`) |
+| 10050 | TCP | Zabbix Agent 2 | Available | Local Windows listener check (`Get-NetTCPConnection`) |
+| 10051 | TCP | Zabbix Server | Available | Local Windows listener check (`Get-NetTCPConnection`) |
+| 5432 | TCP | PostgreSQL internal service | Available; host publication not planned | Not checked as a local port by the tracked script |
+| 80 | TCP | Optional HTTP test service | Available | Not checked as a local port by the tracked script |
+| 443 | TCP | Outbound HTTPS and optional TLS service | Available | Outbound TCP `443` connectivity to documented remote targets; local availability not checked |
+
+**Validation scope:** The Stage 00 script checks for existing Windows TCP listeners on ports `8080`, `8443`, `10050`, and `10051`. It also validates outbound TCP connectivity to port `443` on the documented remote targets. Local availability of ports `5432`, `80`, and `443` is not verified by the tracked script. The original baseline entries are retained as historical records, but they should not be interpreted as evidence of additional checks or guaranteed future port availability.
 
 Port availability is time-sensitive. The validation script must be executed again before platform deployment.
 
@@ -165,7 +167,7 @@ An optional check may generate a warning without rejecting the workstation. For 
 | Docker CLI and server | Passed |
 | Docker Compose | Passed |
 | Docker CPU and memory | Passed |
-| Required ports | Passed |
+| Local TCP listener checks (`8080`, `8443`, `10050`, `10051`) | Passed |
 | DNS resolution | Passed |
 | HTTPS connectivity | Passed |
 | Git repository | Passed |
@@ -294,7 +296,7 @@ The executed validation confirmed:
 - Docker client and server operation;
 - Docker Compose availability;
 - Docker CPU and memory capacity;
-- required TCP port availability;
+- absence of local Windows TCP listeners on ports `8080`, `8443`, `10050`, and `10051` at validation time;
 - DNS resolution;
 - outbound HTTPS connectivity;
 - preservation of unrelated Docker resources;
