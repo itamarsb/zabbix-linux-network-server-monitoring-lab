@@ -152,7 +152,7 @@ O script realiza testes de DNS de saída e de TCP 443 somente para os destinos d
 | HTTPS | Conectividade TCP 443 bem-sucedida |
 | Porta da interface web | TCP 8080 disponível antes da implantação |
 | Porta do servidor Zabbix | TCP 10051 disponível antes da implantação |
-| Repositório Git | Repositório válido com uma branch identificada |
+| Repositório Git | Contexto de repositório Git identificado com sucesso |
 
 Uma verificação opcional pode gerar um aviso sem reprovar a estação de trabalho. Por exemplo, uma porta opcional ocupada pode ser remapeada com segurança na configuração do Compose.
 
@@ -172,7 +172,7 @@ Uma verificação opcional pode gerar um aviso sem reprovar a estação de traba
 | Verificações de listeners TCP locais (`8080`, `8443`, `10050`, `10051`) | Aprovado |
 | Resolução DNS | Aprovado |
 | Conectividade HTTPS | Aprovado |
-| Repositório Git | Aprovado |
+| Contexto do repositório Git | Aprovado |
 | Conflitos com plataformas ativas | Nenhum detectado |
 | Resultado geral | Aprovado |
 
@@ -302,7 +302,9 @@ A validação executada confirmou:
 - resolução DNS;
 - conectividade HTTPS de saída;
 - preservação de recursos Docker não relacionados;
-- estado limpo e sincronizado do repositório Git.
+- identificação da árvore de trabalho Git e consulta à branch atual.
+
+**Escopo da validação Git:** O script do Stage 00 confirma que o diretório de execução pertence a uma árvore de trabalho Git e consulta a branch atual. Ele não verifica se a árvore de trabalho está limpa, se existem alterações não registradas em commits ou se o repositório está sincronizado com um remoto. Essas condições exigem verificações adicionais e não devem ser inferidas do resultado histórico da validação.
 
 O script reutilizável e os resultados documentados fornecem evidências técnicas mais consistentes do que uma grande coleção de capturas de tela do terminal.
 
