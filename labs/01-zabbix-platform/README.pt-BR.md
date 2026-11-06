@@ -378,4 +378,4 @@ A etapa 01 disponibilizou uma plataforma Zabbix 7.0 LTS reproduzível e isolada 
 
 A implantação foi validada sob as perspectivas dos contêineres, banco de dados, servidor, HTTP, segurança, monitoramento e fluxo de trabalho do operador. Um problema inicial relacionado à configuração foi reconhecido, investigado, corrigido e teve sua recuperação confirmada.
 
-A etapa 02 adicionará um host Linux monitorado com Zabbix Agent 2 e validará disponibilidade do host, métricas de recursos, processos, sistemas de arquivos e interfaces de rede.
+Posteriormente, o Stage 02 acrescentou um host Ubuntu 24.04 LTS executado no WSL 2 e monitorado pelo Zabbix Agent 2. A implementação concluída validou a conectividade passiva do agente, as métricas de recursos e o monitoramento de processos, sistemas de arquivos e interfaces de rede. Consulte a [documentação do Stage 02](../02-linux-host-monitoring/README.pt-BR.md) para conhecer a implementação e suas evidências técnicas.
