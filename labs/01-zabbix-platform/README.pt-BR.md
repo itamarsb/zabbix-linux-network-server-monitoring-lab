@@ -58,7 +58,7 @@ A plataforma utiliza três redes Docker com responsabilidades distintas.
 
 A rede `backend` é interna. O PostgreSQL não é publicado na estação de trabalho Windows.
 
-Somente as seguintes portas são publicadas:
+Durante a implantação original do Stage 01, somente as seguintes portas eram publicadas:
 
 | Endpoint da estação de trabalho | Endpoint do contêiner | Finalidade |
 |:---:|:---:|:---:|
@@ -67,15 +67,21 @@ Somente as seguintes portas são publicadas:
 
 Vincular essas portas a `127.0.0.1` impede o acesso direto de outros dispositivos da rede local durante esta etapa.
 
+**Evolução da configuração Compose:** O Stage 01 foi originalmente implementado e validado com três serviços essenciais: PostgreSQL, Zabbix Server e Zabbix Web. A versão atual do repositório utiliza uma configuração Compose ampliada, que também inclui `monitored-web`, `mailpit` e `snmp-target`, introduzidos em etapas posteriores. As observações e evidências originais do Stage 01 descrevem a implantação dos três serviços e não devem ser interpretadas como validação da plataforma ampliada.
+
+**Endpoints publicados no modelo Compose atual:** A tabela acima registra os dois endpoints de loopback originais do Stage 01. O serviço `mailpit`, acrescentado posteriormente, também publica por padrão a porta TCP `127.0.0.1:8025`, enquanto `snmp-target` publica por padrão a porta UDP `127.0.0.1:161`; ambas são configuráveis pelo arquivo `.env`. O serviço `monitored-web`, adicionado posteriormente, não publica portas no host. Esses endpoints adicionais não fazem parte da implantação histórica do Stage 01.
+
 ## Dados persistentes
 
 O volume nomeado `postgres-data` armazena o banco de dados PostgreSQL.
 
-Parar e remover os contêineres não remove esse volume:
+Parar e remover os contêineres do Compose sem a opção `--volumes` não remove esse volume. O comando abaixo afeta **todo o projeto Compose atual**, inclusive os serviços adicionados após o Stage 01; ele **não** representa um procedimento de desligamento restrito aos três serviços e deve ser utilizado somente quando se deseja encerrar todo o projeto:
 
 ```powershell
 docker compose --env-file .env down
 ```
+
+Para operações rotineiras restritas ao Stage 01, utilize os comandos específicos da seção [Operações rotineiras](#operações-rotineiras).
 
 A remoção do volume do banco de dados é intencionalmente excluída do procedimento rotineiro de desligamento. Uma limpeza destrutiva somente deve ser realizada quando houver a intenção explícita de perder toda a configuração e todo o histórico local do Zabbix.
 
@@ -101,6 +107,8 @@ Copy-Item .env.example .env
 
 Edite `.env` e substitua a senha de exemplo do PostgreSQL por uma senha forte, utilizada exclusivamente neste laboratório local.
 
+O `compose.yaml` atual também referencia variáveis obrigatórias de SNMP introduzidas em etapas posteriores. Todas as referências obrigatórias devem estar definidas quando o Compose interpreta o modelo completo, mesmo que apenas os três serviços do Stage 01 sejam selecionados. O `.env.example` atual inclui esses parâmetros como valores de exemplo; não utilize a comunidade SNMP de exemplo como credencial de produção. O contexto de build de `snmp-target` somente é necessário quando esse serviço posterior for compilado ou iniciado.
+
 O arquivo `.env` nunca deve ser incluído em um commit.
 
 Confirme que ele está sendo ignorado pelo Git:
@@ -118,31 +126,29 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
     -File .\scripts\powershell\validate-workstation.ps1
 ```
 
-Valide a interpolação das variáveis e o modelo Compose final:
+Valide a interpolação das variáveis e o **modelo Compose atual completo** (incluindo as definições dos serviços de etapas posteriores):
 
 ```powershell
-docker compose --env-file .env config
+docker compose --env-file .env config -q
 ```
 
-Liste as imagens referenciadas pelo modelo:
+Para inspecionar a configuração resolvida ou a lista completa de imagens, utilize `docker compose --env-file .env config` ou `docker compose --env-file .env config --images`; as saídas **não se restringem ao Stage 01**.
+
+Baixe as imagens com versões fixadas somente para os três serviços essenciais do Stage 01:
 
 ```powershell
-docker compose --env-file .env config --images
-```
-
-Baixe as imagens com versões fixadas antes de iniciar a plataforma:
-
-```powershell
-docker compose --env-file .env pull
+docker compose --env-file .env pull postgres zabbix-server zabbix-web
 ```
 
 ## Implantação
 
-Inicie os serviços em modo desacoplado (*detached*):
+Inicie somente os três serviços essenciais do Stage 01 em modo desacoplado (*detached*), utilizando o modelo Compose atual:
 
 ```powershell
-docker compose --env-file .env up -d
+docker compose --env-file .env up -d postgres zabbix-server zabbix-web
 ```
+
+Essa seleção não interrompe serviços de etapas posteriores que já estejam executando no mesmo projeto Compose, e o comando `up` poderá recriar serviços selecionados se suas configurações tiverem mudado. Utilize um projeto isolado para exercitar apenas os três serviços. Esse procedimento seleciona o **escopo de serviços do Stage 01**, mas não reproduz exatamente a revisão histórica original do Compose.
 
 A ordem de inicialização esperada é:
 
@@ -154,16 +160,16 @@ A ordem de inicialização esperada é:
 
 ### Estado dos contêineres
 
-Inspecione o estado dos serviços e as portas publicadas:
+Inspecione o estado dos serviços e as portas publicadas dos três serviços essenciais do Stage 01:
 
 ```powershell
-docker compose --env-file .env ps
+docker compose --env-file .env ps postgres zabbix-server zabbix-web
 ```
 
 Inspecione o estado dos serviços e as informações de integridade em formato estruturado:
 
 ```powershell
-docker compose --env-file .env ps --format json |
+docker compose --env-file .env ps --format json postgres zabbix-server zabbix-web |
     ConvertFrom-Json |
     Select-Object Name, Service, State, Health, ExitCode
 ```
@@ -171,7 +177,7 @@ docker compose --env-file .env ps --format json |
 Inspecione os contadores de reinicialização dos contêineres:
 
 ```powershell
-docker compose --env-file .env ps -q |
+docker compose --env-file .env ps -q postgres zabbix-server zabbix-web |
     ForEach-Object {
         docker inspect `
             --format '{{.Name}} restart_count={{.RestartCount}}' $_
@@ -180,7 +186,7 @@ docker compose --env-file .env ps -q |
 
 Condições esperadas:
 
-- todos os três serviços estão em execução;
+- todos os três serviços essenciais do Stage 01 estão em execução (outros serviços de etapas posteriores podem existir no mesmo projeto);
 - o PostgreSQL apresenta estado saudável;
 - nenhum serviço está reiniciando repetidamente;
 - o PostgreSQL não possui porta publicada no host;
@@ -334,31 +340,33 @@ Inspecione o host, o template, o item, a *trigger* e os dados recentes relaciona
 
 ## Operações rotineiras
 
-Exiba o estado da plataforma:
+Estes comandos específicos atuam somente sobre os serviços essenciais do Stage 01. Eles não interrompem intencionalmente os serviços das etapas posteriores no projeto Compose atual.
+
+Exiba o estado dos serviços essenciais:
 
 ```powershell
-docker compose --env-file .env ps
+docker compose --env-file .env ps postgres zabbix-server zabbix-web
 ```
 
-Exiba os logs recentes:
+Exiba os logs recentes dos serviços essenciais:
 
 ```powershell
-docker compose --env-file .env logs --tail 100
+docker compose --env-file .env logs --tail 100 postgres zabbix-server zabbix-web
 ```
 
-Pare a plataforma preservando os contêineres e os dados:
+Pare os serviços essenciais, preservando seus contêineres e dados:
 
 ```powershell
-docker compose --env-file .env stop
+docker compose --env-file .env stop zabbix-web zabbix-server postgres
 ```
 
-Inicie os serviços parados:
+Inicie novamente os serviços essenciais parados:
 
 ```powershell
-docker compose --env-file .env start
+docker compose --env-file .env start postgres zabbix-server zabbix-web
 ```
 
-Remova os contêineres e as redes do projeto, preservando o volume do banco de dados:
+**Atenção — operação sobre todo o projeto:** O comando abaixo não é restrito ao Stage 01. Ele interrompe e remove contêineres e redes do projeto Compose atual, podendo afetar `monitored-web`, `mailpit` e `snmp-target`, além dos serviços essenciais. Execute-o somente quando desejar desligar todo o projeto. O volume nomeado do PostgreSQL é preservado, a menos que os volumes sejam removidos explicitamente.
 
 ```powershell
 docker compose --env-file .env down
