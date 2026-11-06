@@ -84,6 +84,8 @@ A configuração inicial foi registrada em 26 de agosto de 2026. O espaço dispo
 
 A estação de trabalho possui capacidade suficiente para executar a plataforma planejada, preservando recursos para o Windows, o Docker Desktop e as atividades normais da estação.
 
+**Evolução da arquitetura:** Esta tabela registra a alocação inicial da plataforma planejada durante o Stage 00. Durante o Stage 02, o alvo de monitoramento Linux foi implementado utilizando Ubuntu 24.04 LTS no WSL 2, em vez do contêiner Docker leve originalmente previsto. O Zabbix Agent 2 é executado no host WSL 2 e se comunica com o Zabbix Server em contêiner por meio da rede privada Docker/WSL. A implementação e sua validação estão documentadas no [Stage 02](../02-linux-host-monitoring/README.pt-BR.md).
+
 ## Portas necessárias
 
 | Porta | Protocolo | Finalidade planejada | Resultado da validação inicial |
