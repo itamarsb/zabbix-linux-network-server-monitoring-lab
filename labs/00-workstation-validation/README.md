@@ -82,6 +82,8 @@ The baseline was collected on August 26, 2026. Available disk space and software
 
 The workstation has sufficient capacity to run the planned stack while preserving resources for Windows, Docker Desktop, and normal workstation activities.
 
+**Architecture evolution:** This table records the initial platform allocation planned during Stage 00. During Stage 02, the Linux monitoring target was implemented using Ubuntu 24.04 LTS under WSL 2 instead of the originally proposed lightweight Docker container. Zabbix Agent 2 runs on the WSL 2 host and communicates with the containerized Zabbix Server through the private Docker/WSL network. The implementation and its validation are documented in [Stage 02](../02-linux-host-monitoring/README.md).
+
 ## Required Ports
 
 | Port | Protocol | Planned purpose | Baseline result |
