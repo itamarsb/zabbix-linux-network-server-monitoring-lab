@@ -88,15 +88,17 @@ A estação de trabalho possui capacidade suficiente para executar a plataforma 
 
 ## Portas necessárias
 
-| Porta | Protocolo | Finalidade planejada | Resultado da validação inicial |
-|:---:|:---:|:---:|:---:|
-| 8080 | TCP | Interface web do Zabbix | Disponível |
-| 8443 | TCP | Interface HTTPS opcional | Disponível |
-| 10050 | TCP | Zabbix Agent 2 | Disponível |
-| 10051 | TCP | Zabbix Server | Disponível |
-| 5432 | TCP | Serviço interno do PostgreSQL | Disponível; publicação no host não planejada |
-| 80 | TCP | Serviço HTTP de teste opcional | Disponível |
-| 443 | TCP | HTTPS de saída e serviço TLS opcional | Disponível |
+| Porta | Protocolo | Finalidade planejada | Resultado da validação inicial | Método de verificação |
+|:---:|:---:|:---:|:---:|---|
+| 8080 | TCP | Interface web do Zabbix | Disponível | Verificação de listener local no Windows (`Get-NetTCPConnection`) |
+| 8443 | TCP | Interface HTTPS opcional | Disponível | Verificação de listener local no Windows (`Get-NetTCPConnection`) |
+| 10050 | TCP | Zabbix Agent 2 | Disponível | Verificação de listener local no Windows (`Get-NetTCPConnection`) |
+| 10051 | TCP | Zabbix Server | Disponível | Verificação de listener local no Windows (`Get-NetTCPConnection`) |
+| 5432 | TCP | Serviço interno do PostgreSQL | Disponível; publicação no host não planejada | Porta local não verificada pelo script versionado |
+| 80 | TCP | Serviço HTTP de teste opcional | Disponível | Porta local não verificada pelo script versionado |
+| 443 | TCP | HTTPS de saída e serviço TLS opcional | Disponível | Conectividade TCP de saída pela porta `443` para destinos remotos documentados; disponibilidade local não verificada |
+
+**Escopo da validação:** O script do Stage 00 verifica a existência de processos escutando nas portas TCP locais `8080`, `8443`, `10050` e `10051` do Windows. Também valida a conectividade TCP de saída para a porta `443` dos destinos remotos documentados. A disponibilidade local das portas `5432`, `80` e `443` não é verificada pelo script versionado. Os registros originais da validação inicial são preservados como dados históricos, mas não devem ser interpretados como evidência de verificações adicionais ou garantia de disponibilidade futura das portas.
 
 A disponibilidade das portas pode mudar ao longo do tempo. O script de validação deve ser executado novamente antes da implantação da plataforma.
 
@@ -167,7 +169,7 @@ Uma verificação opcional pode gerar um aviso sem reprovar a estação de traba
 | Cliente e servidor Docker | Aprovado |
 | Docker Compose | Aprovado |
 | CPU e memória do Docker | Aprovado |
-| Portas necessárias | Aprovado |
+| Verificações de listeners TCP locais (`8080`, `8443`, `10050`, `10051`) | Aprovado |
 | Resolução DNS | Aprovado |
 | Conectividade HTTPS | Aprovado |
 | Repositório Git | Aprovado |
@@ -296,7 +298,7 @@ A validação executada confirmou:
 - funcionamento do cliente e do servidor Docker;
 - disponibilidade do Docker Compose;
 - capacidade de CPU e memória do Docker;
-- disponibilidade das portas TCP necessárias;
+- ausência de listeners TCP locais no Windows nas portas `8080`, `8443`, `10050` e `10051` no momento da validação;
 - resolução DNS;
 - conectividade HTTPS de saída;
 - preservação de recursos Docker não relacionados;
