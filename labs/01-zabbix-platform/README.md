@@ -56,7 +56,7 @@ The platform uses three Docker networks with distinct responsibilities.
 
 The `backend` network is internal. PostgreSQL is not published to the Windows workstation.
 
-Only the following ports are published:
+During the original Stage 01 deployment, only the following ports were published:
 
 | Workstation endpoint | Container endpoint | Purpose |
 |:---:|---|---|
@@ -65,15 +65,21 @@ Only the following ports are published:
 
 Binding these ports to `127.0.0.1` prevents direct access from other devices on the local network during this stage.
 
+**Compose configuration evolution:** Stage 01 was originally implemented and validated with three core services: PostgreSQL, Zabbix Server, and Zabbix Web. The current repository uses an expanded Compose configuration that also includes `monitored-web`, `mailpit`, and `snmp-target`, introduced during subsequent stages. The original Stage 01 observations and evidence describe the three-service deployment and must not be interpreted as validation of the expanded stack.
+
+**Published endpoints in the current Compose model:** The table above records the two original Stage 01 loopback endpoints. The later `mailpit` service also publishes TCP `127.0.0.1:8025` by default, and `snmp-target` publishes UDP `127.0.0.1:161` by default; both are configurable through `.env`. The later `monitored-web` service has no host-published port. These additional endpoints are outside the historical Stage 01 deployment.
+
 ## Persistent Data
 
 The named volume `postgres-data` stores the PostgreSQL database.
 
-Stopping and removing the containers does not remove this volume:
+Stopping and removing Compose containers without the `--volumes` option does not remove this volume. The following command affects the **entire current Compose project**, including services added after Stage 01; it is **not** a three-service shutdown procedure and must only be used when a project-wide shutdown is intended:
 
 ```powershell
 docker compose --env-file .env down
 ```
+
+For routine Stage 01-only operations, use the service-scoped commands in [Routine Operations](#routine-operations).
 
 Removing the database volume is intentionally excluded from the routine shutdown procedure. Destructive cleanup must only be performed when the loss of all local Zabbix configuration and history is explicitly intended.
 
@@ -99,6 +105,8 @@ Copy-Item .env.example .env
 
 Edit `.env` and replace the example PostgreSQL password with a strong password used only by this local laboratory.
 
+The current `compose.yaml` also references required SNMP settings from later stages. All required variable references must be satisfied when Compose parses the full model, even if only the three Stage 01 services are selected. The current `.env.example` includes these settings as example values; do not treat the example SNMP community as a production credential. The `snmp-target` build context is needed only when that later service is built or started.
+
 The `.env` file must never be committed.
 
 Confirm its ignore status:
@@ -116,31 +124,29 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
     -File .\scripts\powershell\validate-workstation.ps1
 ```
 
-Validate variable interpolation and the final Compose model:
+Validate variable interpolation and the **current full Compose model** (including later-stage service definitions):
 
 ```powershell
-docker compose --env-file .env config
+docker compose --env-file .env config -q
 ```
 
-List the images referenced by the model:
+To inspect the full resolved configuration or image list, use `docker compose --env-file .env config` or `docker compose --env-file .env config --images`; their output is **not limited to Stage 01**.
+
+Pull the pinned images for the three Stage 01 core services only:
 
 ```powershell
-docker compose --env-file .env config --images
-```
-
-Pull the pinned images before starting the platform:
-
-```powershell
-docker compose --env-file .env pull
+docker compose --env-file .env pull postgres zabbix-server zabbix-web
 ```
 
 ## Deployment
 
-Start the services in detached mode:
+Start only the three Stage 01 core services in detached mode, using the current Compose model:
 
 ```powershell
-docker compose --env-file .env up -d
+docker compose --env-file .env up -d postgres zabbix-server zabbix-web
 ```
+
+This service selection does not stop later-stage services already running in the same Compose project, and `up` may recreate selected services if their configuration has changed. Use an isolated project for a three-service exercise. This procedure selects the **Stage 01 service scope**; it is not an exact replay of the original historical Compose revision.
 
 The expected startup order is:
 
@@ -152,16 +158,16 @@ The expected startup order is:
 
 ### Container state
 
-Inspect service state and published ports:
+Inspect service state and published ports for the three Stage 01 core services:
 
 ```powershell
-docker compose --env-file .env ps
+docker compose --env-file .env ps postgres zabbix-server zabbix-web
 ```
 
 Inspect service state and health information in a structured format:
 
 ```powershell
-docker compose --env-file .env ps --format json |
+docker compose --env-file .env ps --format json postgres zabbix-server zabbix-web |
     ConvertFrom-Json |
     Select-Object Name, Service, State, Health, ExitCode
 ```
@@ -169,7 +175,7 @@ docker compose --env-file .env ps --format json |
 Inspect container restart counters:
 
 ```powershell
-docker compose --env-file .env ps -q |
+docker compose --env-file .env ps -q postgres zabbix-server zabbix-web |
     ForEach-Object {
         docker inspect `
             --format '{{.Name}} restart_count={{.RestartCount}}' $_
@@ -178,7 +184,7 @@ docker compose --env-file .env ps -q |
 
 Expected conditions:
 
-- all three services are running;
+- all three Stage 01 core services are running (other later-stage services may exist in the same project);
 - PostgreSQL reports a healthy state;
 - no service is repeatedly restarting;
 - PostgreSQL has no host-published port;
@@ -332,31 +338,33 @@ Inspect the affected host, template, item, trigger, and latest data. Correct the
 
 ## Routine Operations
 
-Display platform state:
+These service-scoped commands target only the Stage 01 core services. They do not intentionally stop later-stage services in the current Compose project.
+
+Display core-service state:
 
 ```powershell
-docker compose --env-file .env ps
+docker compose --env-file .env ps postgres zabbix-server zabbix-web
 ```
 
-Display recent logs:
+Display recent core-service logs:
 
 ```powershell
-docker compose --env-file .env logs --tail 100
+docker compose --env-file .env logs --tail 100 postgres zabbix-server zabbix-web
 ```
 
-Stop the platform while preserving containers and data:
+Stop the core services while preserving their containers and data:
 
 ```powershell
-docker compose --env-file .env stop
+docker compose --env-file .env stop zabbix-web zabbix-server postgres
 ```
 
-Start stopped services:
+Restart the stopped core services:
 
 ```powershell
-docker compose --env-file .env start
+docker compose --env-file .env start postgres zabbix-server zabbix-web
 ```
 
-Remove containers and project networks while preserving the database volume:
+**Warning — project-wide operation:** The following command is not scoped to Stage 01. It stops and removes containers and networks for the current Compose project, potentially disrupting `monitored-web`, `mailpit`, and `snmp-target` as well as the core services. Run it only when intentionally shutting down the entire project. The named PostgreSQL volume is preserved unless volumes are explicitly removed.
 
 ```powershell
 docker compose --env-file .env down
