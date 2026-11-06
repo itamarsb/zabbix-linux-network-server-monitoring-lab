@@ -16,7 +16,7 @@ This repository demonstrates a complete monitoring and incident-handling cycle:
 
 **Monitor -> Detect -> Notify -> Validate -> Acknowledge -> Investigate -> Escalate or Restore -> Confirm Recovery -> Document**
 
-The objective is not limited to installing Zabbix. Each stage includes implementation, validation, controlled failure simulation, troubleshooting, recovery, and selected technical evidence.
+The objective is not limited to installing Zabbix. Each stage documents its implementation and validation activities, along with relevant technical evidence. Controlled fault simulations, troubleshooting, and recovery are included where applicable to the stage's scope.
 
 ## Core Objectives
 
