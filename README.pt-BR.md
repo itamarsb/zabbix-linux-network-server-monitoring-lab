@@ -69,22 +69,34 @@ O PostgreSQL permanece dentro da rede Docker. O Mailpit oferece captura SMTP iso
 
 ## Cenários de incidentes
 
-O laboratório reproduz cenários comuns às equipes de NOC e infraestrutura:
+O laboratório distingue experimentos de falhas controladas validados, variações monitoradas de recursos e cenários propostos para validação futura.
 
-- host monitorado indisponível;
-- Zabbix Agent 2 indisponível;
-- serviço HTTP interrompido;
-- porta TCP inacessível;
-- falha na resolução DNS;
-- utilização elevada de CPU;
-- pouco espaço disponível em disco;
-- utilização anormal de memória;
-- latência de rede ou perda de pacotes;
-- serviço bloqueado por um firewall local;
-- manutenção planejada gerando alertas desnecessários;
-- *trigger* mal ajustada produzindo um falso positivo.
+### Cenários controlados validados
 
-Cada cenário concluído deve conter evidências de detecção, etapas de diagnóstico, ação corretiva, validação da recuperação e registro operacional.
+- Interrupção do serviço HTTP, indisponibilidade TCP/HTTP, detecção do problema e recuperação (Stages 04–07).
+- Falha controlada de resolução DNS, detecção do problema e recuperação (Stages 05–06).
+- Manutenção planejada com continuidade da coleta de dados e supressão de notificações de incidentes (Stage 07).
+- Falha controlada de autenticação SNMP, detecção do problema e recuperação (Stage 08).
+
+### Monitoramento de recursos e rede validado
+
+- Carga controlada de CPU e resposta do monitoramento (Stages 02–03).
+- Alocação de memória, uso temporário do sistema de arquivos e variações de tráfego de rede (Stage 02).
+- Monitoramento de disponibilidade ICMP, tempo de resposta e perda de pacotes nas condições observadas (Stage 04).
+
+Essas atividades validam o comportamento do monitoramento, mas não demonstram necessariamente a geração de incidentes.
+
+### Cenários candidatos à validação futura
+
+- Indisponibilidade de host monitorado ou Zabbix Agent 2.
+- Espaço disponível em disco criticamente baixo ou violações de limites de utilização de memória.
+- Indução de latência de rede ou perda de pacotes.
+- Bloqueio efetivo de serviço por firewall local.
+- Incidente falso positivo causado por uma trigger configurada incorretamente.
+
+Esses cenários não devem ser apresentados como experimentalmente validados até que os testes e suas evidências sejam documentados.
+
+Cada cenário de incidente concluído deve incluir evidências de detecção, etapas de diagnóstico, ações corretivas quando aplicáveis, validação da recuperação e registro operacional.
 
 ## Método de diagnóstico e resolução de problemas
 
