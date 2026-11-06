@@ -18,7 +18,7 @@ Este repositório demonstra um ciclo completo de monitoramento e tratamento de i
 
 **Monitorar -> Detectar -> Notificar -> Validar -> Reconhecer -> Investigar -> Escalonar ou Restaurar -> Confirmar a recuperação -> Documentar**
 
-O objetivo não se limita à instalação do Zabbix. Cada etapa contempla implementação, validação, simulação controlada de falhas, diagnóstico, recuperação e evidências técnicas selecionadas.
+O objetivo não se limita à instalação do Zabbix. Cada etapa documenta suas atividades de implementação e validação, acompanhadas das evidências técnicas pertinentes. Simulações controladas de falhas, diagnóstico e recuperação são incluídos quando previstos no escopo da etapa.
 
 ## Objetivos principais
 
