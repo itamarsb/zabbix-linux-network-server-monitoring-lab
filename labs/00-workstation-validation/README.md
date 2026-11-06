@@ -150,7 +150,7 @@ The script performs outbound DNS and TCP 443 tests only against the documented v
 | HTTPS | TCP 443 connectivity succeeds |
 | Web interface port | TCP 8080 available before deployment |
 | Zabbix server port | TCP 10051 available before deployment |
-| Git repository | Valid repository with an identified branch |
+| Git repository | Git repository context detected successfully |
 
 An optional check may generate a warning without rejecting the workstation. For example, an occupied optional port can be safely remapped in the Compose configuration.
 
@@ -170,7 +170,7 @@ An optional check may generate a warning without rejecting the workstation. For 
 | Local TCP listener checks (`8080`, `8443`, `10050`, `10051`) | Passed |
 | DNS resolution | Passed |
 | HTTPS connectivity | Passed |
-| Git repository | Passed |
+| Git repository context | Passed |
 | Conflicts with active stacks | None detected |
 | Overall result | Approved |
 
@@ -300,7 +300,9 @@ The executed validation confirmed:
 - DNS resolution;
 - outbound HTTPS connectivity;
 - preservation of unrelated Docker resources;
-- clean and synchronized Git repository state.
+- Git working-tree detection and current-branch query.
+
+**Git validation scope:** The Stage 00 script confirms that the execution directory belongs to a Git working tree and queries the current branch. It does not verify working-tree cleanliness, uncommitted changes, or synchronization with a remote repository. These conditions require separate checks and must not be inferred from the recorded validation result.
 
 The reusable script and documented results provide stronger technical evidence than a large collection of terminal screenshots.
 
