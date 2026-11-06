@@ -67,22 +67,34 @@ PostgreSQL remains inside the Docker network. Mailpit provides isolated SMTP cap
 
 ## Incident Scenarios
 
-The laboratory reproduces scenarios commonly handled by NOC and infrastructure teams:
+The laboratory distinguishes validated fault-injection exercises, monitored resource variations, and scenarios proposed for future validation.
 
-- monitored host unavailable;
-- Zabbix Agent 2 unavailable;
-- HTTP service stopped;
-- TCP port inaccessible;
-- DNS resolution failure;
-- high CPU utilization;
-- low available disk space;
-- abnormal memory utilization;
-- network latency or packet loss;
-- service blocked by a local firewall;
-- planned maintenance generating unnecessary alerts;
-- poorly tuned trigger producing a false positive.
+### Validated controlled scenarios
 
-Each completed scenario must contain detection evidence, diagnostic steps, corrective action, recovery validation, and an operational record.
+- HTTP service interruption, TCP/HTTP unavailability, problem detection, and recovery (Stages 04–07).
+- Controlled DNS resolution failure, problem detection, and recovery (Stages 05–06).
+- Planned maintenance with continued data collection and suppression of incident notifications (Stage 07).
+- Controlled SNMP authentication failure, problem detection, and recovery (Stage 08).
+
+### Validated resource and network monitoring
+
+- Controlled CPU workload and monitoring response (Stages 02–03).
+- Memory allocation, temporary filesystem usage, and network traffic variations (Stage 02).
+- ICMP availability, response-time, and packet-loss monitoring under observed conditions (Stage 04).
+
+These activities validate monitoring behavior but do not necessarily demonstrate incident generation.
+
+### Candidate scenarios for future validation
+
+- Monitored host or Zabbix Agent 2 unavailability.
+- Critically low available disk space or memory-related threshold violations.
+- Induced network latency or packet loss.
+- Effective service blocking through a local firewall.
+- A false-positive incident caused by an incorrectly tuned trigger.
+
+These scenarios must not be presented as experimentally validated until corresponding tests and evidence are documented.
+
+Each completed incident scenario should include detection evidence, diagnostic steps, corrective actions where applicable, recovery validation, and an operational record.
 
 ## Troubleshooting Method
 
