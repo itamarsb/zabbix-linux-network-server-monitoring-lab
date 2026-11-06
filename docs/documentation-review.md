@@ -4,13 +4,13 @@ This register captures possible documentation inconsistencies identified while p
 
 **Scope reviewed:** main `README.md`, full Stage 00–08 documentation (`labs/00-workstation-validation/README.md`, `labs/01-zabbix-platform/README.md`, `labs/02-linux-host-monitoring/README.md`, `labs/03-windows-host-monitoring/README.md`, `labs/04-network-service-monitoring/README.md`, `labs/05-triggers-alert-handling/README.md`, `labs/06-alert-delivery-notifications/README.md`, `labs/07-maintenance-operational-reporting/README.md`, `labs/08-snmp-grafana-integration/README.md`), Stage 07 maintenance and handover records, the NOC alert triage checklist, the Stage 00 validation script (`scripts/powershell/validate-workstation.ps1`), and current `compose.yaml`, `.env.example`, `snmp/Dockerfile`, `snmp/snmpd.conf.template`, `snmp/entrypoint.sh`, `.gitattributes`, and completed-stage summaries.
 
-**Review date:** 2026-11-04 (updated through Stage 08)
+**Review date:** 2026-11-06 (updated through Stage 08; DOC-001 resolved)
 
-**Review status:** findings recorded for later technical verification; no corrective changes made to the original English documentation.
+**Review status:** findings are reviewed individually. Approved documentation corrections are recorded with their commit references; unresolved findings remain pending technical verification.
 
 | ID | Location | Observation | Suggested follow-up | Status |
 |---|---|---|---|---|
-| DOC-001 | `README.md` — Project Purpose | The phrase "Each stage includes implementation, validation, controlled failure simulation, troubleshooting, recovery..." may imply that every completed stage included a controlled fault and recovery. Stage 00 is a read-only workstation baseline, not a fault-injection exercise. | Clarify the generic statement with "where applicable" or distinguish baseline stages from fault-injection stages. | Review pending |
+| DOC-001 | `README.md` — Project Purpose | The phrase "Each stage includes implementation, validation, controlled failure simulation, troubleshooting, recovery..." may imply that every completed stage included a controlled fault and recovery. Stage 00 is a read-only workstation baseline, not a fault-injection exercise. | Clarify the generic statement with "where applicable" or distinguish baseline stages from fault-injection stages. | Resolved — 2026-11-06; [EN commit](https://github.com/itamarsb/zabbix-linux-network-server-monitoring-lab/commit/768fb056c97185cd018bc927466f1ee5985fe4d6), [PT-BR commit](https://github.com/itamarsb/zabbix-linux-network-server-monitoring-lab/commit/62b86b91be6e3a535ae68035ae681a79ecdf72a9) |
 | DOC-002 | `README.md` — Incident Scenarios | "The laboratory reproduces scenarios" introduces a list including low disk space, packet loss, and false positives. The completed-stage summaries do not clearly establish controlled reproduction of every listed scenario. The list can be read as a completion claim rather than an overview of supported or planned scenarios. | Verify each scenario against lab evidence; separate validated scenarios from examples or planned exercises. | Review pending |
 | DOC-003 | `labs/00-workstation-validation/README.md` — Planned Platform Allocation | The initial allocation lists the Linux monitored host as a "Lightweight container", whereas the implemented Stage 02 uses Ubuntu 24.04 LTS under WSL 2. This is explainable as a change between planning and implementation, but it could confuse readers. | Preserve the historical baseline and explicitly note the subsequently implemented WSL 2 approach if a revision is approved. | Review pending |
 | DOC-004 | `labs/00-workstation-validation/README.md` — Required Ports | The table reports baseline availability for TCP `8080`, `8443`, `10050`, `10051`, `5432`, `80`, and `443`. The tracked `validate-workstation.ps1` checks local listening ports only for `8080`, `8443`, `10050`, and `10051`; its outbound TCP `443` test measures remote connectivity, not local port availability. The other baseline port claims may have been verified separately, but that evidence was not identified in the script. | Confirm whether the additional local port checks were performed separately, document their evidence or clarify the table as a planning inventory; do not retroactively change historical results without verification. | Review pending |
@@ -43,7 +43,7 @@ This register captures possible documentation inconsistencies identified while p
 
 ## Review rules
 
-- The original English files and the Portuguese translation remain unchanged by these findings.
+- Original English and Portuguese files must remain unchanged until a specific correction has been approved; approved changes require separate, traceable commits.
 - These observations are documentation-review candidates, not verified functional defects.
 - Laboratory status, numerical results, and evidence must only be updated after verification.
 - Any future corrections to the source documentation should be made in separate, traceable commits.
