@@ -374,6 +374,34 @@ pkill yes
 
 O Zabbix registrou tempo de CPU de sistema de aproximadamente `39.93%` e tempo de CPU de usuário de aproximadamente `10.09%` durante o teste. Ambos os valores retornaram a aproximadamente `1%` após o término da carga de trabalho.
 
+**Escopo do encerramento de processos:** O teste histórico utilizou `pkill yes`, que pode encerrar processos não relacionados com o mesmo nome quando executado por um usuário com permissões suficientes. O comando é preservado para manter o registro original da execução. Para novas execuções, utilize a alternativa apresentada abaixo, que registra os PIDs iniciados pelo próprio teste e encerra somente esses processos. Essa alternativa ainda não foi validada como um ensaio completo do Stage 02.
+
+```bash
+(
+  pids=()
+
+  cleanup() {
+    if ((${#pids[@]})); then
+      kill "${pids[@]}" 2>/dev/null || true
+      wait "${pids[@]}" 2>/dev/null || true
+    fi
+  }
+
+  trap cleanup EXIT
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+
+  for i in {1..4}; do
+    yes > /dev/null &
+    pids+=("$!")
+  done
+
+  sleep 90
+)
+```
+
+A alternativa Bash proposta destina-se a testes futuros no host Ubuntu monitorado; seus resultados de CPU ainda não foram registrados nem comparados com os resultados históricos. Execute-a em ambiente de testes adequado. A limpeza normal ocorre na saída ou em interrupções tratadas; um encerramento abrupto (por exemplo, `SIGKILL`) não permite executar o tratamento de limpeza.
+
 ### Atividade de memória
 
 Um processo Python alocou e acessou 1 GiB de memória durante 90 segundos:
