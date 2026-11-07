@@ -421,7 +421,7 @@ print("Memory allocation completed.")
 PY
 ```
 
-A memória disponível diminuiu de aproximadamente `13.33 GB` para `12.21 GB`, atingiu o mínimo de aproximadamente `83.60%` e recuperou-se para aproximadamente `13.22 GB` após o encerramento do processo.
+Durante a alocação controlada de memória, o item **Available memory** do Zabbix apresentou redução de aproximadamente `13.33 GB` para o mínimo de `12.21 GB`, recuperando-se posteriormente para aproximadamente `13.22 GB`. O mínimo percentual de aproximadamente `83.60%`, registrado no relato original, refere-se ao item **Available memory in %**, que representa o percentual de memória disponível, e não o percentual de utilização. O gráfico preservado confirma os valores absolutos de memória; o mínimo percentual permanece como um valor relatado no experimento original, não sendo exibido diretamente na captura de tela selecionada.
 
 ### Atividade do sistema de arquivos
 
