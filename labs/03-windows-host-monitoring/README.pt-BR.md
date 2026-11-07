@@ -187,7 +187,9 @@ A porta TCP `10050` foi validada posteriormente por esse destino, após a instal
 
 ## Identificação do escopo da rede Docker
 
-O contêiner Zabbix Server está conectado a duas redes bridge do Docker:
+**Registro histórico da configuração de rede:** Os endereços IPv4 dos contêineres, as sub-redes Docker, os gateways, os endereços das interfaces Windows e a resolução de `host.docker.internal` documentados nesta etapa foram observados durante a validação original do Stage 03. Eles não constituem requisitos de configuração fixos e podem mudar após alterações no Docker Desktop, WSL, nas redes ou na configuração da estação de trabalho. Esses valores devem ser preservados como evidências experimentais, e não considerados obrigatoriamente válidos para uma nova implantação.
+
+Durante a validação original do Stage 03, o contêiner Zabbix Server estava conectado a duas redes bridge do Docker:
 
 | Rede Docker | IPv4 do contêiner | Prefixo | Sub-rede | Gateway |
 |:---:|:---:|:---:|:---:|:---:|
@@ -209,6 +211,41 @@ O Docker Desktop pode traduzir o endereço de origem ao encaminhar uma conexão 
 ```
 
 Trata-se de um escopo controlado, e não de acesso irrestrito. As verificações diretas bem-sucedidas confirmaram que ele é compatível com o caminho atual do Docker Desktop e que poderá ser ainda mais restrito se futuras evidências de endereço de origem permitirem.
+
+### Reproduzindo a identificação da rede
+
+Os comandos abaixo servem como referência para uma **nova** execução no PowerShell do Windows com Docker Desktop; não foram executados novamente nesta correção documental. Eles consultam os valores atuais, em vez de reproduzir os endereços históricos:
+
+```powershell
+# Identify the running Zabbix Server container
+$serverContainer = docker ps `
+  --filter "label=com.docker.compose.service=zabbix-server" `
+  --format "{{.Names}}" |
+  Select-Object -First 1
+
+if (-not $serverContainer) {
+    throw "Zabbix Server container not found."
+}
+
+# Inspect the container network attachments
+docker inspect $serverContainer `
+  --format '{{json .NetworkSettings.Networks}}'
+
+# Resolve the Docker-managed host destination
+docker exec $serverContainer `
+  getent ahostsv4 host.docker.internal
+
+# Discover current Docker networks
+docker network ls
+
+# Inspect current Windows IPv4 interfaces
+Get-NetIPAddress -AddressFamily IPv4 |
+  Select-Object InterfaceAlias, IPAddress, PrefixLength
+```
+
+Inspecione as redes pertinentes retornadas pelos comandos utilizando `docker network inspect <network-name>` (substitua o marcador pelo nome de cada rede identificada). Depois, valide novamente a resolução de `host.docker.internal`, a conectividade TCP `10050` a partir do contêiner Zabbix Server e os **endereços de origem efetivos** observados pelo host Windows. O Docker Desktop pode traduzir esses endereços de origem; portanto, os IPv4 dos contêineres, isoladamente, não determinam quais faixas remotas devem ser autorizadas.
+
+Antes de reproduzir o parâmetro histórico `Server=` do agente ou o escopo de endereços remotos do Firewall do Windows, identifique e valide as faixas necessárias no novo ambiente; não copie as sub-redes registradas sem verificação. Mantenha as permissões tão restritas quanto permitir o caminho de monitoramento validado. Esta orientação destina-se a reproduções futuras e não substitui os resultados históricos registrados no Stage 03.
 
 ### Evidência do escopo de rede
 
@@ -726,7 +763,7 @@ O contêiner Zabbix Server conseguiu:
 
 O destino preferencial para o monitoramento é `host.docker.internal`.
 
-O Zabbix Server utilizava `172.19.0.3` na rede backend e `172.20.0.2` na rede de monitoramento. A autorização do agente contempla a tradução de endereços do Docker Desktop por `192.168.65.0/24` e a validação local por `127.0.0.1`.
+Durante a validação original do Stage 03, o Zabbix Server utilizava `172.19.0.3` na rede backend e `172.20.0.2` na rede de monitoramento. A autorização do agente incluía a faixa `192.168.65.0/24`, observada na tradução de endereços do Docker Desktop, e a validação local por `127.0.0.1`. Esses valores descrevem o ambiente histórico validado e devem ser novamente identificados e verificados antes da reprodução do laboratório.
 
 O MSI oficial do Zabbix Agent 2 `7.0.30` para Windows AMD64 com OpenSSL foi baixado da rede de distribuição de conteúdo do Zabbix. Seu resumo SHA-256 foi registrado e o Windows informou uma assinatura Authenticode válida da Zabbix SIA.
 
