@@ -740,6 +740,6 @@ Uma carga controlada de CPU durante dois minutos utilizou seis dos oito processa
 
 Os critérios de aceitação da etapa 03 foram atendidos.
 
-## Próximas etapas
+## Etapa subsequente
 
-A próxima etapa introduzirá o monitoramento de rede, DNS, TCP e serviços HTTP, preservando os caminhos de monitoramento validados dos agentes Linux e Windows.
+Ao concluir o Stage 03, o monitoramento de rede e serviços estava previsto como o próximo marco do projeto. Posteriormente, o Stage 04 foi concluído, introduzindo o monitoramento ICMP, DNS, TCP e HTTP, preservando as capacidades de monitoramento dos agentes Linux e Windows estabelecidas nas etapas anteriores. A implementação também validou uma interrupção controlada de serviço, alterações nos estados de monitoramento e a recuperação. Consulte a [documentação do Stage 04](../04-network-service-monitoring/README.pt-BR.md) para conhecer a implementação e suas evidências técnicas.
