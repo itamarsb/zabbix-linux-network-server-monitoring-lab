@@ -540,6 +540,6 @@ The four initially unsupported items resolved during template initialization wit
 
 Stage 02 is complete.
 
-## Next Steps
+## Subsequent Stage
 
-The next project stage will introduce Windows host monitoring and validate operating-system, service, resource, and network data collection from a Windows target.
+At the conclusion of Stage 02, Windows host monitoring was planned as the next milestone. Stage 03 was subsequently completed, introducing a Windows 11 Pro host monitored through Zabbix Agent 2. The implementation validated agent connectivity, operating-system and service monitoring, resource metrics, network-interface monitoring, and controlled CPU workload response. See the [Stage 03 documentation](../03-windows-host-monitoring/README.md) for the implementation and technical evidence.
