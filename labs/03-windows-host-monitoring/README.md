@@ -736,6 +736,6 @@ A controlled two-minute CPU workload used six of the workstation's eight logical
 
 Stage 03 acceptance criteria are satisfied.
 
-## Next Steps
+## Subsequent Stage
 
-The next stage will introduce network, DNS, TCP, and HTTP service monitoring while preserving the validated Linux and Windows Agent monitoring paths.
+At the conclusion of Stage 03, network and service monitoring was planned as the next milestone. Stage 04 was subsequently completed, introducing ICMP, DNS, TCP, and HTTP monitoring while preserving the Linux and Windows Agent monitoring capabilities established in earlier stages. The implementation also validated controlled service interruption, monitoring-state changes, and recovery. See the [Stage 04 documentation](../04-network-service-monitoring/README.md) for the implementation and technical evidence.
