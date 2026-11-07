@@ -183,7 +183,9 @@ TCP port `10050` was subsequently validated through this destination after Agent
 
 ## Docker Network Scope Discovery
 
-The Zabbix Server container is attached to two Docker bridge networks:
+**Historical network snapshot:** The container IPv4 addresses, Docker subnets, gateways, Windows interface addresses, and `host.docker.internal` resolution documented in this stage were observed during the original Stage 03 validation. They are not fixed configuration requirements and may change after Docker Desktop, WSL, network, or workstation configuration changes. Preserve these values as experimental evidence rather than assuming they will apply to a new deployment.
+
+During the original Stage 03 validation, the Zabbix Server container was attached to two Docker bridge networks:
 
 | Docker network | Container IPv4 | Prefix | Subnet | Gateway |
 |---|---|:---:|:---:|:---:|
@@ -205,6 +207,41 @@ Docker Desktop may translate the source address while forwarding a connection fr
 ```
 
 This is a controlled scope rather than unrestricted access. Successful direct checks confirmed that it supports the current Docker Desktop path, and it may be narrowed further if later source-address evidence permits.
+
+### Reproducing the network discovery
+
+The commands below are a reference for a **new** Windows PowerShell and Docker Desktop session; they were not executed again as part of this documentation correction. They retrieve current values rather than recreating the historical addresses:
+
+```powershell
+# Identify the running Zabbix Server container
+$serverContainer = docker ps `
+  --filter "label=com.docker.compose.service=zabbix-server" `
+  --format "{{.Names}}" |
+  Select-Object -First 1
+
+if (-not $serverContainer) {
+    throw "Zabbix Server container not found."
+}
+
+# Inspect the container network attachments
+docker inspect $serverContainer `
+  --format '{{json .NetworkSettings.Networks}}'
+
+# Resolve the Docker-managed host destination
+docker exec $serverContainer `
+  getent ahostsv4 host.docker.internal
+
+# Discover current Docker networks
+docker network ls
+
+# Inspect current Windows IPv4 interfaces
+Get-NetIPAddress -AddressFamily IPv4 |
+  Select-Object InterfaceAlias, IPAddress, PrefixLength
+```
+
+Inspect the applicable networks returned by these commands with `docker network inspect <network-name>` (replace the placeholder with each discovered network name). Then revalidate `host.docker.internal` resolution, TCP `10050` connectivity from the Zabbix Server container, and the **effective source addresses** observed by the Windows host. Docker Desktop may translate those source addresses, so container IPv4 addresses alone do not establish which remote-address ranges must be authorized.
+
+Before reproducing the historical Agent `Server=` setting or Windows Firewall remote-address scope, derive and verify the necessary ranges in the new environment; do not copy the recorded subnets unchanged. Keep authorizations as narrow as the validated monitoring path permits. This guidance is for future reproduction and does not replace the recorded Stage 03 test results.
 
 ### Network-scope evidence
 
@@ -722,7 +759,7 @@ The Zabbix Server container successfully:
 
 The preferred monitoring destination is `host.docker.internal`.
 
-The Zabbix Server currently uses `172.19.0.3` on the backend network and `172.20.0.2` on the monitoring network. Agent authorization accounts for Docker Desktop address translation through `192.168.65.0/24` and local validation through `127.0.0.1`.
+During the original Stage 03 validation, the Zabbix Server used `172.19.0.3` on the backend network and `172.20.0.2` on the monitoring network. The Agent authorization included the observed Docker Desktop address-translation range `192.168.65.0/24` and local validation through `127.0.0.1`. These values describe the validated historical environment and must be rediscovered and revalidated before reproduction.
 
 The official Zabbix Agent 2 `7.0.30` Windows AMD64 OpenSSL MSI was downloaded from the Zabbix content-delivery network. Its SHA-256 digest was recorded, and Windows reported a valid Authenticode signature from Zabbix SIA.
 
