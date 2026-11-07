@@ -370,6 +370,34 @@ pkill yes
 
 Zabbix recorded CPU system time at approximately `39.93%` and CPU user time at approximately `10.09%` during the test. Both values returned to approximately `1%` after the workload ended.
 
+**Process cleanup scope:** The historical test used `pkill yes`, which can terminate unrelated processes with the same name when executed by a user with sufficient permissions. This command is retained to preserve the original execution record. For future runs, use the PID-scoped alternative below, which tracks the processes started by the test and terminates only those recorded PIDs. This alternative has not yet been validated as a complete Stage 02 workload.
+
+```bash
+(
+  pids=()
+
+  cleanup() {
+    if ((${#pids[@]})); then
+      kill "${pids[@]}" 2>/dev/null || true
+      wait "${pids[@]}" 2>/dev/null || true
+    fi
+  }
+
+  trap cleanup EXIT
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+
+  for i in {1..4}; do
+    yes > /dev/null &
+    pids+=("$!")
+  done
+
+  sleep 90
+)
+```
+
+The proposed Bash alternative is intended for future tests on the monitored Ubuntu host; its monitored CPU results have not been recorded or compared with the historical results. Run it in an appropriate test environment. Normal cleanup runs on exit or handled interruption; abrupt termination (for example, `SIGKILL`) cannot trigger the cleanup trap.
+
 ### Memory activity
 
 A Python process allocated and touched 1 GiB of memory for 90 seconds:
