@@ -120,6 +120,23 @@ apt-cache policy zabbix-agent2
 
 The repository provided Zabbix Agent 2 version `7.0.30` for Ubuntu 24.04.
 
+**Portable installation alternative:** The commands above preserve the original Stage 02 execution record. To reproduce the procedure under a different Ubuntu username, run the following commands from the Ubuntu WSL shell. The `$HOME` variable resolves to the current Linux user's home directory. This alternative has not been independently executed as part of the original Stage 02 validation.
+
+```bash
+# Download the package to the current user's home directory
+curl -fL \
+  "https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.0+ubuntu24.04_all.deb" \
+  -o "$HOME/zabbix-release.deb"
+
+# Confirm and inspect the downloaded package
+ls -lh "$HOME/zabbix-release.deb"
+dpkg-deb --info "$HOME/zabbix-release.deb"
+
+# Install the repository package and refresh package indexes
+sudo dpkg -i "$HOME/zabbix-release.deb"
+sudo apt-get update
+```
+
 ## Agent Installation
 
 Zabbix Agent 2 was installed with:
@@ -454,6 +471,8 @@ The package was downloaded again to the persistent user home directory:
 ```
 
 This provided a stable path across the installation commands.
+
+**Path portability:** The absolute path above records the original WSL user's home directory; it should not be copied unchanged for another Linux user. For a portable installation, use `"$HOME/zabbix-release.deb"` as shown in the installation alternative. The cause of the earlier `/tmp` file availability issue was not established by this observation.
 
 ### PowerShell altered Linux command syntax
 
