@@ -124,6 +124,23 @@ apt-cache policy zabbix-agent2
 
 O repositório disponibilizou o Zabbix Agent 2 versão `7.0.30` para Ubuntu 24.04.
 
+**Alternativa portátil de instalação:** Os comandos anteriores preservam o registro original de execução do Stage 02. Para reproduzir o procedimento com outro nome de usuário Ubuntu, execute os comandos abaixo no terminal do Ubuntu no WSL. A variável `$HOME` corresponde ao diretório pessoal do usuário Linux atual. Esta alternativa não foi executada independentemente como parte da validação original do Stage 02.
+
+```bash
+# Baixar o pacote no diretório pessoal do usuário
+curl -fL \
+  "https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.0+ubuntu24.04_all.deb" \
+  -o "$HOME/zabbix-release.deb"
+
+# Confirmar e inspecionar o pacote
+ls -lh "$HOME/zabbix-release.deb"
+dpkg-deb --info "$HOME/zabbix-release.deb"
+
+# Instalar o repositório e atualizar os índices
+sudo dpkg -i "$HOME/zabbix-release.deb"
+sudo apt-get update
+```
+
 ## Instalação do agente
 
 O Zabbix Agent 2 foi instalado com:
@@ -458,6 +475,8 @@ O pacote foi baixado novamente para o diretório pessoal persistente do usuário
 ```
 
 Isso forneceu um caminho estável entre os comandos de instalação.
+
+**Portabilidade do caminho:** O caminho absoluto acima registra o diretório pessoal do usuário WSL original; ele não deve ser copiado sem alterações para outro usuário Linux. Para uma instalação portátil, utilize `"$HOME/zabbix-release.deb"`, conforme a alternativa de instalação. A causa da dificuldade anterior para localizar o arquivo em `/tmp` não foi estabelecida por esta observação.
 
 ### PowerShell alterou a sintaxe dos comandos Linux
 
