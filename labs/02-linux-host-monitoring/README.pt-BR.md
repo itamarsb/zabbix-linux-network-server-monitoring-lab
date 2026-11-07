@@ -544,6 +544,6 @@ Os quatro itens inicialmente não suportados foram resolvidos durante a iniciali
 
 A etapa 02 está concluída.
 
-## Próximas etapas
+## Etapa subsequente
 
-A próxima etapa do projeto introduzirá o monitoramento de um host Windows e validará a coleta de dados de sistema operacional, serviços, recursos e rede a partir de um alvo Windows.
+Ao concluir o Stage 02, o monitoramento de um host Windows estava previsto como o próximo marco do projeto. Posteriormente, o Stage 03 foi concluído, introduzindo um host Windows 11 Pro monitorado pelo Zabbix Agent 2. A implementação validou a conectividade do agente, o monitoramento do sistema operacional e dos serviços, as métricas de recursos, o monitoramento das interfaces de rede e a resposta a uma carga controlada de CPU. Consulte a [documentação do Stage 03](../03-windows-host-monitoring/README.pt-BR.md) para conhecer a implementação e suas evidências técnicas.
