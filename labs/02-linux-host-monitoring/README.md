@@ -417,7 +417,7 @@ print("Memory allocation completed.")
 PY
 ```
 
-Available memory decreased from approximately `13.33 GB` to `12.21 GB`, reached a minimum of approximately `83.60%`, and recovered to approximately `13.22 GB` after the process completed.
+During the controlled memory allocation, the Zabbix item **Available memory** decreased from approximately `13.33 GB` to a minimum of `12.21 GB` and subsequently recovered to approximately `13.22 GB`. The separately reported minimum of approximately `83.60%` refers to the **Available memory in %** item, which measures the percentage of available memory rather than memory utilization. The preserved graph confirms the absolute memory values; the percentage minimum remains a value reported in the original experiment narrative rather than one directly displayed in the selected screenshot.
 
 ### Filesystem activity
 
