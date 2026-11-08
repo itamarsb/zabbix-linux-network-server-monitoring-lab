@@ -106,6 +106,12 @@ The maintenance type allowed Zabbix to continue collecting item and web-scenario
 
 ![Active maintenance period](../../docs/screenshots/stage-07-active-maintenance-period.png)
 
+**Maintenance scope and notification-suppression considerations:** The controlled experiment intentionally interrupted only the `monitored-web` container. However, the maintenance period was associated with the logical Zabbix host `Zabbix Lab Internal Services`, which also contains monitoring items for PostgreSQL TCP availability.
+
+In Zabbix, host-associated maintenance without restrictive trigger-tag conditions may suppress problems from other triggers belonging to the same host. The preserved Stage 07 evidence confirms suppression of the intended HTTP availability incident, but does not independently establish whether trigger-tag restrictions were configured or whether an unrelated PostgreSQL incident would have been suppressed.
+
+For future service-specific maintenance, consider evaluating supported trigger-tag filtering or separating monitored services into dedicated logical Zabbix hosts. These alternatives require configuration and experimental validation before implementation. The original Stage 07 maintenance configuration, monitoring results, and notification evidence remain unchanged.
+
 ## Notification-Suppression Configuration
 
 The existing trigger action was reviewed before the controlled interruption:
