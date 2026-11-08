@@ -191,9 +191,11 @@ The template collects:
 
 Normal-state validation confirmed:
 
-- availability value `1`;
-- packet loss of `0%`;
-- response-time collection in milliseconds.
+- ICMP availability value `1`;
+- ICMP packet loss of `0%`;
+- ICMP response-time collection through the native `icmppingsec` item, which returns values in seconds.
+
+In the preserved Zabbix Latest data screenshot, the **ICMP response time** item was displayed as `49.5 ms` (approximately `0.0495 s`). The milliseconds represent the value displayed in the frontend, while the native item returns seconds. The screenshot does not independently establish the exact stored raw value or the item's configured *Units* field.
 
 ### External DNS resolution monitoring
 
