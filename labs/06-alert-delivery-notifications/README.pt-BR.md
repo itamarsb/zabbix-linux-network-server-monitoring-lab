@@ -138,6 +138,72 @@ O serviço oferece:
 | Autenticação | Não necessária |
 | Segurança da conexão | Nenhuma, no laboratório controlado |
 
+### Inicialização e validação do Mailpit para futuras execuções
+
+**Inicialização e validação do Mailpit para futuras execuções:** Os comandos abaixo apresentam um procedimento restrito ao serviço Mailpit, utilizando a definição atual do Docker Compose. Execute-os a partir da raiz do repositório, no PowerShell do Windows, com o arquivo `.env` operacional existente e o projeto Compose correto. O serviço `mailpit` deverá ser iniciado sem recriar ou reiniciar a plataforma de monitoramento. Verifique o estado do contêiner, examine os logs de inicialização, confirme o acesso à interface web local e teste a conectividade SMTP a partir do contêiner Zabbix Server quando as ferramentas necessárias estiverem disponíveis. Após configurar o tipo de mídia do Zabbix, realize o envio de uma mensagem de teste e confirme seu recebimento no Mailpit. Os comandos destinam-se a reproduções futuras e **não constituem uma transcrição literal da execução original do Stage 06**; eles **não foram executados independentemente durante esta revisão documental**.
+
+**Pré-requisitos:** Utilize somente o projeto autorizado do laboratório. Confirme que o `.env` existente identifica o mesmo projeto Compose da stack de monitoramento em execução; não o substitua pelo `.env.example`, não exiba segredos operacionais e não utilize comandos de inicialização ou interrupção de todo o projeto. Os comandos abaixo utilizam a porta web `8025` documentada; se o `.env` existente definir outro `MAILPIT_WEB_HTTP_PORT`, utilize a porta efetiva na verificação HTTP. O listener SMTP do Mailpit permanece dentro da rede Docker `monitoring`, na porta `1025`, e **não** é publicado no host Windows pelo `compose.yaml` atual.
+
+**A. Validar o ambiente Compose existente**
+
+```powershell
+# Validar a configuração Compose existente
+docker compose --env-file .env -f compose.yaml config --quiet
+
+# Conferir os contêineres existentes
+docker compose --env-file .env -f compose.yaml ps --all
+```
+
+**B. Iniciar somente o Mailpit e inspecionar a inicialização**
+
+```powershell
+# Iniciar somente o Mailpit, sem iniciar dependências
+# ou recriar um contêiner existente
+docker compose --env-file .env -f compose.yaml up `
+  --no-deps --no-recreate -d mailpit
+
+# Verificar o estado do serviço
+docker compose --env-file .env -f compose.yaml ps --all mailpit
+
+# Consultar as mensagens recentes de inicialização
+docker compose --env-file .env -f compose.yaml logs `
+  --tail 50 mailpit
+```
+
+A opção `--no-deps` limita a inicialização ao serviço selecionado; `--no-recreate` impede recriar um contêiner existente mesmo que sua configuração tenha sido alterada. Antes de utilizar esse procedimento, confirme que qualquer contêiner existente corresponde à configuração pretendida. O estado do contêiner e os logs não comprovam, por si só, a entrega SMTP.
+
+**C. Verificar o acesso web local e, opcionalmente, a conectividade TCP SMTP**
+
+```powershell
+# Validar a interface web do Mailpit
+$response = Invoke-WebRequest `
+  -Uri "http://127.0.0.1:8025/" `
+  -UseBasicParsing `
+  -TimeoutSec 10
+
+$response.StatusCode
+```
+
+Para a porta documentada, uma resposta HTTP `200` demonstra que a interface web está respondendo, mas não comprova a entrega SMTP.
+
+Se o contêiner `zabbix-server` já estiver em execução e sua imagem disponibilizar Bash com suporte a `/dev/tcp`, poderá ser realizada uma tentativa não destrutiva de conexão a partir desse contêiner:
+
+```powershell
+# Conferir a conectividade TCP SMTP a partir do Zabbix Server
+docker compose --env-file .env -f compose.yaml exec -T `
+  zabbix-server bash -c "true < /dev/tcp/mailpit/1025"
+
+if ($LASTEXITCODE -ne 0) {
+    throw "SMTP port 1025 is not reachable from Zabbix Server, or the probe is unsupported."
+}
+```
+
+Essa consulta opcional tenta abrir uma conexão TCP, mas não envia e-mail. Se Bash ou `/dev/tcp` não estiver disponível, o resultado será inconclusivo; realize o teste real de entrega pelo tipo de mídia do Zabbix, sem presumir indisponibilidade do Mailpit.
+
+**D. Validar a entrega de mensagens SMTP pelo Zabbix**
+
+Depois de configurar o tipo de mídia existente `Mailpit Local SMTP` (servidor `mailpit`, porta `1025`), utilize o teste do tipo de mídia do Zabbix para enviar uma mensagem ao destinatário de laboratório já documentado abaixo. Confirme que a nova mensagem aparece na interface web do Mailpit. Essa entrega de ponta a ponta constitui a verificação funcional; contêiner em execução, ausência de erros nos logs ou HTTP `200` isoladamente são insuficientes. A captura preservada do Stage 06 comprova o envio histórico, **não a execução dos novos comandos acima**.
+
 ## Tipo de mídia do Zabbix
 
 Foi criado um tipo de mídia de e-mail dedicado:
