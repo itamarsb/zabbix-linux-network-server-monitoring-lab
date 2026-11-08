@@ -818,11 +818,9 @@ A tentativa malsucedida com o firewall também proporcionou um exercício realis
 
 ---
 
-# Próximas etapas
+# Etapa subsequente
 
-A próxima etapa ampliará o laboratório do tratamento de incidentes pela interface web para fluxos de entrega de alertas e notificações operacionais.
-
-As atividades planejadas incluem:
+Ao concluir o Stage 05, o próximo marco planejado era a implementação dos fluxos de entrega de alertas e notificações operacionais. O planejamento original incluía:
 
 - configurar um canal de notificações adequado ao laboratório;
 - criar uma ação vinculada à severidade da *trigger*;
@@ -830,3 +828,5 @@ As atividades planejadas incluem:
 - testar o conteúdo das mensagens;
 - validar notificações de problemas e recuperação;
 - documentar a entrega de notificações e o comportamento do diagnóstico.
+
+Posteriormente, o Stage 06 foi concluído, implementando a entrega local de notificações SMTP por meio do Mailpit, tipos de mídia do Zabbix, ações de triggers baseadas em severidade e notificações de problema e recuperação para os serviços HTTP e DNS monitorados. A entrega foi validada pelo histórico de ações do Zabbix e pelas evidências correspondentes. Consulte a [documentação do Stage 06](../06-alert-delivery-notifications/README.pt-BR.md) para conhecer a implementação e os resultados.
