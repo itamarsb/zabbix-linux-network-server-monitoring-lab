@@ -339,6 +339,8 @@ Expressão da *trigger*:
 max(/NOTEACERITAMAR1/net.dns[1.1.1.1,example.com,A,2,1,udp],3m)=0
 ```
 
+**Expressão da trigger e associação ao item:** A expressão anterior registra a configuração inicial, referenciando a chave original do item DNS com o servidor `1.1.1.1`. Durante o experimento controlado subsequente, a chave do item monitorado foi temporariamente alterada para utilizar `192.0.2.1`. As capturas preservadas confirmam a configuração inicial da trigger e o ciclo posterior de problema e recuperação, mas não exibem a expressão efetiva da trigger nem o identificador do item associado enquanto a chave temporária estava ativa. Portanto, a expressão exata apresentada nesse intervalo não pode ser reconstruída independentemente a partir das evidências disponíveis.
+
 A expressão exige que a verificação DNS permaneça indisponível durante o período avaliado de três minutos.
 
 Descrição:
@@ -456,6 +458,8 @@ A visualização *Latest Data* do Zabbix confirmou que o item passou de `1` para
 ![Falha DNS controlada](../../docs/screenshots/stage-05-controlled-dns-failure.png)
 
 Essa evidência confirma a falha na camada dos dados monitorados antes da validação do evento da *trigger*.
+
+**Interpretação do comportamento observado da trigger:** O item DNS passou a `0` após a alteração temporária da chave, e o evento DNS anteriormente configurado foi posteriormente gerado e resolvido após a restauração da chave original. Essa sequência observada é compatível com a continuidade da avaliação do item monitorado pela trigger. Entretanto, não demonstra independentemente se o Zabbix atualizou automaticamente a expressão exibida ou se ocorreu alguma ação adicional de configuração. Em reproduções futuras, a expressão da trigger e o item associado deverão ser inspecionados enquanto a chave temporária estiver ativa, antes que essa associação seja considerada diretamente verificada.
 
 ---
 
