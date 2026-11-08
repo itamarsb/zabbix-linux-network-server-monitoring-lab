@@ -134,7 +134,7 @@ zabbix-noc-lab-zabbix-server-1
 
 ### Network attachments
 
-| Docker Docker network | Zabbix Server address |
+| Docker network | Zabbix Server address |
 |---|:---:|
 | `zabbix-noc-lab_backend` | `172.19.0.3` |
 | `zabbix-noc-lab_monitoring` | `172.20.0.2` |
