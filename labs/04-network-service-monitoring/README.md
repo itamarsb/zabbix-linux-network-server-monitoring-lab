@@ -293,6 +293,45 @@ After `monitored-web` was started again, Docker DNS registration returned, the H
 
 The last-error item preserves the most recent recorded error after recovery. Recovery is therefore confirmed by the failed-step value returning to `0`, TCP availability returning to `1`, HTTP status `200`, and resumed response-time and download-speed collection.
 
+### Reproducing the controlled failure (future runs)
+
+**Reproducing the controlled service failure:** The following commands provide a service-scoped procedure for future reproduction of the original Stage 04 experiment. Run them from the repository root in Windows PowerShell, using the existing operational `.env` file and the correct Docker Compose project. These are reference commands consistent with the current `compose.yaml`, **not a verbatim record of the commands used in the original experiment**, and they have not been independently executed as part of this documentation revision.
+
+**Prerequisites and guardrails:** Use only an isolated laboratory environment. Verify that the `.env` file belongs to the same project and that `monitored-web`, `postgres`, `zabbix-server`, and `zabbix-web` are running before starting. Keep the operational `.env` private; do not replace it with `.env.example`, print secrets, or run project-wide shutdown commands such as `docker compose down`. Stop if the project, target service, or expected monitoring baseline does not match the documentation.
+
+```powershell
+# Validate the existing Compose configuration (without printing secrets)
+docker compose --env-file .env -f compose.yaml config --quiet
+
+# Check the existing project and all service states
+docker compose --env-file .env -f compose.yaml ps --all
+```
+
+After confirming the correct project, the baseline HTTP response `200`, `monitored-web` TCP availability `1`, and PostgreSQL TCP availability `1` in Zabbix, stop **only** the designated HTTP test service:
+
+```powershell
+# Inject an isolated failure in the dedicated HTTP target only
+docker compose --env-file .env -f compose.yaml stop monitored-web
+
+# Confirm the target is stopped and the monitoring platform remains running
+docker compose --env-file .env -f compose.yaml ps --all monitored-web
+docker compose --env-file .env -f compose.yaml ps postgres zabbix-server zabbix-web
+```
+
+Observe at least one subsequent Zabbix collection cycle and confirm the service-specific failure signals. Do not stop `postgres`, `zabbix-server`, `zabbix-web`, or the complete Compose project. Restore the existing target container promptly after the controlled observation:
+
+```powershell
+# Restore the existing monitored-web container without recreating it
+docker compose --env-file .env -f compose.yaml start monitored-web
+
+# Verify the target and critical monitoring services
+docker compose --env-file .env -f compose.yaml ps monitored-web
+docker compose --env-file .env -f compose.yaml ps postgres zabbix-server zabbix-web
+```
+
+**Recovery checks:** In Zabbix, verify that `monitored-web` TCP availability returns to `1`, the failed web-scenario step returns to `0`, a new successful HTTP response `200` is collected, and response-time and download-speed measurements resume. PostgreSQL TCP availability should remain at `1` throughout. The latest-error item may retain the prior error after recovery, so it must not be used alone to determine current availability. If `monitored-web` does not restart or monitoring does not recover, diagnose the isolated service rather than applying broader Compose changes. Future outcomes may differ from the historical `1 -> 0 -> 1` evidence.
+
+
 ## Monitoring Strategy
 
 Stage 04 uses native Zabbix capabilities wherever possible.
