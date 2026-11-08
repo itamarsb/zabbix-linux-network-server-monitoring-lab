@@ -816,11 +816,9 @@ The unsuccessful firewall attempt also provided a realistic troubleshooting exer
 
 ---
 
-# Next Steps
+# Subsequent Stage
 
-The next stage will extend the laboratory from frontend incident handling toward alert delivery and operational notification workflows.
-
-Planned activities include:
+At the conclusion of Stage 05, the next planned milestone was the implementation of alert delivery and operational notification workflows. The original plan included:
 
 - configuring a notification channel suitable for the laboratory;
 - creating an action linked to trigger severity;
@@ -828,3 +826,5 @@ Planned activities include:
 - testing message content;
 - validating problem and recovery notifications;
 - documenting notification delivery and troubleshooting behavior.
+
+Stage 06 was subsequently completed, implementing local SMTP notification delivery through Mailpit, Zabbix media types, severity-based trigger actions, and problem and recovery notifications for the monitored HTTP and DNS services. Delivery was validated through the Zabbix action history and supporting evidence. See the [Stage 06 documentation](../06-alert-delivery-notifications/README.md) for the implementation and results.
