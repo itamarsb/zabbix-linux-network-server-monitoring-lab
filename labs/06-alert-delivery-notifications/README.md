@@ -136,6 +136,72 @@ The service provides:
 | Authentication | Not required |
 | Connection security | None, inside the controlled laboratory |
 
+### Mailpit startup and verification for future runs
+
+**Mailpit startup and verification for future runs:** The commands below provide a service-scoped procedure for starting and verifying Mailpit using the current Docker Compose definition. Run them from the repository root in Windows PowerShell with the existing operational `.env` file and the correct Compose project. The `mailpit` service should be started without recreating or restarting the monitoring platform. Verify the container status, inspect its startup logs, confirm access to the local web interface, and test SMTP connectivity from the Zabbix Server container when the required diagnostic tools are available. After configuring the Zabbix media type, perform an actual test-email delivery and confirm receipt in Mailpit. These commands are provided for future reproduction and are **not a verbatim record of the original Stage 06 execution**; they have **not been independently executed during this documentation review**.
+
+**Prerequisites:** Use only the authorized laboratory project. Confirm that the existing `.env` identifies the same Compose project as the running monitoring stack; do not substitute `.env.example`, display operational secrets, or use project-wide start/stop commands. The commands below use the documented host web port `8025`; if the existing `.env` configures a different `MAILPIT_WEB_HTTP_PORT`, use that actual port for the HTTP check. Mailpit's SMTP listener stays inside the Docker `monitoring` network on port `1025`, and is **not** published on the Windows host by the current `compose.yaml`.
+
+**A. Validate the existing Compose environment**
+
+```powershell
+# Validate the existing Compose configuration
+docker compose --env-file .env -f compose.yaml config --quiet
+
+# Inspect the existing containers
+docker compose --env-file .env -f compose.yaml ps --all
+```
+
+**B. Start only Mailpit and inspect its startup**
+
+```powershell
+# Start only Mailpit, without starting dependencies
+# or recreating an existing container
+docker compose --env-file .env -f compose.yaml up `
+  --no-deps --no-recreate -d mailpit
+
+# Inspect service status
+docker compose --env-file .env -f compose.yaml ps --all mailpit
+
+# Examine recent startup messages
+docker compose --env-file .env -f compose.yaml logs `
+  --tail 50 mailpit
+```
+
+`--no-deps` limits startup to the selected service; `--no-recreate` avoids recreating an existing container even if its configuration has changed. Verify that any existing container matches the intended configuration before using this procedure. Container state and startup logs alone do not prove that SMTP delivery works.
+
+**C. Check local web access and optional SMTP TCP connectivity**
+
+```powershell
+# Validate the Mailpit web interface
+$response = Invoke-WebRequest `
+  -Uri "http://127.0.0.1:8025/" `
+  -UseBasicParsing `
+  -TimeoutSec 10
+
+$response.StatusCode
+```
+
+For the documented port, an HTTP `200` response demonstrates that the web interface is responding. It does not establish SMTP delivery.
+
+If the `zabbix-server` container is already running and its image includes Bash with `/dev/tcp` support, a read-only connection probe can be attempted from that container:
+
+```powershell
+# Check SMTP TCP reachability from Zabbix Server
+docker compose --env-file .env -f compose.yaml exec -T `
+  zabbix-server bash -c "true < /dev/tcp/mailpit/1025"
+
+if ($LASTEXITCODE -ne 0) {
+    throw "SMTP port 1025 is not reachable from Zabbix Server, or the probe is unsupported."
+}
+```
+
+This optional probe attempts a TCP connection but does not send an email. If Bash or `/dev/tcp` is unavailable, that probe is inconclusive; use the actual Zabbix media-type delivery test rather than assuming Mailpit is down.
+
+**D. Verify SMTP message delivery through Zabbix**
+
+After configuring the existing `Mailpit Local SMTP` media type (server `mailpit`, port `1025`), use the Zabbix media-type test to send a message to the laboratory recipient already documented below. Confirm the new message appears in the Mailpit web interface. This end-to-end delivery is the functional verification; a running container, clean logs, or HTTP `200` alone is insufficient. The preserved Stage 06 screenshot demonstrates successful historical delivery, **not execution of the new commands above**.
+
 ## Zabbix Media Type
 
 A dedicated email media type was created:
