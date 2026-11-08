@@ -195,9 +195,11 @@ O template coleta:
 
 A validação em estado normal confirmou:
 
-- valor de disponibilidade `1`;
-- perda de pacotes de `0%`;
-- coleta do tempo de resposta em milissegundos.
+- disponibilidade ICMP com valor `1`;
+- perda de pacotes ICMP de `0%`;
+- coleta do tempo de resposta ICMP pelo item nativo `icmppingsec`, que retorna valores em segundos.
+
+Na captura preservada da tela de Dados recentes do Zabbix, o item **ICMP response time** apresentou `49.5 ms` (aproximadamente `0.0495 s`). Os milissegundos representam o valor exibido na interface, enquanto o item nativo retorna segundos. A captura não permite confirmar independentemente o valor bruto exato armazenado nem o conteúdo do campo *Units* configurado para o item.
 
 ### Monitoramento de resolução DNS externa
 
