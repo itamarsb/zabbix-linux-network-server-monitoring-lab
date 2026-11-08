@@ -151,6 +151,10 @@ Trigger expression:
 max(/Internal Services - Zabbix Lab/net.tcp.service[tcp,monitored-web,80],2m)=0
 ```
 
+**Trigger scope and limitation:** This trigger evaluates TCP connectivity to port `80` on `monitored-web` through the `net.tcp.service[tcp,monitored-web,80]` item. Although the historical event name is `HTTP service unavailable on monitored-web`, the expression detects TCP unavailability of the HTTP target, not HTTP application-level failures. A reachable TCP port does not guarantee a successful HTTP response, a valid status code, or the expected page content.
+
+The Stage 04 [HTTP web scenario](../04-network-service-monitoring/README.md) provides complementary application-level checks, including HTTP status `200` and the required response text `Welcome to nginx!`. The controlled container-stop experiment remains valid because it intentionally made the target's TCP service unavailable. No application-level failure trigger or separate HTTP 5xx experiment was validated as part of Stage 05.
+
 The expression requires the item to remain unavailable during the evaluated two-minute window. This reduces the risk of generating an incident from a brief transient failure.
 
 Description:
