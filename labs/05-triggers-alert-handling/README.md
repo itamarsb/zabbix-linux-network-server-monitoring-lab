@@ -395,6 +395,25 @@ Remove-NetFirewallRule `
   -DisplayName "Zabbix Lab - Block DNS Target 1.1.1.1"
 ```
 
+**Historical cleanup evidence:** The documented removal command explicitly targets `Zabbix Lab - Block DNS Target 1.1.1.1`. Although the earlier UDP-specific rule (`Zabbix Lab - Block DNS 1.1.1.1 UDP`) is also documented, the retained execution record does not include a separate removal command or a final firewall-rule inventory confirming its absence. This documentation gap does not establish that the UDP-specific rule remained active; its final state cannot be independently verified from the preserved evidence.
+
+**Non-destructive check for future validation:** On the relevant Windows host, the following PowerShell command can inspect whether either historical test rule is present. It has **not** been executed as part of this documentation revision:
+
+```powershell
+# Inspect both historical DNS test rules without changing the firewall
+$ruleNames = @(
+    "Zabbix Lab - Block DNS 1.1.1.1 UDP"
+    "Zabbix Lab - Block DNS Target 1.1.1.1"
+)
+
+Get-NetFirewallRule `
+    -DisplayName $ruleNames `
+    -ErrorAction SilentlyContinue |
+    Select-Object Name, DisplayName, Enabled, Direction, Action
+```
+
+No returned rules would indicate that neither matching rule was found at the time of that check, not when or how a rule was removed. If any rule is returned, inspect its identity and parameters before considering a separate, explicitly authorized cleanup; no removal is performed by this query.
+
 This unsuccessful attempt was retained as a troubleshooting lesson:
 
 - verify the monitored value instead of assuming that a control produced the intended condition;
@@ -522,7 +541,7 @@ The event initially disappeared from the recent-incidents view after recovery. T
 | Severity classified as Average | Passed |
 | Initial firewall attempt evaluated | Completed with no monitored state change |
 | Ineffective test evidence rejected | Passed |
-| Temporary firewall configuration removed | Passed |
+| Broader firewall-rule removal command | Documented; UDP-specific rule cleanup not independently verified |
 | Deterministic fault introduced | Passed |
 | Item changed from `1` to `0` | Passed |
 | Sustained failure detected | Passed |
@@ -748,7 +767,7 @@ Stage 05 is complete because:
 - [x] an additional DNS trigger with a different severity was configured;
 - [x] the DNS trigger was enabled and initially reported `OK`;
 - [x] an ineffective fault-injection attempt was identified and rejected;
-- [x] temporary Windows Firewall rules were removed;
+- [x] the broader Windows Firewall test-rule removal was documented; cleanup of the earlier UDP-specific rule remains unverified in the retained evidence;
 - [x] a deterministic DNS failure was introduced;
 - [x] the monitored DNS value changed from `1` to `0`;
 - [x] the DNS trigger generated an Average-severity incident;
