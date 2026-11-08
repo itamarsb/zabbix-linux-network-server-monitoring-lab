@@ -348,7 +348,7 @@ O teste de configuração do agente foi concluído com sucesso, com código de s
 
 ## Configuração do Firewall do Windows
 
-A instalação criou uma regra dedicada de entrada no Firewall do Windows:
+A instalação do pacote MSI do Zabbix Agent 2 e a configuração do Firewall do Windows foram etapas distintas. Embora a instalação do MSI tenha sido concluída com sucesso, a primeira rotina de configuração posterior à instalação foi interrompida antes da criação da regra de firewall. Após a correção e retomada do procedimento, sem reinstalar o MSI, a regra dedicada de entrada no Firewall do Windows, descrita abaixo, foi criada e validada. A sequência de interrupção e recuperação está documentada na seção de Diagnóstico e resolução de problemas.
 
 | Propriedade | Valor validado |
 |:---:|:---:|
