@@ -98,13 +98,19 @@ A verificação confirmou que:
 
 - o PostgreSQL estava saudável;
 - o Zabbix Server estava em execução;
-- o Zabbix Web estava saudável;
+- o Zabbix Web apresentou o estado `healthy` no Docker, conforme a captura preservada da validação inicial;
 - o serviço HTTP monitorado estava saudável;
 - a interface web do Zabbix estava acessível;
 - os serviços Docker mantinham a conectividade esperada;
 - os sinais de monitoramento da etapa 05 continuavam disponíveis.
 
 ![Validação inicial da plataforma na etapa 06](../../docs/screenshots/stage-06-platform-baseline-validation.png)
+
+**Estado de saúde do Docker versus disponibilidade do serviço:** A captura original da validação inicial apresenta o estado Docker `healthy` para PostgreSQL, `monitored-web` e Zabbix Web. Também registra uma resposta HTTP `200` bem-sucedida da interface do Zabbix.
+
+Embora o `compose.yaml` atual não defina explicitamente um healthcheck para `zabbix-web`, as imagens Docker podem fornecer sua própria instrução `HEALTHCHECK`. A configuração efetiva do healthcheck do contêiner histórico não foi inspecionada independentemente durante esta revisão documental.
+
+O estado de saúde Docker do Mailpit não aparece nessa captura inicial. Sua disponibilidade operacional é sustentada separadamente pelo acesso à interface web e pela captura bem-sucedida de mensagens SMTP documentada no Stage 06.
 
 ## Serviço de notificações
 
@@ -373,7 +379,7 @@ O incidente DNS controlado permaneceu ativo por aproximadamente seis minutos, e 
 | Validação | Resultado esperado | Resultado observado | Estado |
 |:---:|:---:|:---:|:---:|
 | Estado inicial da plataforma | Serviços centrais permanecem operacionais | Plataforma permaneceu disponível | Aprovado |
-| Disponibilidade do Mailpit | Serviço local de captura SMTP está acessível | Serviço saudável e interface web acessível | Aprovado |
+| Disponibilidade do Mailpit | Serviço local de captura SMTP está acessível | Interface web do Mailpit acessível; mensagem SMTP recebida durante a validação do tipo de mídia | Aprovado |
 | Teste do tipo de mídia | E-mail de teste chega ao Mailpit | E-mail de validação recebido | Aprovado |
 | Mídia do operador | Destinatário aceita as severidades selecionadas | Eventos Average e High permitidos | Aprovado |
 | Problema HTTP | Notificação de problema High entregue | E-mail `PROBLEM` recebido | Aprovado |
