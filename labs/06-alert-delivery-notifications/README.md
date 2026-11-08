@@ -96,13 +96,19 @@ The verification confirmed:
 
 - PostgreSQL was healthy;
 - Zabbix Server was running;
-- Zabbix Web was healthy;
+- Zabbix Web was reported as `healthy` by Docker in the preserved baseline validation;
 - the monitored HTTP service was healthy;
 - the Zabbix frontend was reachable;
 - the Docker services retained their expected connectivity;
 - the Stage 05 monitoring signals remained available.
 
 ![Stage 06 platform baseline validation](../../docs/screenshots/stage-06-platform-baseline-validation.png)
+
+**Docker health status versus service availability:** The preserved baseline screenshot shows Docker `healthy` status for PostgreSQL, `monitored-web`, and Zabbix Web. It also records a successful HTTP `200` response from the Zabbix frontend.
+
+Although the current `compose.yaml` does not explicitly define a healthcheck for `zabbix-web`, Docker images may provide their own `HEALTHCHECK`. The exact healthcheck configuration of the historical container was not independently inspected during this documentation review.
+
+Mailpit's Docker health status is not shown in this baseline capture. Its operational availability is supported separately by the accessible web interface and successful SMTP message capture documented in Stage 06.
 
 ## Notification Service
 
@@ -371,7 +377,7 @@ The controlled DNS incident remained active for approximately six minutes, and t
 | Validation | Expected result | Observed result | Status |
 |---|---|---|:---:|
 | Platform baseline | Core services remain operational | Platform remained available | Passed |
-| Mailpit availability | Local SMTP capture service is reachable | Service healthy and web interface reachable | Passed |
+| Mailpit availability | Local SMTP capture service is reachable | Mailpit web interface reachable; SMTP message received during media-type validation | Passed |
 | Media-type test | Test email reaches Mailpit | Validation email received | Passed |
 | Operator media | Recipient accepts selected severities | Average and High events permitted | Passed |
 | HTTP problem | High-severity problem notification delivered | `PROBLEM` email received | Passed |
