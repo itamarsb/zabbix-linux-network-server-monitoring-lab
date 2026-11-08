@@ -397,6 +397,25 @@ Remove-NetFirewallRule `
   -DisplayName "Zabbix Lab - Block DNS Target 1.1.1.1"
 ```
 
+**Evidências históricas de limpeza:** O comando de remoção documentado identifica explicitamente a regra `Zabbix Lab - Block DNS Target 1.1.1.1`. Embora a regra anterior, específica para UDP (`Zabbix Lab - Block DNS 1.1.1.1 UDP`), também esteja documentada, o registro de execução preservado não apresenta um comando separado de remoção nem um inventário final do firewall confirmando sua ausência. Essa lacuna documental não demonstra que a regra UDP permaneceu ativa; seu estado final não pode ser verificado independentemente a partir das evidências preservadas.
+
+**Verificação não destrutiva para validação futura:** No host Windows correspondente, o comando PowerShell abaixo permite consultar se alguma das duas regras históricas de teste está presente. Ele **não foi executado** nesta revisão documental:
+
+```powershell
+# Inspect both historical DNS test rules without changing the firewall
+$ruleNames = @(
+    "Zabbix Lab - Block DNS 1.1.1.1 UDP"
+    "Zabbix Lab - Block DNS Target 1.1.1.1"
+)
+
+Get-NetFirewallRule `
+    -DisplayName $ruleNames `
+    -ErrorAction SilentlyContinue |
+    Select-Object Name, DisplayName, Enabled, Direction, Action
+```
+
+A ausência de resultados indicaria apenas que nenhuma regra correspondente foi encontrada no momento da consulta, sem comprovar quando ou como uma regra foi removida. Caso alguma regra seja retornada, confira sua identidade e seus parâmetros antes de considerar uma limpeza separada e expressamente autorizada; a consulta não remove nenhuma regra.
+
 Essa tentativa malsucedida foi mantida como lição de diagnóstico:
 
 - verificar o valor monitorado, em vez de presumir que um controle produziu a condição pretendida;
@@ -524,7 +543,7 @@ Após a recuperação, o evento inicialmente desapareceu da visualização de in
 | Severidade classificada como Average | Aprovado |
 | Tentativa inicial com firewall avaliada | Concluída sem mudança no estado monitorado |
 | Evidência do teste ineficaz rejeitada | Aprovado |
-| Configuração temporária de firewall removida | Aprovado |
+| Comando de remoção da regra abrangente de firewall | Documentado; limpeza da regra específica para UDP sem verificação independente |
 | Falha determinística introduzida | Aprovado |
 | Item mudou de `1` para `0` | Aprovado |
 | Falha persistente detectada | Aprovado |
@@ -750,7 +769,7 @@ A etapa 05 está concluída porque:
 - [x] uma *trigger* DNS adicional, com severidade diferente, foi configurada;
 - [x] a *trigger* DNS foi habilitada e inicialmente apresentou `OK`;
 - [x] uma tentativa ineficaz de injeção de falha foi identificada e rejeitada;
-- [x] as regras temporárias do Firewall do Windows foram removidas;
+- [x] a remoção da regra de teste mais abrangente do Firewall do Windows foi documentada; a limpeza da regra anterior específica para UDP permanece sem verificação nas evidências preservadas;
 - [x] uma falha DNS determinística foi introduzida;
 - [x] o valor DNS monitorado mudou de `1` para `0`;
 - [x] a *trigger* DNS gerou um incidente de severidade Average;
