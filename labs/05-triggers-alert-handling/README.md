@@ -337,6 +337,8 @@ Trigger expression:
 max(/NOTEACERITAMAR1/net.dns[1.1.1.1,example.com,A,2,1,udp],3m)=0
 ```
 
+**Trigger expression and item association:** The expression above records the initial configuration, referencing the original DNS item key with server `1.1.1.1`. During the subsequent controlled experiment, the monitored item's key was temporarily changed to use `192.0.2.1`. The preserved screenshots confirm the initial trigger configuration and the later problem/recovery lifecycle, but do not show the effective trigger expression or linked item identifier while the temporary key was active. Therefore, the exact expression displayed during that interval cannot be independently reconstructed from the retained evidence.
+
 The expression requires the DNS check to remain unavailable during the evaluated three-minute period.
 
 Description:
@@ -454,6 +456,8 @@ Zabbix Latest Data confirmed that the item transitioned from `1` to `0`.
 ![Controlled DNS failure](../../docs/screenshots/stage-05-controlled-dns-failure.png)
 
 This evidence confirms the failure at the monitored-data layer before validating the trigger event.
+
+**Interpretation of the observed trigger behavior:** The DNS item changed to `0` after the temporary key modification, and the previously configured DNS event was subsequently generated and resolved after restoration of the original key. This observed sequence is consistent with continued trigger evaluation of the monitored item. However, it does not independently demonstrate whether Zabbix updated the displayed expression automatically or whether any additional configuration action occurred. Future reproductions should inspect the trigger expression and linked item while the temporary key is active, before accepting the association as directly verified.
 
 ---
 
