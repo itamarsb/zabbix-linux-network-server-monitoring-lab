@@ -344,7 +344,7 @@ The Agent configuration test completed successfully with exit code `0` before th
 
 ## Windows Firewall Configuration
 
-The installation created a dedicated inbound Windows Firewall rule:
+The Zabbix Agent 2 MSI installation and the Windows Firewall configuration were separate steps. Although the MSI installation completed successfully, the first post-installation configuration routine was interrupted before the firewall rule was created. After correcting and resuming the configuration workflow without reinstalling the MSI, the dedicated inbound Windows Firewall rule described below was created and validated. The interruption and recovery sequence is documented in the Troubleshooting section.
 
 | Property | Validated value |
 |---|:---:|
