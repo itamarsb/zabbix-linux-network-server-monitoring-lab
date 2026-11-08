@@ -108,6 +108,12 @@ O tipo de manutenção permitiu que o Zabbix continuasse coletando dados dos ite
 
 ![Período de manutenção ativo](../../docs/screenshots/stage-07-active-maintenance-period.png)
 
+**Escopo da manutenção e considerações sobre a supressão de notificações:** O experimento controlado interrompeu intencionalmente apenas o contêiner `monitored-web`. Entretanto, o período de manutenção foi associado ao host lógico do Zabbix `Zabbix Lab Internal Services`, que também contém itens de monitoramento da disponibilidade TCP do PostgreSQL.
+
+No Zabbix, uma manutenção associada ao host, sem condições restritivas por tags de triggers, pode suprimir problemas de outras triggers pertencentes ao mesmo host. As evidências preservadas do Stage 07 confirmam a supressão do incidente esperado de disponibilidade HTTP, mas não permitem estabelecer independentemente se existiam restrições por tags configuradas ou se um eventual incidente não relacionado do PostgreSQL também teria sido suprimido.
+
+Para futuras manutenções específicas por serviço, recomenda-se avaliar os filtros por tags de triggers disponibilizados pelo Zabbix ou a separação dos serviços monitorados em hosts lógicos dedicados. Essas alternativas exigem configuração e validação experimental antes da implementação. A configuração original da manutenção, os resultados de monitoramento e as evidências de notificações do Stage 07 permanecem inalterados.
+
 ## Configuração da supressão de notificações
 
 A ação de *trigger* existente foi revisada antes da interrupção controlada:
