@@ -153,6 +153,10 @@ Expressão da *trigger*:
 max(/Internal Services - Zabbix Lab/net.tcp.service[tcp,monitored-web,80],2m)=0
 ```
 
+**Escopo e limitação da trigger:** Esta trigger avalia a conectividade TCP com a porta `80` do serviço `monitored-web`, por meio do item `net.tcp.service[tcp,monitored-web,80]`. Embora o nome histórico do evento seja `HTTP service unavailable on monitored-web`, a expressão detecta a indisponibilidade TCP do alvo HTTP, e não falhas da aplicação na camada HTTP. Uma porta TCP acessível não garante uma resposta HTTP bem-sucedida, um código de status válido ou o conteúdo esperado da página.
+
+O [cenário web HTTP do Stage 04](../04-network-service-monitoring/README.pt-BR.md) disponibiliza verificações complementares na camada de aplicação, incluindo o status HTTP `200` e o texto obrigatório `Welcome to nginx!`. O experimento de interrupção controlada do contêiner permanece válido porque provocou intencionalmente a indisponibilidade TCP do serviço. Nenhuma trigger de falha na camada de aplicação ou experimento específico com erros HTTP 5xx foi validado como parte do Stage 05.
+
 A expressão exige que o item permaneça indisponível durante a janela avaliada de dois minutos, reduzindo o risco de gerar um incidente a partir de uma falha transitória breve.
 
 Descrição:
