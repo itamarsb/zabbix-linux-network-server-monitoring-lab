@@ -201,6 +201,8 @@ As consultas diretas SNMPv2c ao alvo controlado foram bem-sucedidas antes do cad
 
 Esses resultados permitiram separar a validação do SNMP no alvo da configuração no Zabbix.
 
+Para futuras consultas SNMP diretas e uma verificação opcional e controlada de divergência da macro e recuperação, consulte o [runbook de validação SNMP](snmp-validation-runbook.pt-BR.md). Os comandos de referência **não foram executados independentemente** nesta revisão documental.
+
 ## Configuração do host no Zabbix
 
 O alvo SNMP foi cadastrado com a seguinte configuração final:
