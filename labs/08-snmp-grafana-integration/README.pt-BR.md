@@ -45,7 +45,7 @@ A implementação final inclui:
 | Zabbix Server | Consulta OIDs SNMP, descobre interfaces, armazena valores e avalia *triggers* |
 | Zabbix Web | Configura o host SNMP e disponibiliza itens, incidentes e gráficos nativos |
 | PostgreSQL | Armazena configuração, histórico, tendências e eventos do Zabbix |
-| Rede de monitoramento do Docker | Oferece resolução interna de nomes e comunicação isolada entre serviços |
+| Rede de monitoramento do Docker | Fornece resolução de nomes gerenciada pelo Docker e conectividade entre os contêineres conectados à rede bridge de monitoramento. Essa rede não está configurada com `internal: true`. |
 | Operador NOC | Valida a coleta, executa a injeção controlada de falhas e confirma a recuperação |
 
 ## Alvo SNMP
@@ -126,6 +126,40 @@ A implementação aplica os seguintes controles:
 - as evidências publicadas são revisadas quanto à exposição de segredos;
 - uma comunidade do laboratório que havia sido exposta foi rotacionada imediatamente;
 - o alvo e a macro do Zabbix foram sincronizados após a rotação.
+
+**Autorização de origem SNMP e isolamento de rede:** O arquivo `.env.example` versionado especifica `SNMP_ALLOWED_NETWORK=172.16.0.0/12`. O template do Net-SNMP utiliza esse CIDR como restrição de origem para a comunidade somente de leitura. Essa faixa é mais ampla que a sub-rede histórica de monitoramento Docker e não deve ser interpretada como uma autorização exclusiva para o Zabbix Server.
+
+A publicação da porta UDP restrita ao loopback da estação limita o endpoint publicado no host, mas não restringe a comunicação entre contêineres conectados à mesma rede bridge do Docker. A rede `monitoring` não está configurada com `internal: true`, diferentemente da rede `backend`; isso, isoladamente, não demonstra exposição externa.
+
+O CIDR efetivamente autorizado, as conexões de rede e os endereços dos contêineres devem ser verificados no ambiente em execução antes de formular conclusões de segurança ou restringir a configuração. Qualquer redução futura da faixa autorizada também deverá considerar o healthcheck autenticado do próprio contêiner SNMP.
+
+### Verificações não destrutivas de autorização de rede para futuras execuções
+
+Os comandos PowerShell abaixo consultam as redes atuais do contêiner e o CIDR configurado sem exibir a comunidade SNMP. Execute-os somente no projeto Compose previsto, com o `.env` operacional existente; eles **não foram executados nesta revisão documental**.
+
+```powershell
+# Inspecionar o contêiner SNMP e as redes conectadas
+docker compose --env-file .env -f compose.yaml ps snmp-target
+
+$snmpId = docker compose --env-file .env -f compose.yaml ps -q snmp-target
+
+if (-not $snmpId) {
+    throw "SNMP target container not found."
+}
+
+docker inspect $snmpId `
+  --format '{{json .NetworkSettings.Networks}}'
+
+# Consultar a rede de origem autorizada sem exibir
+# a comunidade SNMP secreta
+docker compose --env-file .env -f compose.yaml exec -T `
+  snmp-target printenv SNMP_ALLOWED_NETWORK
+
+# Listar as redes Docker para inspeção adicional
+docker network ls
+```
+
+A variável de ambiente, isoladamente, não comprova a autorização efetiva presente na configuração Net-SNMP gerada. Qualquer futura inspeção do `snmpd.conf` gerado deverá evitar imprimir ou publicar a linha completa `rocommunity`, pois ela contém a comunidade secreta. Estas consultas não alteram o contêiner, a rede nem as regras de acesso.
 
 ## Incidente com finais de linha
 
