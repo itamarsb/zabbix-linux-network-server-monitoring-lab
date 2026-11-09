@@ -4,6 +4,8 @@
 
 [Voltar ao Stage 07](README.pt-BR.md)
 
+**Registro histórico da passagem de turno — 4 de setembro de 2026:** Este relatório documenta o estado operacional observado durante o turno do Stage 07, cuja validação final da plataforma foi concluída às `20:05:30`. Os estados dos serviços, os valores de monitoramento, os alertas e as condições de manutenção apresentados abaixo são observações históricas, não informações atualizadas do ambiente. Os cinco serviços Docker pertencem à configuração original do Stage 07; o `snmp-target` foi introduzido no Stage 08. A linha referente ao estado da manutenção no Zabbix não representa um serviço Docker Compose adicional.
+
 ## Resumo da passagem de turno
 
 | Campo | Valor |
@@ -68,9 +70,9 @@ As seguintes atividades foram concluídas:
 | 20:04 | Manutenção encerrada | Estado da manutenção mudou para `Expired` |
 | 20:05:30 | Validação final concluída | Plataforma confirmada em operação normal |
 
-## Estado atual da plataforma
+## Estado da plataforma na passagem de turno — 4 de setembro de 2026
 
-| Componente | Estado atual | Observação operacional |
+| Componente | Estado na passagem de turno | Observação operacional |
 |:---:|:---:|:---:|
 | PostgreSQL | Healthy | Serviço de banco de dados permaneceu disponível |
 | Zabbix Server | Running | Processamento de eventos permaneceu operacional |
@@ -79,9 +81,9 @@ As seguintes atividades foram concluídas:
 | Mailpit | Healthy | Interface web retornou status HTTP `200` |
 | Manutenção no Zabbix | Expired | Host não está mais em manutenção |
 
-## Estado atual do monitoramento
+## Estado do monitoramento na passagem de turno — 4 de setembro de 2026
 
-| Sinal de monitoramento | Valor atual | Valor esperado | Estado |
+| Sinal de monitoramento | Valor na passagem de turno | Valor esperado | Estado |
 |:---:|:---:|:---:|:---:|
 | Disponibilidade TCP de monitored-web | `1` | `1` | Normal |
 | Etapa com falha no cenário HTTP | `0` | `0` | Normal |

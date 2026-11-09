@@ -77,6 +77,10 @@ A atividade foi planejada para confirmar que:
 
 Antes da interrupção controlada, foram confirmadas as seguintes condições:
 
+**Configuração histórica do ambiente — 4 de setembro de 2026:** Os cinco serviços Docker Compose mencionados abaixo eram `postgres`, `zabbix-server`, `zabbix-web`, `monitored-web` e `mailpit`. Essa quantidade representa a configuração do laboratório observada durante o experimento de manutenção do Stage 07 e não deve ser interpretada como um inventário da implantação atual.
+
+O serviço `snmp-target` foi introduzido posteriormente, no Stage 08. O `compose.yaml` atual define seis serviços, mas este registro histórico de manutenção não comprova quais contêineres estão em execução no ambiente presente.
+
 - os cinco serviços Docker Compose estavam em execução;
 - o PostgreSQL estava saudável;
 - o Zabbix Server estava em execução;
