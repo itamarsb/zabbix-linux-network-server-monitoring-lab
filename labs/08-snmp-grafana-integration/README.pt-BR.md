@@ -280,9 +280,11 @@ Esse método isolou a dependência de autenticação e demonstrou que um alvo sa
 
 ## Decisão sobre a validação de notificações
 
-Uma ação dedicada, denominada `NOC Lab - SNMP problem notifications`, foi configurada durante o diagnóstico. Dois incidentes controlados foram gerados, mas a ação não produziu registros no histórico de ações do Zabbix, e o Mailpit não recebeu mensagens.
+Uma ação dedicada, denominada `NOC Lab - SNMP problem notifications`, foi configurada durante o diagnóstico. Dois incidentes SNMP controlados foram gerados. Não foram observados registros correspondentes de operações de notificação na visualização consultada do Action Log do Zabbix, e nenhuma mensagem foi recebida no Mailpit durante esses testes. As evidências preservadas não permitem estabelecer os filtros exatos do Action Log, o intervalo de tempo selecionado ou as permissões efetivas de visualização; portanto, a ausência de registros visíveis não deve ser interpretada como comprovação definitiva de que nenhuma operação de notificação foi iniciada.
 
 As condições da ação foram revisadas, substituindo uma referência herdada de *trigger* por uma combinação de host e nome de evento. O segundo teste também não resultou em entrega. Por isso, a ação não validada foi desabilitada, em vez de ser apresentada como evidência de sucesso.
+
+**Limitação da validação:** A ação de notificações SNMP permaneceu sem validação e foi desabilitada. A ausência de entrega de mensagens foi observada, mas sua causa exata não foi isolada conclusivamente. Uma investigação futura deverá correlacionar os detalhes dos eventos afetados com `Reports → Action log`, verificar o intervalo de tempo selecionado, os filtros, as permissões do usuário, a configuração do tipo de mídia, as condições e operações da ação e comparar os resultados com o Mailpit. Essas verificações são recomendações para diagnóstico futuro, não procedimentos adicionais comprovadamente executados no experimento original do Stage 08.
 
 A entrega de e-mails SNMP não foi mantida como requisito de aceitação da etapa 08 porque o fluxo completo de notificações de problema e recuperação entre Zabbix e Mailpit já havia sido validado e documentado na etapa 06. A etapa 08 permanece concentrada em seu novo escopo técnico: consultas SNMP, descoberta, monitoramento de interfaces, falha de autenticação e recuperação.
 
@@ -396,7 +398,7 @@ Esta etapa demonstrou a importância de validar cada camada de forma independent
 - finais de linha CRLF do Windows podem impedir a execução de *entrypoints* Linux;
 - a escolha do template determina os itens, as regras de descoberta, as *triggers* e os gráficos disponíveis;
 - uma referência de *trigger* herdada pode não se comportar como esperado em uma condição de ação;
-- um registro de ações vazio indica que nenhuma operação de notificação foi executada;
+- uma visualização vazia ou filtrada do Action Log não comprova, isoladamente, que nenhuma operação de notificação foi executada; a verificação deve considerar o evento relevante, o intervalo de tempo, os filtros e as permissões disponíveis;
 - integrações opcionais malsucedidas não devem ser apresentadas como evidências validadas;
 - a recuperação precisa ser confirmada nas visualizações de disponibilidade e de histórico de eventos.
 
