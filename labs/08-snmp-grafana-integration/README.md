@@ -278,9 +278,11 @@ This method isolated the authentication dependency and demonstrated that a healt
 
 ## Notification Validation Decision
 
-A dedicated action named `NOC Lab - SNMP problem notifications` was configured during troubleshooting. Two controlled incidents were generated, but the action did not produce entries in the Zabbix action log and Mailpit received no messages.
+A dedicated action named `NOC Lab - SNMP problem notifications` was configured during troubleshooting. Two controlled SNMP incidents were generated. No corresponding notification-operation entries were observed in the inspected Zabbix Action log view, and no messages were received in Mailpit during those tests. The preserved evidence does not establish the exact Action log filters, selected time range, or effective visibility permissions; therefore, the absence of visible entries must not be treated as definitive proof that no notification operation was initiated.
 
 The action conditions were revised from an inherited trigger reference to a host and event-name combination. The second test still produced no delivery. The unvalidated action was therefore disabled instead of being presented as successful evidence.
+
+**Validation limitation:** The SNMP notification action remained unvalidated and was disabled. Its failure to deliver messages was observed, but the precise cause was not conclusively isolated. Future troubleshooting should correlate the affected event details with `Reports → Action log`, verify the selected time range, filters, user permissions, media-type configuration, action conditions and operations, and compare the results with Mailpit. These checks are recommendations for future investigation, not additional procedures confirmed in the original Stage 08 experiment.
 
 SNMP email delivery was not retained as a Stage 08 acceptance requirement because the complete Zabbix-to-Mailpit problem and recovery workflow had already been validated and documented in Stage 06. Stage 08 remains focused on the new technical scope: SNMP polling, discovery, interface monitoring, authentication failure, and recovery.
 
@@ -394,7 +396,7 @@ The stage demonstrated the importance of validating each layer independently:
 - Windows CRLF line endings can invalidate Linux entrypoints;
 - template selection determines available items, discovery rules, triggers, and graphs;
 - an inherited trigger reference may not behave as expected in an action condition;
-- an empty action log indicates that no notification operation was executed;
+- an empty or filtered Action log view does not, by itself, prove that no notification operation was executed; verification requires the relevant event, time range, filters, and available permissions to be considered;
 - failed optional integration work must not be represented as validated evidence;
 - recovery must be confirmed from both availability and event-history views.
 
