@@ -106,6 +106,8 @@ The maintenance type allowed Zabbix to continue collecting item and web-scenario
 
 ![Active maintenance period](../../docs/screenshots/stage-07-active-maintenance-period.png)
 
+**Maintenance scheduling and effective window:** The initial `Active since` and `Active till` settings defined the maintenance eligibility bounds from `19:25` to `21:30` on September 4, 2026. The separate `Periods` configuration used `One time only`, starting at `19:29` with a duration of one hour, resulting in a scheduled interval of `19:29–20:29`. The effective maintenance interval is determined by the overlap between these settings; the `Active since` value alone does not activate maintenance. These times describe the original configuration, not separate service interruption events.
+
 **Maintenance scope and notification-suppression considerations:** The controlled experiment intentionally interrupted only the `monitored-web` container. However, the maintenance period was associated with the logical Zabbix host `Zabbix Lab Internal Services`, which also contains monitoring items for PostgreSQL TCP availability.
 
 In Zabbix, host-associated maintenance without restrictive trigger-tag conditions may suppress problems from other triggers belonging to the same host. The preserved Stage 07 evidence confirms suppression of the intended HTTP availability incident, but does not independently establish whether trigger-tag restrictions were configured or whether an unrelated PostgreSQL incident would have been suppressed.
@@ -150,7 +152,7 @@ The following sequence was completed:
 
 | Time | Activity | Result |
 |:---:|---|---|
-| 19:25 | Maintenance became active | Host entered planned maintenance |
+| 19:25 | Initial `Active since` bound reached | Scheduled maintenance start was `19:29` |
 | 19:46:05 | Controlled test started | Mailpit contained zero messages |
 | 19:46 | `monitored-web` was stopped | Controlled interruption began |
 | 19:47:19 | HTTP problem was generated | High-severity incident created and suppressed |
@@ -236,6 +238,8 @@ The HTTP incident recovered at `19:53:15`, after a duration of `5m 56s`.
 After the monitored service returned to its normal state, the maintenance period was formally closed.
 
 The active-until value was adjusted to `20:04`, and the maintenance status changed to `Expired`.
+
+**Early closure of the maintenance window:** After service recovery, the `Active till` field was manually changed from `21:30` to `20:04`. Assuming the original one-time period (`19:29–20:29`) remained unchanged, this shortened the effective maintenance interval to `19:29–20:04`. The preserved screenshot confirms the updated `Active till` value and `Expired` status, but does not independently display the final `Periods` configuration. The scheduled duration of one hour should not be interpreted as the actual duration after this adjustment.
 
 This confirmed that:
 
