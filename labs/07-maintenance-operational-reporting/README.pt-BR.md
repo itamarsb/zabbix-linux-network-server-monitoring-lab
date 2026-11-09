@@ -108,6 +108,8 @@ O tipo de manutenção permitiu que o Zabbix continuasse coletando dados dos ite
 
 ![Período de manutenção ativo](../../docs/screenshots/stage-07-active-maintenance-period.png)
 
+**Agendamento da manutenção e intervalo efetivo:** Os campos iniciais `Active since` e `Active till` estabeleceram os limites gerais de validade da manutenção, das `19:25` às `21:30` de 4 de setembro de 2026. Separadamente, a configuração `Periods` utilizou `One time only`, com início às `19:29` e duração de uma hora, resultando no intervalo agendado de `19:29–20:29`. O intervalo efetivo da manutenção depende da sobreposição entre essas configurações; o valor de `Active since`, isoladamente, não ativa a manutenção. Esses horários representam a configuração original, não eventos distintos de interrupção do serviço.
+
 **Escopo da manutenção e considerações sobre a supressão de notificações:** O experimento controlado interrompeu intencionalmente apenas o contêiner `monitored-web`. Entretanto, o período de manutenção foi associado ao host lógico do Zabbix `Zabbix Lab Internal Services`, que também contém itens de monitoramento da disponibilidade TCP do PostgreSQL.
 
 No Zabbix, uma manutenção associada ao host, sem condições restritivas por tags de triggers, pode suprimir problemas de outras triggers pertencentes ao mesmo host. As evidências preservadas do Stage 07 confirmam a supressão do incidente esperado de disponibilidade HTTP, mas não permitem estabelecer independentemente se existiam restrições por tags configuradas ou se um eventual incidente não relacionado do PostgreSQL também teria sido suprimido.
@@ -152,7 +154,7 @@ A seguinte sequência foi concluída:
 
 | Horário | Atividade | Resultado |
 |:---:|:---:|:---:|
-| 19:25 | A manutenção tornou-se ativa | Host entrou em manutenção planejada |
+| 19:25 | Início do limite geral `Active since` | Início agendado da manutenção às `19:29` |
 | 19:46:05 | Início do teste controlado | Mailpit continha zero mensagens |
 | 19:46 | `monitored-web` foi interrompido | Início da interrupção controlada |
 | 19:47:19 | Problema HTTP foi gerado | Incidente de severidade High criado e suprimido |
@@ -238,6 +240,8 @@ O incidente HTTP se recuperou às `19:53:15`, após uma duração de `5m 56s`.
 Após o retorno do serviço monitorado ao estado normal, o período de manutenção foi formalmente encerrado.
 
 O valor de término da atividade foi ajustado para `20:04`, e o estado da manutenção mudou para `Expired`.
+
+**Encerramento antecipado da janela de manutenção:** Após a recuperação do serviço, o campo `Active till` foi alterado manualmente de `21:30` para `20:04`. Considerando que o período original de execução única (`19:29–20:29`) permaneceu inalterado, essa modificação reduziu o intervalo efetivo da manutenção para `19:29–20:04`. A captura preservada confirma o novo valor de `Active till` e o estado `Expired`, mas não apresenta independentemente a configuração final do bloco `Periods`. A duração agendada de uma hora não deve ser interpretada como a duração efetiva após esse ajuste.
 
 Isso confirmou que:
 
