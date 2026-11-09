@@ -199,6 +199,8 @@ Direct SNMPv2c queries succeeded against the controlled target before Zabbix reg
 
 These results separated target-side SNMP validation from Zabbix-side configuration.
 
+For future direct polling and an optional controlled macro-mismatch/recovery check, see the [SNMP validation runbook](snmp-validation-runbook.md). Its reference commands have **not been independently executed** during this documentation review.
+
 ## Zabbix Host Configuration
 
 The SNMP target was registered with the following final configuration:
