@@ -43,7 +43,7 @@ The final implementation includes:
 | Zabbix Server | Polls SNMP OIDs, discovers interfaces, stores values, and evaluates triggers |
 | Zabbix Web | Configures the SNMP host and provides items, incidents, and native graphs |
 | PostgreSQL | Stores Zabbix configuration, history, trends, and events |
-| Docker monitoring network | Provides internal name resolution and isolated service communication |
+| Docker monitoring network | Provides Docker-managed service-name resolution and connectivity between attached containers on the monitoring bridge network. This network is not configured with `internal: true`. |
 | NOC operator | Validates collection, performs controlled fault injection, and confirms recovery |
 
 ## SNMP Target
@@ -124,6 +124,40 @@ The implementation applies the following controls:
 - published evidence is reviewed for secret exposure;
 - an exposed laboratory community was rotated immediately;
 - the target and Zabbix macro were synchronized after rotation.
+
+**SNMP source authorization and network isolation:** The tracked `.env.example` specifies `SNMP_ALLOWED_NETWORK=172.16.0.0/12`. The Net-SNMP configuration template uses this CIDR as the source restriction for the read-only community. This range is broader than the historical Docker monitoring subnet and must not be interpreted as authorization limited exclusively to the Zabbix Server.
+
+The workstation's loopback-only UDP port binding limits the published host endpoint but does not restrict communication between containers attached to the same Docker bridge network. The `monitoring` network is not configured with `internal: true`; this differs from the `backend` network and does not, by itself, demonstrate external exposure.
+
+The actual allowed CIDR, network attachments, and container addresses must be verified in the running environment before making security claims or narrowing the configuration. Any future reduction of the authorized range must also account for the SNMP target's authenticated self-healthcheck.
+
+### Read-only network authorization checks for future runs
+
+The following Windows PowerShell commands inspect the current container networks and the configured source CIDR without displaying the SNMP community. Run them only in the intended Compose project with the existing operational `.env`; they have **not been executed as part of this documentation review**.
+
+```powershell
+# Inspect running SNMP container and network attachments
+docker compose --env-file .env -f compose.yaml ps snmp-target
+
+$snmpId = docker compose --env-file .env -f compose.yaml ps -q snmp-target
+
+if (-not $snmpId) {
+    throw "SNMP target container not found."
+}
+
+docker inspect $snmpId `
+  --format '{{json .NetworkSettings.Networks}}'
+
+# Check the configured allowed network without printing
+# the secret SNMP community
+docker compose --env-file .env -f compose.yaml exec -T `
+  snmp-target printenv SNMP_ALLOWED_NETWORK
+
+# List Docker networks for further inspection
+docker network ls
+```
+
+The environment variable alone does not prove the effective authorization in the generated Net-SNMP configuration. Any later inspection of the generated `snmpd.conf` must avoid printing or publishing the full `rocommunity` line because that line contains the secret community. These checks do not modify the container, network, or access rules.
 
 ## Line-Ending Incident
 
