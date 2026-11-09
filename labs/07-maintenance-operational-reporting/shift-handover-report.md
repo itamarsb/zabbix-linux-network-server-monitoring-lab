@@ -2,6 +2,8 @@
 
 [Back to Stage 07](README.md)
 
+**Historical handover snapshot — September 4, 2026:** This report records the operational state observed during the Stage 07 shift, with final platform validation completed at `20:05:30`. Service statuses, monitoring values, alerts, and maintenance conditions below are historical observations, not live environment status. The five Docker services belong to the Stage 07 baseline; `snmp-target` was introduced in Stage 08. The Zabbix maintenance-status row is not an additional Docker Compose service.
+
 ## Handover Summary
 
 | Field | Value |
@@ -66,9 +68,9 @@ The following activities were completed:
 | 20:04 | Maintenance ended | Maintenance changed to `Expired` |
 | 20:05:30 | Final validation completed | Platform confirmed in normal operation |
 
-## Current Platform State
+## Platform State at Handover — September 4, 2026
 
-| Component | Current state | Operational note |
+| Component | State at handover | Operational note |
 |---|:---:|---|
 | PostgreSQL | Healthy | Database service remained available |
 | Zabbix Server | Running | Event processing remained operational |
@@ -77,9 +79,9 @@ The following activities were completed:
 | Mailpit | Healthy | Frontend returned HTTP status `200` |
 | Zabbix maintenance | Expired | Host is no longer under maintenance |
 
-## Current Monitoring State
+## Monitoring State at Handover — September 4, 2026
 
-| Monitoring signal | Current value | Expected value | Status |
+| Monitoring signal | Value at handover | Expected value | Status |
 |---|:---:|:---:|:---:|
 | Monitored-web TCP availability | `1` | `1` | Normal |
 | HTTP scenario failed step | `0` | `0` | Normal |
