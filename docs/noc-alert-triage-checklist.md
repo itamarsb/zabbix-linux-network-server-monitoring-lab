@@ -44,7 +44,7 @@
 |:---:|:---|:---:|
 | HTTP or TCP failure | Response code, failed step, port reachability, service/container status | [Stage 04](../labs/04-network-service-monitoring/README.md) |
 | DNS failure | Name resolution, resolver, target, recent changes; compare monitored value | [Stage 05](../labs/05-triggers-alert-handling/README.md) |
-| Host or agent unavailable | Agent status, network path, recent data, dependent services | [Stages 02–03](../labs/02-linux-host-monitoring/README.md) |
+| Host or agent unavailable | Agent status, network path, recent data, dependent services | [Stage 02 — Linux](../labs/02-linux-host-monitoring/README.md) · [Stage 03 — Windows](../labs/03-windows-host-monitoring/README.md) |
 | SNMP collection failure | Item freshness, target reachability, interface state, credentials/configuration **without revealing secrets** | [Stage 08](../labs/08-snmp-grafana-integration/README.md) |
 | Alert without email | Media type, action conditions, user media severity, Zabbix action log, Mailpit (lab only) | [Stage 06](../labs/06-alert-delivery-notifications/README.md) |
 | Alert during maintenance | Maintenance scope, active period, suppressed problem, expected notification behavior | [Stage 07](../labs/07-maintenance-operational-reporting/README.md) |
