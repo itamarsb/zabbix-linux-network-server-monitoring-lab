@@ -8,7 +8,7 @@
 
 Validar a estação de trabalho local antes da implantação da plataforma Zabbix.
 
-Esta etapa estabelece uma referência técnica inicial (*baseline*) para Windows, PowerShell, WSL, Docker, rede, armazenamento e estado do repositório. A validação reduz falhas de implantação e evita conflitos com ambientes de laboratório não relacionados.
+As verificações iniciais abrangem Windows, PowerShell, WSL, Docker, rede, armazenamento e estado do repositório. A conferência desses pré-requisitos antes da implantação ajuda a identificar limitações de recursos e conflitos com serviços já existentes.
 
 ## Contexto operacional
 
@@ -312,8 +312,8 @@ Caso sejam adicionadas capturas de tela futuramente, elas devem excluir credenci
 
 ## Resultado
 
-A estação de trabalho foi aprovada para a implantação do laboratório Zabbix NOC local.
+Na avaliação registrada na etapa 00, as 20 verificações foram aprovadas, sem avisos ou falhas, permitindo avançar com o ambiente Zabbix local. Trata-se de uma configuração inicial histórica da estação de trabalho, não de uma nova avaliação de seu estado atual.
 
-A etapa 01 posteriormente criou e validou a plataforma reproduzível, composta por PostgreSQL, Zabbix Server e Zabbix Web.
+A etapa 01 implantou e validou o PostgreSQL, o Zabbix Server e o Zabbix Web.
 
 Prossiga para [`Lab 01 — Implantação da plataforma Zabbix`](../01-zabbix-platform/README.md).

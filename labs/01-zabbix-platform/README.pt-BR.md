@@ -8,7 +8,7 @@
 
 Implantar e validar uma plataforma de monitoramento reproduzível com Zabbix 7.0 LTS, utilizando Docker Compose.
 
-Esta etapa estabelece os serviços centrais necessários aos laboratórios posteriores de Linux, Windows, redes, monitoramento de serviços e resposta a incidentes.
+O PostgreSQL, o Zabbix Server e o Zabbix Web formam a base dos exercícios posteriores de monitoramento de hosts, redes e serviços, além do tratamento de incidentes.
 
 ## Resultados de aprendizagem
 
@@ -374,8 +374,6 @@ docker compose --env-file .env down
 
 ## Resultado
 
-A etapa 01 disponibilizou uma plataforma Zabbix 7.0 LTS reproduzível e isolada localmente, composta por PostgreSQL, Zabbix Server e Zabbix Web.
+Os testes da etapa 01 confirmaram a implantação do PostgreSQL, do Zabbix Server e do Zabbix Web no ambiente Docker local. Foram verificados o estado dos contêineres, a conexão com o banco de dados e a disponibilidade da interface web, além das condições básicas de monitoramento e acesso administrativo. Um problema inicial relacionado ao template foi reconhecido, investigado, corrigido e observado como recuperado.
 
-A implantação foi validada sob as perspectivas dos contêineres, banco de dados, servidor, HTTP, segurança, monitoramento e fluxo de trabalho do operador. Um problema inicial relacionado à configuração foi reconhecido, investigado, corrigido e teve sua recuperação confirmada.
-
-Posteriormente, o Stage 02 acrescentou um host Ubuntu 24.04 LTS executado no WSL 2 e monitorado pelo Zabbix Agent 2. A implementação concluída validou a conectividade passiva do agente, as métricas de recursos e o monitoramento de processos, sistemas de arquivos e interfaces de rede. Consulte a [documentação do Stage 02](../02-linux-host-monitoring/README.pt-BR.md) para conhecer a implementação e suas evidências técnicas.
+A plataforma resultante serviu de base ao exercício de monitoramento do Ubuntu 24.04 LTS com Zabbix Agent 2 no WSL 2. Continue pela [documentação da etapa 02](../02-linux-host-monitoring/README.pt-BR.md).
