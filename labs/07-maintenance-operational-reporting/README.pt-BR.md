@@ -6,9 +6,9 @@
 
 ## Objetivo
 
-Esta etapa introduz práticas de tratamento de manutenções planejadas e elaboração de relatórios operacionais, comuns às equipes de Centros de Operações de Rede (NOC).
+Este exercício acompanha uma janela de manutenção planejada para o serviço HTTP monitorado, incluindo o tratamento de incidentes e a documentação da passagem de turno.
 
-A implementação valida o comportamento do Zabbix quando um serviço monitorado é interrompido intencionalmente durante uma janela de manutenção aprovada.
+A interrupção controlada permite verificar se o Zabbix continua coletando dados enquanto o incidente e as operações de notificação associadas são suprimidos conforme a configuração.
 
 A etapa abrange:
 
@@ -26,11 +26,11 @@ A etapa abrange:
 - relatório de passagem de turno;
 - notas de diagnóstico e evidências selecionadas.
 
-## Situação atual
+## Situação da etapa
 
 **Concluída**
 
-A etapa 07 validou com sucesso todo o ciclo de manutenção planejada do serviço `monitored-web`.
+O exercício registrado abrangeu a interrupção e a restauração do `monitored-web`, a supressão do incidente relacionado à manutenção e o encerramento do período configurado.
 
 A implementação final confirmou:
 
@@ -359,9 +359,9 @@ A última mensagem de erro HTTP permaneceu temporariamente visível nos dados re
 
 O valor TCP atual, o valor da etapa com falha, o código de resposta, o estado do incidente e a integridade do contêiner foram utilizados para confirmar a situação operacional real.
 
-## Principais aprendizados
+## Lições operacionais
 
-Esta etapa demonstrou que:
+O exercício de manutenção mostra que:
 
 - a manutenção não interrompe necessariamente a coleta de dados de monitoramento;
 - o trabalho planejado pode gerar eventos de problema, ao mesmo tempo em que suprime ações operacionais;
@@ -376,21 +376,6 @@ Esta etapa demonstrou que:
 
 ## Resultado final
 
-A etapa 07 demonstrou com sucesso o ciclo completo de manutenção planejada:
+Durante o exercício de manutenção programada, o Zabbix continuou coletando dados enquanto o serviço `monitored-web` ficou intencionalmente indisponível. O problema HTTP foi registrado como suprimido, e nenhuma nova mensagem foi observada no Mailpit para esse incidente.
 
-1. validação do estado inicial;
-2. ativação da manutenção;
-3. continuidade da coleta de dados;
-4. interrupção controlada do serviço;
-5. detecção do problema;
-6. supressão do incidente;
-7. supressão da notificação;
-8. restauração do serviço;
-9. recuperação automática;
-10. encerramento da manutenção;
-11. validação após a manutenção;
-12. elaboração de relatórios operacionais.
-
-O laboratório retornou ao estado normal, o período de manutenção expirou, o incidente HTTP foi resolvido e nenhuma notificação indesejada foi entregue.
-
-**Etapa 07 concluída com sucesso.**
+Após a restauração do serviço, o problema foi recuperado automaticamente e o período de manutenção foi encerrado com estado `Expired`. As verificações posteriores e os registros de manutenção e passagem de turno preservam o resultado do experimento.

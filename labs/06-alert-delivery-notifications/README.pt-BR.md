@@ -6,9 +6,9 @@
 
 ## Objetivo
 
-Esta etapa amplia o fluxo de tratamento de incidentes implementado na etapa 05, introduzindo a entrega automatizada de alertas por meio de ações e tipos de mídia nativos do Zabbix.
+Os incidentes HTTP e DNS configurados na etapa 05 são utilizados aqui para testar notificações automáticas por meio de ações e tipos de mídia nativos do Zabbix.
 
-A implementação demonstra a transição completa entre uma condição de monitoramento detectada e uma notificação destinada ao operador, seguida pela notificação correspondente à recuperação.
+O Mailpit captura as mensagens geradas quando o Zabbix detecta um problema e quando a condição monitorada retorna ao normal.
 
 A etapa valida:
 
@@ -24,11 +24,11 @@ A etapa valida:
 - o diagnóstico de problemas nas notificações;
 - o tratamento seguro das configurações de notificação.
 
-## Situação atual
+## Situação da etapa
 
 **Concluída**
 
-A etapa 06 implementou e validou com sucesso a entrega automatizada de alertas para os sinais de monitoramento HTTP e DNS criados na etapa 05.
+Nos testes registrados de HTTP e DNS, as mensagens de problema e recuperação foram recebidas pelo Mailpit, com as operações correspondentes visíveis no histórico de ações do Zabbix.
 
 A solução final inclui:
 
@@ -552,9 +552,9 @@ A etapa 06 está concluída porque:
 - [x] as evidências selecionadas da etapa 06 foram armazenadas;
 - [x] os resultados finais da etapa 06 foram documentados.
 
-## Principais aprendizados
+## Lições operacionais
 
-Esta etapa demonstrou que:
+Os testes de notificações mostram que:
 
 - detecção por *triggers* e entrega de notificações são camadas operacionais diferentes;
 - um evento válido não garante a entrega se o tipo de mídia não contiver o modelo de mensagem necessário;
@@ -569,19 +569,6 @@ Esta etapa demonstrou que:
 
 ## Resultado final
 
-A etapa 06 transformou os eventos de monitoramento da etapa 05 em fluxos completos de notificação aos operadores.
+As falhas controladas de HTTP e DNS produziram notificações de problema recebidas pelo Mailpit. Após a recuperação das condições monitoradas, as mensagens correspondentes de recuperação também chegaram. O histórico de ações do Zabbix forneceu um registro separado dessas operações de entrega.
 
-O laboratório agora oferece:
-
-- sinais HTTP e DNS monitorados;
-- processamento de *triggers* conforme a severidade;
-- notificações automáticas de problemas;
-- notificações automáticas de recuperação;
-- entrega SMTP local;
-- contexto operacional destinado ao operador;
-- histórico de entregas dentro do Zabbix;
-- testes reproduzíveis de falha e recuperação;
-- resultados documentados de diagnóstico;
-- evidências selecionadas para o portfólio.
-
-A implementação demonstra um caminho completo de monitoramento, desde a coleta de sinais até a detecção de incidentes, a notificação ao operador, a recuperação do serviço e a confirmação da entrega.
+O diagnóstico da configuração do tipo de mídia mostrou por que os modelos de mensagem e as condições das ações precisam ser verificados independentemente da detecção das triggers. A etapa documenta os testes de entrega e a restauração das alterações temporárias, sem depender de serviços SMTP externos.

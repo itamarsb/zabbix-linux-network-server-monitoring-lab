@@ -6,17 +6,17 @@
 
 ## Objetivo
 
-Esta etapa introduz o monitoramento de infraestrutura baseado em SNMP, por meio de um alvo Docker controlado e integrado ao Zabbix.
+Um alvo Docker controlado, executando Net-SNMP, fornece os dados utilizados neste exercício de monitoramento SNMP com Zabbix.
 
-A implementação prioriza um fluxo completo com recursos nativos do Zabbix: implantação do alvo, tratamento seguro da comunidade SNMP, consultas diretas, cadastro do host, descoberta de interfaces, coleta de tráfego, detecção de problemas, recuperação e diagnóstico.
+Os testes abrangem consultas diretas, cadastro do host, descoberta de interfaces, coleta de tráfego e uma falha controlada de autenticação seguida de recuperação.
 
 O Grafana foi mantido como uma decisão opcional, e não como dependência obrigatória. A etapa foi concluída com o monitoramento nativo do Zabbix porque os resultados operacionais exigidos foram alcançados sem adicionar outra plataforma de visualização.
 
-## Situação final
+## Situação da etapa
 
 **Concluída**
 
-A implementação final inclui:
+A configuração registrada inclui:
 
 - um alvo SNMP dedicado com Alpine Linux;
 - agente Net-SNMP e ferramentas de linha de comando;
@@ -402,7 +402,7 @@ Esta etapa demonstrou a importância de validar cada camada de forma independent
 - integrações opcionais malsucedidas não devem ser apresentadas como evidências validadas;
 - a recuperação precisa ser confirmada nas visualizações de disponibilidade e de histórico de eventos.
 
-## Competências demonstradas
+## Assuntos técnicos abordados
 
 - fundamentos de SNMP e consultas SNMPv2c;
 - interpretação de OIDs e conhecimento das MIBs;
@@ -424,12 +424,10 @@ Esta etapa demonstrou a importância de validar cada camada de forma independent
 - validação de problemas e recuperações;
 - diagnóstico do caminho de notificações;
 - revisão de evidências e boas práticas de segurança;
-- documentação técnica transparente.
+- registro dos procedimentos, resultados e limitações dos testes.
 
 ## Resultado final
 
-A etapa 08 está concluída.
+Ao término dos testes registrados, as consultas SNMP e o monitoramento de interfaces estavam funcionando, o incidente de falha de autenticação havia sido recuperado e a comunidade operacional havia sido rotacionada. Os resultados do alvo e do monitoramento foram registrados nas evidências da etapa 08.
 
-O laboratório agora inclui um alvo SNMPv2c reproduzível, tratamento seguro da comunidade, consultas diretas e pelo Zabbix, descoberta de interfaces Linux, coleta de tráfego, visualização nativa, falha controlada de autenticação, recuperação automática e diagnóstico documentado.
-
-O ambiente final está saudável, a comunidade operacional foi rotacionada e restaurada com segurança, e a ação de notificação não validada da etapa 08 permanece desabilitada.
+A ação opcional de notificações SNMP permaneceu desabilitada porque a entrega de mensagens não havia sido validada. O Grafana não foi acrescentado: os gráficos nativos do Zabbix atenderam às necessidades de visualização deste exercício.
