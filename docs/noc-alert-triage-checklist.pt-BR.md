@@ -46,7 +46,7 @@
 |:---:|:---:|:---:|
 | Falha HTTP ou TCP | Código de resposta, etapa com falha, acessibilidade da porta, estado do serviço/contêiner | [Stage 04](../labs/04-network-service-monitoring/README.pt-BR.md) |
 | Falha DNS | Resolução de nomes, resolvedor, alvo, mudanças recentes; comparar o valor monitorado | [Stage 05](../labs/05-triggers-alert-handling/README.pt-BR.md) |
-| Host ou agente indisponível | Estado do agente, caminho de rede, dados recentes, serviços dependentes | [Stages 02–03](../labs/02-linux-host-monitoring/README.pt-BR.md) |
+| Host ou agente indisponível | Estado do agente, caminho de rede, dados recentes, serviços dependentes | [Stage 02 — Linux](../labs/02-linux-host-monitoring/README.pt-BR.md) · [Stage 03 — Windows](../labs/03-windows-host-monitoring/README.pt-BR.md) |
 | Falha na coleta SNMP | Atualidade dos itens, acessibilidade do alvo, estado da interface, credenciais/configuração **sem revelar segredos** | [Stage 08](../labs/08-snmp-grafana-integration/README.pt-BR.md) |
 | Alerta sem e-mail | Tipo de mídia, condições da ação, severidades da mídia do usuário, registro de ações do Zabbix e Mailpit (somente no laboratório) | [Stage 06](../labs/06-alert-delivery-notifications/README.pt-BR.md) |
 | Alerta durante manutenção | Escopo e período de manutenção, problema suprimido, comportamento esperado das notificações | [Stage 07](../labs/07-maintenance-operational-reporting/README.pt-BR.md) |
