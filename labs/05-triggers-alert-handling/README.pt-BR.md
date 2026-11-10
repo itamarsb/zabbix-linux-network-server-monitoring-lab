@@ -6,7 +6,7 @@
 
 ## Objetivo
 
-Esta etapa introduz a configuração de *triggers*, classificação de severidade, geração de eventos, reconhecimento de problemas, anotações do operador, recuperação controlada e fluxos iniciais de tratamento de alertas.
+Os sinais HTTP e DNS são utilizados para configurar triggers, classificar incidentes por severidade, registrar ações do operador e acompanhar os problemas até a recuperação.
 
 A implementação utiliza sinais de monitoramento estabelecidos nas etapas anteriores para reproduzir atividades comuns a um Centro de Operações de Rede (NOC):
 
@@ -24,7 +24,7 @@ Duas condições monitoradas foram selecionadas:
 1. disponibilidade HTTP do contêiner dedicado `monitored-web`;
 2. resolução DNS externa a partir da estação de trabalho Windows.
 
-Esses testes demonstram diferentes níveis de severidade e validam todo o ciclo, desde o monitoramento normal até a detecção do problema e a recuperação.
+Os dois casos utilizam severidades diferentes e acompanham a transição registrada entre monitoramento normal, detecção do problema e recuperação.
 
 ---
 
@@ -107,9 +107,9 @@ Duas severidades foram demonstradas explicitamente nesta etapa:
 
 ---
 
-# Parte 1 — Trigger do serviço HTTP
+## Parte 1 — Trigger do serviço HTTP
 
-## Item monitorado
+### Item monitorado
 
 A *trigger* HTTP utiliza o item de disponibilidade TCP criado para o alvo dedicado:
 
@@ -128,7 +128,7 @@ O alvo é resolvido pela rede interna do Docker.
 
 ---
 
-## Configuração da trigger HTTP
+### Configuração da trigger HTTP
 
 | Campo | Configuração |
 |---|---|
@@ -167,7 +167,7 @@ The dedicated monitored HTTP service is unavailable on TCP port 80. Validate Doc
 
 ---
 
-## Estado HTTP inicial
+### Estado HTTP inicial
 
 A *trigger* foi criada, habilitada, classificada com severidade **High** e inicialmente apresentou o estado normal `OK`.
 
@@ -177,7 +177,7 @@ Isso confirma que sua configuração estava ativa antes da introdução da falha
 
 ---
 
-## Falha HTTP controlada
+### Falha HTTP controlada
 
 Somente o serviço dedicado `monitored-web` foi interrompido:
 
@@ -199,7 +199,7 @@ O isolamento da falha é importante porque demonstra monitoramento de um serviç
 
 ---
 
-## Detecção do problema HTTP
+### Detecção do problema HTTP
 
 Após o período de condição persistente, o Zabbix gerou o evento esperado:
 
@@ -219,7 +219,7 @@ O evento exibiu:
 
 ---
 
-## Reconhecimento do incidente HTTP
+### Reconhecimento do incidente HTTP
 
 O evento foi reconhecido e uma anotação operacional de investigação foi registrada.
 
@@ -244,7 +244,7 @@ Essa atividade reproduz uma prática importante de NOC: um problema não deve ap
 
 ---
 
-## Recuperação do serviço HTTP
+### Recuperação do serviço HTTP
 
 O serviço dedicado foi restaurado com:
 
@@ -262,7 +262,7 @@ Após a conclusão da verificação de integridade (*health check*), o Docker in
 
 ---
 
-## Resolução do evento HTTP
+### Resolução do evento HTTP
 
 Quando a disponibilidade TCP retornou a `1`, a *trigger* voltou automaticamente ao estado normal.
 
@@ -282,9 +282,9 @@ O incidente HTTP foi resolvido automaticamente, sem encerramento manual do event
 
 ---
 
-# Parte 2 — Trigger de resolução DNS externa
+## Parte 2 — Trigger de resolução DNS externa
 
-## Item monitorado
+### Item monitorado
 
 A estação de trabalho Windows utiliza o Zabbix Agent 2 para validar a resolução DNS externa.
 
@@ -314,7 +314,7 @@ Valores esperados:
 
 ---
 
-## Configuração da trigger DNS
+### Configuração da trigger DNS
 
 | Campo | Configuração |
 |---|---|
@@ -351,7 +351,7 @@ External DNS resolution through Zabbix Agent 2 is unavailable. Validate Windows 
 
 ---
 
-## Estado DNS inicial
+### Estado DNS inicial
 
 A *trigger* foi criada com severidade **Average** e inicialmente apresentou `OK`.
 
@@ -361,7 +361,7 @@ Essa segunda *trigger* demonstra que a severidade operacional deve refletir o im
 
 ---
 
-## Tentativa inicial de injeção de falha
+### Tentativa inicial de injeção de falha
 
 O primeiro teste de DNS tentou bloquear a comunicação de saída para `1.1.1.1` por meio do Firewall do Windows.
 
@@ -431,7 +431,7 @@ Essa tentativa malsucedida foi mantida como lição de diagnóstico:
 
 ---
 
-## Falha DNS controlada
+### Falha DNS controlada
 
 Uma falha determinística foi introduzida alterando temporariamente o servidor DNS no item monitorado, de:
 
@@ -463,7 +463,7 @@ Essa evidência confirma a falha na camada dos dados monitorados antes da valida
 
 ---
 
-## Detecção do problema DNS
+### Detecção do problema DNS
 
 Após a condição persistente de três minutos, o Zabbix gerou:
 
@@ -483,7 +483,7 @@ O incidente apresentou corretamente:
 
 ---
 
-## Recuperação do DNS
+### Recuperação do DNS
 
 O item monitorado foi restaurado à chave original de produção:
 
@@ -499,7 +499,7 @@ Não foi necessário reiniciar a estação de trabalho, o Agent 2 ou interromper
 
 ---
 
-## Resolução do evento DNS
+### Resolução do evento DNS
 
 Após a restauração do alvo DNS original, o Zabbix encerrou automaticamente o incidente.
 
@@ -520,9 +520,9 @@ Após a recuperação, o evento inicialmente desapareceu da visualização de in
 
 ---
 
-# Resumo da validação
+## Resumo da validação
 
-## Validação HTTP
+### Validação HTTP
 
 | Validação | Resultado |
 |---|:---:|
@@ -542,7 +542,7 @@ Após a recuperação, o evento inicialmente desapareceu da visualização de in
 | Evento resolvido automaticamente | Aprovado |
 | Histórico preservado | Aprovado |
 
-## Validação DNS
+### Validação DNS
 
 | Validação | Resultado |
 |---|:---:|
@@ -563,9 +563,9 @@ Após a recuperação, o evento inicialmente desapareceu da visualização de in
 
 ---
 
-# Constatações operacionais
+## Constatações operacionais
 
-## Constatação 1 — Os valores monitorados devem validar a injeção de falhas
+### Constatação 1 — Os valores monitorados devem validar a injeção de falhas
 
 A existência de uma regra de firewall no sistema operacional não comprova que a aplicação monitorada apresentou a falha esperada.
 
@@ -582,7 +582,7 @@ Se o valor monitorado não mudar, a falha não foi demonstrada.
 
 ---
 
-## Constatação 2 — Condições persistentes reduzem falsos positivos
+### Constatação 2 — Condições persistentes reduzem falsos positivos
 
 As *triggers* HTTP e DNS exigem falhas repetidas durante uma janela de tempo:
 
@@ -595,7 +595,7 @@ Essa abordagem evita que amostras transitórias isoladas se tornem imediatamente
 
 ---
 
-## Constatação 3 — A severidade representa o impacto operacional
+### Constatação 3 — A severidade representa o impacto operacional
 
 Os dois testes geraram problemas em serviços, mas receberam intencionalmente severidades diferentes:
 
@@ -606,7 +606,7 @@ A classificação por severidade ajuda os operadores a priorizar atividades conf
 
 ---
 
-## Constatação 4 — O reconhecimento estabelece responsabilidade operacional
+### Constatação 4 — O reconhecimento estabelece responsabilidade operacional
 
 O reconhecimento registra que um operador:
 
@@ -620,7 +620,7 @@ Um reconhecimento sem anotação de investigação oferece menor valor operacion
 
 ---
 
-## Constatação 5 — A recuperação deve ser validada em várias camadas
+### Constatação 5 — A recuperação deve ser validada em várias camadas
 
 Para o serviço HTTP, a recuperação foi confirmada por:
 
@@ -639,7 +639,7 @@ Para a resolução DNS, a recuperação foi confirmada por:
 
 ---
 
-## Constatação 6 — Visualizações recentes e históricas de incidentes têm finalidades diferentes
+### Constatação 6 — Visualizações recentes e históricas de incidentes têm finalidades diferentes
 
 A visualização de incidentes recentes é útil para operações em andamento.
 
@@ -652,7 +652,7 @@ A visualização histórica é necessária quando:
 
 ---
 
-# Índice de evidências
+## Índice de evidências
 
 | Evidência | Arquivo |
 |---|---|
@@ -671,9 +671,9 @@ A visualização histórica é necessária quando:
 
 ---
 
-# Referência para diagnóstico e resolução de problemas
+## Referência para diagnóstico e resolução de problemas
 
-## A expressão da trigger informa um host desconhecido
+### A expressão da trigger informa um host desconhecido
 
 Confirme o nome técnico do host utilizado na expressão.
 
@@ -688,7 +688,7 @@ As expressões das *triggers* devem fazer referência ao nome técnico do host s
 
 ---
 
-## A trigger permanece em `OK` após um controle de teste ser aplicado
+### A trigger permanece em `OK` após um controle de teste ser aplicado
 
 Verifique o valor do item em:
 
@@ -709,7 +709,7 @@ Valide:
 
 ---
 
-## O problema não aparece imediatamente
+### O problema não aparece imediatamente
 
 As *triggers* utilizam janelas de condição persistente.
 
@@ -724,7 +724,7 @@ O intervalo de atualização do item pode acrescentar tempo até que o evento ap
 
 ---
 
-## Um incidente resolvido desaparece da lista de recentes
+### Um incidente resolvido desaparece da lista de recentes
 
 Utilize:
 
@@ -736,7 +736,7 @@ Filtre pelo nome do incidente e pelo intervalo de tempo apropriado.
 
 ---
 
-## Uma configuração temporária de teste permanece ativa
+### Uma configuração temporária de teste permanece ativa
 
 Restaure imediatamente o alvo monitorado original.
 
@@ -754,7 +754,7 @@ Verifique se *Latest Data* retorna:
 
 ---
 
-# Critérios de aceitação
+## Critérios de aceitação
 
 A etapa 05 está concluída porque:
 
@@ -792,11 +792,11 @@ A etapa 05 está concluída porque:
 
 ---
 
-# Resultado da etapa
+## Resultado da etapa
 
-A etapa 05 demonstrou que o laboratório consegue transformar valores brutos de monitoramento em eventos operacionalmente significativos.
+Os exercícios HTTP e DNS transformaram valores monitorados em eventos reconhecidos, investigados e acompanhados até a recuperação.
 
-A implementação agora oferece suporte ao seguinte fluxo:
+O fluxo registrado segue esta sequência:
 
 ```text
 Monitoring signal
@@ -810,15 +810,15 @@ Monitoring signal
     -> historical operational record
 ```
 
-O teste HTTP demonstrou indisponibilidade isolada de serviço com severidade **High** e tratamento formal pelo operador.
+A interrupção do serviço HTTP gerou um problema de severidade **High**, reconhecido e investigado pelo operador.
 
-O teste DNS demonstrou falha de uma dependência com severidade **Average**, injeção de falha determinística, recuperação automática e validação histórica.
+A alteração controlada do alvo DNS gerou um incidente de severidade **Average**, seguido de recuperação após a restauração do alvo original.
 
-A tentativa malsucedida com o firewall também proporcionou um exercício realista de diagnóstico: alterações de configuração devem ser verificadas em relação ao sinal efetivamente monitorado antes de serem aceitas como evidência.
+O teste DNS anterior, baseado em firewall, não modificou o valor monitorado. Uma tentativa de falha precisa ser comparada ao sinal monitorado antes de ser apresentada como incidente reproduzido.
 
 ---
 
-# Etapa subsequente
+## Etapa subsequente
 
 Ao concluir o Stage 05, o próximo marco planejado era a implementação dos fluxos de entrega de alertas e notificações operacionais. O planejamento original incluía:
 
@@ -829,4 +829,4 @@ Ao concluir o Stage 05, o próximo marco planejado era a implementação dos flu
 - validar notificações de problemas e recuperação;
 - documentar a entrega de notificações e o comportamento do diagnóstico.
 
-Posteriormente, o Stage 06 foi concluído, implementando a entrega local de notificações SMTP por meio do Mailpit, tipos de mídia do Zabbix, ações de triggers baseadas em severidade e notificações de problema e recuperação para os serviços HTTP e DNS monitorados. A entrega foi validada pelo histórico de ações do Zabbix e pelas evidências correspondentes. Consulte a [documentação do Stage 06](../06-alert-delivery-notifications/README.pt-BR.md) para conhecer a implementação e os resultados.
+A etapa 06 acrescentou a entrega SMTP pelo Mailpit. As mensagens de problema e recuperação de HTTP e DNS foram verificadas no histórico de ações do Zabbix e na caixa postal local; consulte a [documentação da etapa 06](../06-alert-delivery-notifications/README.pt-BR.md).

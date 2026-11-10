@@ -6,9 +6,9 @@
 
 ## Objetivo
 
-Esta etapa introduz o monitoramento de rede e serviços por meio de verificações nativas do Zabbix, realizadas pelo Zabbix Server e pelo Zabbix Agent 2.
+Neste laboratório, o Zabbix Server e o Zabbix Agent 2 acompanham a conectividade de rede e a disponibilidade dos serviços por meio de verificações nativas.
 
-A implementação valida:
+O exercício abrange:
 
 - acessibilidade por ICMP;
 - tempo de resposta ICMP e perda de pacotes;
@@ -22,13 +22,13 @@ A implementação valida:
 
 Esta etapa amplia o monitoramento de hosts concluído nas etapas 02 e 03 com verificações de disponibilidade orientadas a serviços, comumente realizadas pelas equipes de Centros de Operações de Rede (NOC).
 
-## Situação atual
+## Situação registrada
 
 A etapa 04 está concluída.
 
 As verificações iniciais de conectividade e as atividades de monitoramento nativo de ICMP, DNS, TCP e HTTP foram concluídas.
 
-A implementação confirma:
+As verificações registradas mostraram:
 
 - disponibilidade local do Zabbix Web na porta TCP `8080`;
 - disponibilidade local do Zabbix Server na porta TCP `10051`;
@@ -383,31 +383,31 @@ O PostgreSQL não foi selecionado como alvo da falha porque armazena o banco de 
 
 ![Identificação da conectividade pelo Docker](../../docs/screenshots/stage-04-docker-connectivity-discovery.png)
 
-A evidência confirma a resolução DNS interna do Docker e identifica os utilitários de diagnóstico disponíveis no contêiner Zabbix Server.
+A captura mostra a resolução DNS interna do Docker e identifica os utilitários de diagnóstico disponíveis no contêiner Zabbix Server.
 
 ### Validação dos dados recentes de ICMP
 
 ![Validação dos dados recentes de ICMP](../../docs/screenshots/stage-04-icmp-latest-data-validation.png)
 
-A evidência confirma a disponibilidade ICMP, a ausência de perda de pacotes e a coleta de tempo de resposta para o alvo externo.
+A visualização registra a disponibilidade ICMP, a ausência de perda de pacotes e a coleta de tempo de resposta para o alvo externo.
 
 ### Disponibilidade TCP do PostgreSQL
 
 ![Disponibilidade TCP do PostgreSQL](../../docs/screenshots/stage-04-postgresql-tcp-availability.png)
 
-A evidência confirma o monitoramento bem-sucedido do serviço TCP do PostgreSQL pela rede interna de backend do Docker.
+O item registra o monitoramento do serviço TCP do PostgreSQL pela rede interna de backend do Docker.
 
 ### Validação dos dados recentes de HTTP
 
 ![Validação dos dados recentes de HTTP](../../docs/screenshots/stage-04-http-latest-data-validation.png)
 
-A evidência confirma a coleta em estado normal do status HTTP, da etapa com falha, do tempo de resposta, da velocidade de download e da disponibilidade TCP.
+A visualização apresenta a coleta em estado normal do status HTTP, da etapa com falha, do tempo de resposta, da velocidade de download e da disponibilidade TCP.
 
 ### Falha HTTP controlada
 
 ![Falha HTTP controlada](../../docs/screenshots/stage-04-controlled-http-failure.png)
 
-A evidência confirma disponibilidade TCP `0`, etapa com falha `1`, velocidade de download do cenário `0 Bps` e preservação da disponibilidade do PostgreSQL.
+A captura da falha controlada mostra disponibilidade TCP `0`, etapa com falha `1`, velocidade de download do cenário `0 Bps` e preservação da disponibilidade do PostgreSQL.
 
 ### Histórico de erros da falha HTTP
 
@@ -425,7 +425,7 @@ O gráfico confirma a transição completa da disponibilidade TCP, da operação
 
 ![Validação da resolução DNS externa](../../docs/screenshots/stage-04-dns-resolution-validation.png)
 
-A evidência confirma coletas repetidas e bem-sucedidas de resolução DNS com valor `1` a partir do host Windows monitorado.
+O item DNS apresenta verificações repetidas e bem-sucedidas de resolução DNS com valor `1` a partir do host Windows monitorado.
 
 ## Critérios de aceitação
 

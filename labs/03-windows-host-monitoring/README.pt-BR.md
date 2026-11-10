@@ -6,13 +6,13 @@
 
 ## Visão geral
 
-Esta etapa introduz o primeiro host Windows monitorado no Zabbix NOC Operations Lab.
+O exercício de monitoramento Windows utiliza uma estação de trabalho com Windows 11 Pro e Zabbix Agent 2 como serviço nativo.
 
 O alvo de monitoramento é a estação de trabalho Windows 11 Pro que também hospeda o Docker Desktop, o WSL 2 e a plataforma Zabbix executada em contêineres.
 
 O Zabbix Agent 2 é instalado como um serviço nativo do Windows e configurado para verificações passivas iniciadas pelo contêiner do Zabbix Server.
 
-## Situação atual
+## Situação da etapa
 
 **Concluída**
 
@@ -748,11 +748,11 @@ A regra do Firewall do Windows utiliza o escopo necessário de endereços remoto
 | Recuperação após a carga de trabalho confirmada | Aprovado |
 | Evidências finais da etapa 03 selecionadas | Aprovado |
 
-## Resultado atual
+## Resultados registrados
 
-A configuração inicial da estação de trabalho Windows, a validação IPv4 do Docker para o Windows, a identificação do escopo das redes Docker, a verificação do pacote oficial do Agent 2, a instalação controlada, a validação direta das verificações passivas, o cadastro na interface web, a descoberta inicial, a coleta de métricas, a validação controlada de CPU e a confirmação da recuperação estão concluídas.
+Os registros da etapa 03 abrangem a conectividade de rede, a instalação e o cadastro do Agent 2, a coleta de métricas e um teste controlado de CPU.
 
-O alvo é um sistema Windows 11 Pro de 64 bits que agora executa o Zabbix Agent 2 `7.0.30` como serviço nativo do Windows.
+Durante o experimento, a estação Windows 11 Pro de 64 bits executava o Zabbix Agent 2 `7.0.30` como serviço nativo.
 
 O contêiner Zabbix Server conseguiu:
 
@@ -761,22 +761,22 @@ O contêiner Zabbix Server conseguiu:
 - alcançar a interface Wi-Fi do Windows em `192.168.0.179`;
 - concluir os dois testes ICMP sem perda de pacotes.
 
-O destino preferencial para o monitoramento é `host.docker.internal`.
+A configuração registrada utilizou `host.docker.internal` como destino preferencial do monitoramento.
 
 Durante a validação original do Stage 03, o Zabbix Server utilizava `172.19.0.3` na rede backend e `172.20.0.2` na rede de monitoramento. A autorização do agente incluía a faixa `192.168.65.0/24`, observada na tradução de endereços do Docker Desktop, e a validação local por `127.0.0.1`. Esses valores descrevem o ambiente histórico validado e devem ser novamente identificados e verificados antes da reprodução do laboratório.
 
 O MSI oficial do Zabbix Agent 2 `7.0.30` para Windows AMD64 com OpenSSL foi baixado da rede de distribuição de conteúdo do Zabbix. Seu resumo SHA-256 foi registrado e o Windows informou uma assinatura Authenticode válida da Zabbix SIA.
 
-A configuração original do agente foi preservada, a configuração das verificações passivas passou na validação, a regra restrita de firewall foi criada e a porta TCP `10050` está em estado de escuta. As verificações diretas do contêiner Zabbix Server retornaram `1`, `NOTEACERITAMAR1` e `7.0.30` para `agent.ping`, `system.hostname` e `agent.version`, respectivamente.
+A configuração original do agente foi preservada, as verificações passivas foram validadas, uma regra restrita de firewall foi criada e a porta TCP `10050` estava em escuta durante o teste. As verificações diretas do contêiner Zabbix Server retornaram `1`, `NOTEACERITAMAR1` e `7.0.30` para `agent.ping`, `system.hostname` e `agent.version`, respectivamente.
 
-O host Windows está cadastrado no grupo `Windows servers` como `Windows Workstation - NOTEACERITAMAR1`. Utiliza `host.docker.internal:10050` como interface do agente baseada em DNS e o template `Windows by Zabbix agent`.
+O host Windows foi cadastrado no grupo `Windows servers` como `Windows Workstation - NOTEACERITAMAR1`, com `host.docker.internal:10050` como interface do agente baseada em DNS e o template `Windows by Zabbix agent` associado.
 
-A interface web confirmou a disponibilidade do agente e apresentou `146` valores monitorados após a descoberta inicial. Os dados em tempo real incluíram estado do agente, CPU, memória, swap, tempo de atividade, processos, threads, discos, sistemas de arquivos, interfaces de rede e serviços do Windows.
+A interface web confirmou a disponibilidade do agente e apresentou `146` valores monitorados após a descoberta inicial. Os dados coletados incluíram estado do agente, CPU, memória, swap, tempo de atividade, processos, threads, discos, sistemas de arquivos, interfaces de rede e serviços do Windows.
 
 Uma carga controlada de CPU durante dois minutos utilizou seis dos oito processadores lógicos da estação de trabalho. O Zabbix registrou aumento da utilização do intervalo normal para `89.5912%` e, depois, redução para `36.6596%` após o fim da carga. O caminho de monitoramento permaneceu disponível durante todo o teste.
 
-Os critérios de aceitação da etapa 03 foram atendidos.
+Os critérios de aceitação da etapa 03 foram atendidos nos testes registrados.
 
 ## Etapa subsequente
 
-Ao concluir o Stage 03, o monitoramento de rede e serviços estava previsto como o próximo marco do projeto. Posteriormente, o Stage 04 foi concluído, introduzindo o monitoramento ICMP, DNS, TCP e HTTP, preservando as capacidades de monitoramento dos agentes Linux e Windows estabelecidas nas etapas anteriores. A implementação também validou uma interrupção controlada de serviço, alterações nos estados de monitoramento e a recuperação. Consulte a [documentação do Stage 04](../04-network-service-monitoring/README.pt-BR.md) para conhecer a implementação e suas evidências técnicas.
+A etapa 04 ampliou o laboratório com verificações ICMP, DNS, TCP e HTTP, incluindo uma interrupção isolada de serviço e recuperação. Consulte a [documentação da etapa 04](../04-network-service-monitoring/README.pt-BR.md).
