@@ -4,9 +4,9 @@
 
 ## Objective
 
-This stage extends the incident-handling workflow implemented in Stage 05 by introducing automated alert delivery through native Zabbix actions and media types.
+The HTTP and DNS incidents configured in Stage 05 are used here to test automated notifications through native Zabbix actions and media types.
 
-The implementation demonstrates the complete transition from a detected monitoring condition to an operator-facing notification, followed by the corresponding recovery notification.
+Mailpit captures the messages generated when Zabbix detects a problem and when the monitored condition returns to normal.
 
 The stage validates:
 
@@ -22,11 +22,11 @@ The stage validates:
 - notification troubleshooting;
 - secure handling of notification settings.
 
-## Current Status
+## Stage Status
 
 **Completed**
 
-Stage 06 successfully implemented and validated automated alert delivery for the HTTP and DNS monitoring signals created in Stage 05.
+The recorded HTTP and DNS tests delivered problem and recovery messages to Mailpit, with corresponding operations visible in the Zabbix action history.
 
 The final solution includes:
 
@@ -550,9 +550,9 @@ Stage 06 is complete because:
 - [x] selected Stage 06 evidence was stored;
 - [x] final Stage 06 results were documented.
 
-## Key Learnings
+## Operational Lessons
 
-This stage demonstrated that:
+The notification tests highlight that:
 
 - trigger detection and notification delivery are separate operational layers;
 - a valid event does not guarantee delivery unless the media type contains the required message template;
@@ -567,19 +567,6 @@ This stage demonstrated that:
 
 ## Final Result
 
-Stage 06 converted the Stage 05 monitoring events into complete operator-notification workflows.
+Controlled HTTP and DNS failures produced problem notifications received by Mailpit. After the monitored conditions recovered, the corresponding recovery messages also arrived. The Zabbix action history provided a separate record of these delivery operations.
 
-The laboratory now provides:
-
-- monitored HTTP and DNS signals;
-- severity-aware trigger processing;
-- automatic problem notifications;
-- automatic recovery notifications;
-- local SMTP delivery;
-- operator-facing operational context;
-- delivery history inside Zabbix;
-- repeatable failure and recovery testing;
-- documented troubleshooting results;
-- selected portfolio evidence.
-
-The implementation demonstrates a complete monitoring path from signal collection to incident detection, operator notification, service recovery, and delivery confirmation.
+Troubleshooting the media-type configuration showed why message templates and action conditions must be checked independently of trigger detection. The stage records the delivery tests and the restoration of temporary test changes without requiring external SMTP services.

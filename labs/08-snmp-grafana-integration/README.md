@@ -4,17 +4,17 @@
 
 ## Objective
 
-This stage introduces SNMP-based infrastructure monitoring through a controlled Docker target integrated with Zabbix.
+A controlled Docker target running Net-SNMP provides the SNMP data used in this Zabbix monitoring exercise.
 
-The implementation prioritizes a complete native Zabbix workflow: target deployment, secure community handling, direct polling, host registration, interface discovery, traffic collection, problem detection, recovery, and troubleshooting.
+The tests cover direct polling, host registration, interface discovery, traffic collection, and a controlled authentication failure followed by recovery.
 
 Grafana was retained as an optional decision gate rather than a mandatory dependency. The stage was completed with native Zabbix monitoring because the required operational results were achieved without adding another visualization platform.
 
-## Final Status
+## Stage Status
 
 **Completed**
 
-The final implementation includes:
+The recorded configuration includes:
 
 - a dedicated Alpine Linux SNMP target;
 - Net-SNMP agent and command-line tools;
@@ -400,7 +400,7 @@ The stage demonstrated the importance of validating each layer independently:
 - failed optional integration work must not be represented as validated evidence;
 - recovery must be confirmed from both availability and event-history views.
 
-## Skills Demonstrated
+## Technical Topics Covered
 
 - SNMP fundamentals and SNMPv2c polling;
 - OID interpretation and MIB awareness;
@@ -422,12 +422,10 @@ The stage demonstrated the importance of validating each layer independently:
 - problem and recovery validation;
 - notification-path troubleshooting;
 - evidence review and security hygiene;
-- transparent technical documentation.
+- recording of test procedures, results, and limitations.
 
 ## Final Result
 
-Stage 08 is complete.
+At the end of the recorded tests, SNMP polling and interface monitoring were working, the authentication-failure incident had recovered, and the operational community had been rotated. The target and monitoring results were captured in the Stage 08 evidence.
 
-The laboratory now includes a reproducible SNMPv2c target, secure community handling, direct and Zabbix-based polling, Linux interface discovery, traffic collection, native visualization, controlled authentication failure, automatic recovery, and documented troubleshooting.
-
-The final environment is healthy, the operational community has been rotated and restored securely, and the unvalidated Stage 08 notification action remains disabled.
+The optional SNMP notification action was left disabled because message delivery had not been validated. Grafana was not added: the native Zabbix graphs met the visualization needs of this exercise.

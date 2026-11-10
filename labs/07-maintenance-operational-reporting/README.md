@@ -4,9 +4,9 @@
 
 ## Objective
 
-This stage introduces planned-maintenance handling and operational reporting practices commonly performed by Network Operations Center teams.
+This exercise follows a planned maintenance window for the monitored HTTP service, including incident handling and shift-handover documentation.
 
-The implementation validates how Zabbix behaves when a monitored service is intentionally interrupted during an approved maintenance window.
+The controlled interruption checks whether Zabbix continues collecting data while the associated incident and notification operations are suppressed as configured.
 
 The stage covers:
 
@@ -24,11 +24,11 @@ The stage covers:
 - shift-handover reporting;
 - troubleshooting notes and selected evidence.
 
-## Current Status
+## Stage Status
 
 **Completed**
 
-Stage 07 successfully validated the complete planned-maintenance lifecycle for the `monitored-web` service.
+The recorded maintenance exercise covered the interruption and restoration of `monitored-web`, suppression of the maintenance-related incident, and closure of the maintenance period.
 
 The final implementation confirmed:
 
@@ -357,9 +357,9 @@ The last HTTP error message remained temporarily visible in recent data after th
 
 The current TCP value, failed-step value, response code, incident state, and container health were used to confirm the real operational status.
 
-## Key Learnings
+## Operational Lessons
 
-This stage demonstrated that:
+The maintenance exercise shows that:
 
 - maintenance does not necessarily stop monitoring-data collection;
 - planned work can generate problem events while suppressing operational actions;
@@ -374,21 +374,6 @@ This stage demonstrated that:
 
 ## Final Result
 
-Stage 07 successfully demonstrated the complete planned-maintenance lifecycle:
+During the scheduled maintenance exercise, Zabbix continued collecting data while `monitored-web` was intentionally unavailable. The HTTP problem was recorded as suppressed, and no new Mailpit messages were observed for that incident.
 
-1. baseline validation;
-2. maintenance activation;
-3. continued data collection;
-4. controlled service interruption;
-5. problem detection;
-6. incident suppression;
-7. notification suppression;
-8. service restoration;
-9. automatic recovery;
-10. maintenance closure;
-11. post-maintenance validation;
-12. operational reporting.
-
-The laboratory returned to its normal state, the maintenance period expired, the HTTP incident was resolved, and no unintended notification was delivered.
-
-**Stage 07 completed successfully.**
+After the service was restored, the problem recovered automatically and the maintenance period was closed with `Expired` status. The post-maintenance checks and the maintenance and shift-handover reports preserve the outcome of the recorded exercise.
