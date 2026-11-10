@@ -299,7 +299,7 @@ O item de último erro preserva o erro registrado mais recentemente após a recu
 
 ### Reprodução da falha controlada (execuções futuras)
 
-**Reprodução da falha controlada de serviço:** Os comandos abaixo apresentam um procedimento restrito ao serviço de teste para futuras reproduções do experimento original do Stage 04. Execute-os a partir da raiz do repositório, no PowerShell do Windows, utilizando o arquivo `.env` operacional existente e o projeto Docker Compose correto. São comandos de referência compatíveis com o `compose.yaml` atual, **não uma transcrição literal dos comandos utilizados no experimento original**, e não foram executados independentemente nesta revisão documental.
+**Reprodução da falha controlada de serviço:** Os comandos abaixo apresentam um procedimento restrito ao serviço de teste para futuras reproduções do experimento original do Stage 04. Execute-os a partir da raiz do repositório, no PowerShell do Windows, utilizando o arquivo `.env` operacional existente e o projeto Docker Compose correto. São comandos de referência compatíveis com o `compose.yaml` atual, não um registro dos comandos efetivamente executados no Stage 04. Nenhum resultado de uma nova execução desses comandos é apresentado aqui.
 
 **Pré-requisitos e cuidados:** Utilize somente um laboratório isolado. Confirme que o arquivo `.env` pertence ao mesmo projeto e que os serviços `monitored-web`, `postgres`, `zabbix-server` e `zabbix-web` estão em execução. Mantenha o `.env` operacional privado; não o substitua pelo `.env.example`, não exiba segredos e não utilize comandos de encerramento de todo o projeto, como `docker compose down`. Interrompa o procedimento se o projeto, o serviço-alvo ou o estado inicial esperado não corresponder à documentação.
 

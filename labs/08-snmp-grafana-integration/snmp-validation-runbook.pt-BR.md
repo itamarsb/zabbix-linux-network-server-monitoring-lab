@@ -4,7 +4,7 @@
 
 ## Objetivo e limites das evidências
 
-Este é um **procedimento para reproduções futuras** de consultas SNMPv2c diretas e somente de leitura, além de um experimento opcional de divergência da macro do Zabbix, controlado pelo operador. **Nenhum desses comandos de referência foi executado independentemente durante a revisão da DOC-027.** Eles não representam uma transcrição literal dos comandos utilizados no Stage 08 original.
+Este é um **procedimento para reproduções futuras** de consultas SNMPv2c diretas e somente de leitura, além de um experimento opcional de divergência da macro do Zabbix, controlado pelo operador. **Os comandos de referência destinam-se a futuras execuções; não representam um registro de execução nem novos resultados dos testes originais do Stage 08.**
 
 As evidências preservadas do Stage 08 já demonstram consultas diretas bem-sucedidas, alvo saudável, incidente por incompatibilidade de autenticação (`Linux: No SNMP data collection`) e recuperação. Uma nova execução exigirá evidências separadas.
 

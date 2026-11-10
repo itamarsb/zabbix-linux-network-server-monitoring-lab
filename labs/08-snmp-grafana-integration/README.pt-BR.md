@@ -135,7 +135,7 @@ O CIDR efetivamente autorizado, as conexões de rede e os endereços dos contêi
 
 ### Verificações não destrutivas de autorização de rede para futuras execuções
 
-Os comandos PowerShell abaixo consultam as redes atuais do contêiner e o CIDR configurado sem exibir a comunidade SNMP. Execute-os somente no projeto Compose previsto, com o `.env` operacional existente; eles **não foram executados nesta revisão documental**.
+Os comandos PowerShell abaixo consultam as redes atuais do contêiner e o CIDR configurado sem exibir a comunidade SNMP. Execute-os somente no projeto Compose previsto, com o `.env` operacional existente; são verificações de referência para uso futuro, sem resultados de inspeção operacional apresentados aqui.
 
 ```powershell
 # Inspecionar o contêiner SNMP e as redes conectadas
@@ -201,7 +201,7 @@ As consultas diretas SNMPv2c ao alvo controlado foram bem-sucedidas antes do cad
 
 Esses resultados permitiram separar a validação do SNMP no alvo da configuração no Zabbix.
 
-Para futuras consultas SNMP diretas e uma verificação opcional e controlada de divergência da macro e recuperação, consulte o [runbook de validação SNMP](snmp-validation-runbook.pt-BR.md). Os comandos de referência **não foram executados independentemente** nesta revisão documental.
+Para futuras consultas SNMP diretas e uma verificação opcional e controlada de divergência da macro e recuperação, consulte o [runbook de validação SNMP](snmp-validation-runbook.pt-BR.md). O runbook apresenta procedimentos para testes futuros, não resultados adicionais do experimento original do Stage 08.
 
 ## Configuração do host no Zabbix
 

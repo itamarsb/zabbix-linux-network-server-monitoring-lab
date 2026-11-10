@@ -214,7 +214,7 @@ Trata-se de um escopo controlado, e não de acesso irrestrito. As verificações
 
 ### Reproduzindo a identificação da rede
 
-Os comandos abaixo servem como referência para uma **nova** execução no PowerShell do Windows com Docker Desktop; não foram executados novamente nesta correção documental. Eles consultam os valores atuais, em vez de reproduzir os endereços históricos:
+Os comandos abaixo permitem identificar os endereços de rede de uma nova sessão do PowerShell do Windows com Docker Desktop, em vez de reutilizar os valores registrados no Stage 03. São verificações de referência, não resultados adicionais do experimento original:
 
 ```powershell
 # Identify the running Zabbix Server container
