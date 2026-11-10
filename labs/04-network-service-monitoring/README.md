@@ -295,7 +295,7 @@ The last-error item preserves the most recent recorded error after recovery. Rec
 
 ### Reproducing the controlled failure (future runs)
 
-**Reproducing the controlled service failure:** The following commands provide a service-scoped procedure for future reproduction of the original Stage 04 experiment. Run them from the repository root in Windows PowerShell, using the existing operational `.env` file and the correct Docker Compose project. These are reference commands consistent with the current `compose.yaml`, **not a verbatim record of the commands used in the original experiment**, and they have not been independently executed as part of this documentation revision.
+**Reproducing the controlled service failure:** The following commands provide a service-scoped procedure for future reproduction of the original Stage 04 experiment. Run them from the repository root in Windows PowerShell, using the existing operational `.env` file and the correct Docker Compose project. These are reference commands compatible with the current `compose.yaml`, not an execution log of the original Stage 04 experiment. No new results from running them are reported here.
 
 **Prerequisites and guardrails:** Use only an isolated laboratory environment. Verify that the `.env` file belongs to the same project and that `monitored-web`, `postgres`, `zabbix-server`, and `zabbix-web` are running before starting. Keep the operational `.env` private; do not replace it with `.env.example`, print secrets, or run project-wide shutdown commands such as `docker compose down`. Stop if the project, target service, or expected monitoring baseline does not match the documentation.
 

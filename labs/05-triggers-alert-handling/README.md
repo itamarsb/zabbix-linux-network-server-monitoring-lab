@@ -403,7 +403,7 @@ Remove-NetFirewallRule `
 
 **Historical cleanup evidence:** The documented removal command explicitly targets `Zabbix Lab - Block DNS Target 1.1.1.1`. Although the earlier UDP-specific rule (`Zabbix Lab - Block DNS 1.1.1.1 UDP`) is also documented, the retained execution record does not include a separate removal command or a final firewall-rule inventory confirming its absence. This documentation gap does not establish that the UDP-specific rule remained active; its final state cannot be independently verified from the preserved evidence.
 
-**Non-destructive check for future validation:** On the relevant Windows host, the following PowerShell command can inspect whether either historical test rule is present. It has **not** been executed as part of this documentation revision:
+**Non-destructive check for future validation:** On the relevant Windows host, the following PowerShell command can inspect whether either historical test rule is present. The command is provided for future checks; no result from it is included in the Stage 05 evidence:
 
 ```powershell
 # Inspect both historical DNS test rules without changing the firewall

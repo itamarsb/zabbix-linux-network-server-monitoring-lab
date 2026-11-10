@@ -133,7 +133,7 @@ The actual allowed CIDR, network attachments, and container addresses must be ve
 
 ### Read-only network authorization checks for future runs
 
-The following Windows PowerShell commands inspect the current container networks and the configured source CIDR without displaying the SNMP community. Run them only in the intended Compose project with the existing operational `.env`; they have **not been executed as part of this documentation review**.
+The following Windows PowerShell commands inspect the current container networks and the configured source CIDR without displaying the SNMP community. Run them only in the intended Compose project with the existing operational `.env`; they are reference checks for future use, and no live inspection results are included here.
 
 ```powershell
 # Inspect running SNMP container and network attachments
@@ -199,7 +199,7 @@ Direct SNMPv2c queries succeeded against the controlled target before Zabbix reg
 
 These results separated target-side SNMP validation from Zabbix-side configuration.
 
-For future direct polling and an optional controlled macro-mismatch/recovery check, see the [SNMP validation runbook](snmp-validation-runbook.md). Its reference commands have **not been independently executed** during this documentation review.
+For future direct polling and an optional controlled macro-mismatch/recovery check, see the [SNMP validation runbook](snmp-validation-runbook.md). The runbook describes procedures for future tests, not additional results from the original Stage 08 experiment.
 
 ## Zabbix Host Configuration
 

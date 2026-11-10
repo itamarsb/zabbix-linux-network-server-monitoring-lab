@@ -4,7 +4,7 @@
 
 ## Purpose and evidence boundary
 
-This is a **future reproduction procedure** for direct, read-only SNMPv2c queries and an optional operator-controlled Zabbix macro-mismatch experiment. **None of these reference commands was independently executed during the DOC-027 review.** Do not present them as a verbatim log of the original Stage 08 test.
+This is a **future reproduction procedure** for direct, read-only SNMPv2c queries and an optional operator-controlled Zabbix macro-mismatch experiment. **These reference commands are intended for future runs; they are not an execution log or new results from the original Stage 08 tests.**
 
 The preserved Stage 08 results already show direct polling, a healthy target, an authentication-mismatch incident (`Linux: No SNMP data collection`), and recovery. Any new execution requires separate evidence.
 

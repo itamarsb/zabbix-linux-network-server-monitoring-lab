@@ -106,7 +106,7 @@ The verification confirmed:
 
 **Docker health status versus service availability:** The preserved baseline screenshot shows Docker `healthy` status for PostgreSQL, `monitored-web`, and Zabbix Web. It also records a successful HTTP `200` response from the Zabbix frontend.
 
-Although the current `compose.yaml` does not explicitly define a healthcheck for `zabbix-web`, Docker images may provide their own `HEALTHCHECK`. The exact healthcheck configuration of the historical container was not independently inspected during this documentation review.
+Although the current `compose.yaml` does not explicitly define a healthcheck for `zabbix-web`, Docker images may provide their own `HEALTHCHECK`. The recorded Stage 06 evidence does not establish the historical container's effective healthcheck configuration.
 
 Mailpit's Docker health status is not shown in this baseline capture. Its operational availability is supported separately by the accessible web interface and successful SMTP message capture documented in Stage 06.
 
@@ -138,7 +138,7 @@ The service provides:
 
 ### Mailpit startup and verification for future runs
 
-**Mailpit startup and verification for future runs:** The commands below provide a service-scoped procedure for starting and verifying Mailpit using the current Docker Compose definition. Run them from the repository root in Windows PowerShell with the existing operational `.env` file and the correct Compose project. The `mailpit` service should be started without recreating or restarting the monitoring platform. Verify the container status, inspect its startup logs, confirm access to the local web interface, and test SMTP connectivity from the Zabbix Server container when the required diagnostic tools are available. After configuring the Zabbix media type, perform an actual test-email delivery and confirm receipt in Mailpit. These commands are provided for future reproduction and are **not a verbatim record of the original Stage 06 execution**; they have **not been independently executed during this documentation review**.
+**Mailpit startup and verification for future runs:** The commands below provide a service-scoped procedure for starting and verifying Mailpit using the current Docker Compose definition. Run them from the repository root in Windows PowerShell with the existing operational `.env` file and the correct Compose project. The `mailpit` service should be started without recreating or restarting the monitoring platform. Verify the container status, inspect its startup logs, confirm access to the local web interface, and test SMTP connectivity from the Zabbix Server container when the required diagnostic tools are available. After configuring the Zabbix media type, perform an actual test-email delivery and confirm receipt in Mailpit. These commands are reference steps for future runs, not commands confirmed in the original Stage 06 execution. No additional execution results are reported here.
 
 **Prerequisites:** Use only the authorized laboratory project. Confirm that the existing `.env` identifies the same Compose project as the running monitoring stack; do not substitute `.env.example`, display operational secrets, or use project-wide start/stop commands. The commands below use the documented host web port `8025`; if the existing `.env` configures a different `MAILPIT_WEB_HTTP_PORT`, use that actual port for the HTTP check. Mailpit's SMTP listener stays inside the Docker `monitoring` network on port `1025`, and is **not** published on the Windows host by the current `compose.yaml`.
 

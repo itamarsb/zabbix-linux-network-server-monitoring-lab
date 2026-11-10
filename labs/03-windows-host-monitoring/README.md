@@ -210,7 +210,7 @@ This is a controlled scope rather than unrestricted access. Successful direct ch
 
 ### Reproducing the network discovery
 
-The commands below are a reference for a **new** Windows PowerShell and Docker Desktop session; they were not executed again as part of this documentation correction. They retrieve current values rather than recreating the historical addresses:
+The following commands can be used in a new Windows PowerShell and Docker Desktop session to discover current network addresses rather than reuse those recorded in Stage 03. They are reference checks, not additional results from the original experiment:
 
 ```powershell
 # Identify the running Zabbix Server container
