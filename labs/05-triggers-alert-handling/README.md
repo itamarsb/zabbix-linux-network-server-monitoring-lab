@@ -4,7 +4,7 @@
 
 ## Objective
 
-This stage introduces trigger configuration, severity classification, event generation, problem acknowledgment, operator notes, controlled recovery, and initial alert-handling workflows.
+HTTP and DNS monitoring signals are used to configure triggers, classify incidents by severity, document operator actions, and follow problems through recovery.
 
 The implementation uses monitoring signals established in the previous stages to reproduce common Network Operations Center activities:
 
@@ -22,7 +22,7 @@ Two monitored conditions were selected:
 1. HTTP availability for the dedicated `monitored-web` container;
 2. external DNS resolution from the Windows workstation.
 
-These tests demonstrate different severity levels and validate the complete lifecycle from normal monitoring through problem detection and recovery.
+The two cases use different severities and follow the recorded transition from normal monitoring to problem detection and recovery.
 
 ---
 
@@ -105,9 +105,9 @@ Two severities were explicitly demonstrated during this stage:
 
 ---
 
-# Part 1 - HTTP Service Trigger
+## Part 1 - HTTP Service Trigger
 
-## Monitored Item
+### Monitored Item
 
 The HTTP trigger uses the TCP service-availability item created for the dedicated target:
 
@@ -126,7 +126,7 @@ The target is resolved through the internal Docker network.
 
 ---
 
-## HTTP Trigger Configuration
+### HTTP Trigger Configuration
 
 | Field | Configuration |
 |---|---|
@@ -165,7 +165,7 @@ The dedicated monitored HTTP service is unavailable on TCP port 80. Validate Doc
 
 ---
 
-## Initial HTTP State
+### Initial HTTP State
 
 The trigger was created, enabled, assigned **High** severity, and initially displayed the normal `OK` state.
 
@@ -175,7 +175,7 @@ This confirms that the trigger configuration was active before introducing the c
 
 ---
 
-## Controlled HTTP Failure
+### Controlled HTTP Failure
 
 Only the dedicated `monitored-web` service was stopped:
 
@@ -197,7 +197,7 @@ The isolation of the failure is important because it demonstrates service-specif
 
 ---
 
-## HTTP Problem Detection
+### HTTP Problem Detection
 
 After the sustained-condition period elapsed, Zabbix generated the expected event:
 
@@ -217,7 +217,7 @@ The event displayed:
 
 ---
 
-## HTTP Incident Acknowledgment
+### HTTP Incident Acknowledgment
 
 The event was acknowledged and an operational investigation note was recorded.
 
@@ -242,7 +242,7 @@ This activity reproduces an important NOC practice: a problem should not only be
 
 ---
 
-## HTTP Service Recovery
+### HTTP Service Recovery
 
 The dedicated service was restored with:
 
@@ -260,7 +260,7 @@ After the health check completed, Docker reported the service as healthy.
 
 ---
 
-## HTTP Event Resolution
+### HTTP Event Resolution
 
 When TCP availability returned to `1`, the trigger automatically returned to its normal state.
 
@@ -280,9 +280,9 @@ The HTTP incident was resolved automatically without manually terminating the ev
 
 ---
 
-# Part 2 - External DNS Resolution Trigger
+## Part 2 - External DNS Resolution Trigger
 
-## Monitored Item
+### Monitored Item
 
 The Windows workstation uses Zabbix Agent 2 to validate external DNS resolution.
 
@@ -312,7 +312,7 @@ Expected values:
 
 ---
 
-## DNS Trigger Configuration
+### DNS Trigger Configuration
 
 | Field | Configuration |
 |---|---|
@@ -349,7 +349,7 @@ External DNS resolution through Zabbix Agent 2 is unavailable. Validate Windows 
 
 ---
 
-## Initial DNS State
+### Initial DNS State
 
 The trigger was created with **Average** severity and initially reported `OK`.
 
@@ -359,7 +359,7 @@ This second trigger demonstrates that operational severity should reflect impact
 
 ---
 
-## Initial Fault-Injection Attempt
+### Initial Fault-Injection Attempt
 
 The first DNS test attempted to block outbound communication to `1.1.1.1` using Windows Firewall.
 
@@ -429,7 +429,7 @@ This unsuccessful attempt was retained as a troubleshooting lesson:
 
 ---
 
-## Controlled DNS Failure
+### Controlled DNS Failure
 
 A deterministic failure was introduced by temporarily changing the DNS server in the monitored item from:
 
@@ -461,7 +461,7 @@ This evidence confirms the failure at the monitored-data layer before validating
 
 ---
 
-## DNS Problem Detection
+### DNS Problem Detection
 
 After the three-minute sustained condition, Zabbix generated:
 
@@ -481,7 +481,7 @@ The incident correctly displayed:
 
 ---
 
-## DNS Recovery
+### DNS Recovery
 
 The monitored item was restored to its original production key:
 
@@ -497,7 +497,7 @@ No workstation restart, Agent 2 restart, or general network interruption was req
 
 ---
 
-## DNS Event Resolution
+### DNS Event Resolution
 
 After the original DNS target was restored, Zabbix automatically closed the incident.
 
@@ -518,9 +518,9 @@ The event initially disappeared from the recent-incidents view after recovery. T
 
 ---
 
-# Validation Summary
+## Validation Summary
 
-## HTTP Validation
+### HTTP Validation
 
 | Validation | Result |
 |---|:---:|
@@ -540,7 +540,7 @@ The event initially disappeared from the recent-incidents view after recovery. T
 | Event automatically resolved | Passed |
 | History preserved | Passed |
 
-## DNS Validation
+### DNS Validation
 
 | Validation | Result |
 |---|:---:|
@@ -561,9 +561,9 @@ The event initially disappeared from the recent-incidents view after recovery. T
 
 ---
 
-# Operational Findings
+## Operational Findings
 
-## Finding 1 - Monitoring values must validate fault injection
+### Finding 1 - Monitoring values must validate fault injection
 
 A firewall rule existing in the operating system does not prove that the monitored application experienced the expected failure.
 
@@ -580,7 +580,7 @@ If the monitored value does not change, the failure has not been demonstrated.
 
 ---
 
-## Finding 2 - Sustained conditions reduce false positives
+### Finding 2 - Sustained conditions reduce false positives
 
 The HTTP and DNS triggers require repeated failure during a time window:
 
@@ -593,7 +593,7 @@ This design prevents isolated transient samples from immediately becoming operat
 
 ---
 
-## Finding 3 - Severity represents operational impact
+### Finding 3 - Severity represents operational impact
 
 Both tests generated service problems, but they were intentionally assigned different severities:
 
@@ -604,7 +604,7 @@ Severity classification helps operators prioritize work according to business an
 
 ---
 
-## Finding 4 - Acknowledgment creates operational accountability
+### Finding 4 - Acknowledgment creates operational accountability
 
 Acknowledgment records that an operator has:
 
@@ -618,7 +618,7 @@ An acknowledgment without an investigation note provides less operational value.
 
 ---
 
-## Finding 5 - Recovery must be validated at multiple layers
+### Finding 5 - Recovery must be validated at multiple layers
 
 For the HTTP service, recovery was confirmed through:
 
@@ -637,7 +637,7 @@ For DNS resolution, recovery was confirmed through:
 
 ---
 
-## Finding 6 - Recent and historical incident views serve different purposes
+### Finding 6 - Recent and historical incident views serve different purposes
 
 The recent-incidents view is useful for active operations.
 
@@ -650,7 +650,7 @@ The historical view is required when:
 
 ---
 
-# Evidence Index
+## Evidence Index
 
 | Evidence | File |
 |---|---|
@@ -669,9 +669,9 @@ The historical view is required when:
 
 ---
 
-# Troubleshooting Reference
+## Troubleshooting Reference
 
-## Trigger expression reports an unknown host
+### Trigger expression reports an unknown host
 
 Confirm the technical host name used by the expression.
 
@@ -686,7 +686,7 @@ Trigger expressions must reference the technical host name selected by Zabbix.
 
 ---
 
-## Trigger remains `OK` after a test control is applied
+### Trigger remains `OK` after a test control is applied
 
 Check the item value in:
 
@@ -707,7 +707,7 @@ Validate:
 
 ---
 
-## Problem does not appear immediately
+### Problem does not appear immediately
 
 The triggers use sustained time windows.
 
@@ -722,7 +722,7 @@ The item update interval can add additional time before the frontend displays th
 
 ---
 
-## Resolved incident disappears from recent incidents
+### Resolved incident disappears from recent incidents
 
 Use:
 
@@ -734,7 +734,7 @@ Filter by the incident name and appropriate time range.
 
 ---
 
-## Temporary test configuration remains active
+### Temporary test configuration remains active
 
 Restore the original monitored target immediately.
 
@@ -752,7 +752,7 @@ Verify that Latest Data returns:
 
 ---
 
-# Acceptance Criteria
+## Acceptance Criteria
 
 Stage 05 is complete because:
 
@@ -790,11 +790,11 @@ Stage 05 is complete because:
 
 ---
 
-# Stage Result
+## Stage Result
 
-Stage 05 demonstrated that the laboratory can convert raw monitoring values into operationally meaningful events.
+The HTTP and DNS exercises turned monitored values into problem events that were acknowledged, investigated, and followed through recovery.
 
-The implementation now supports:
+The recorded workflow follows:
 
 ```text
 Monitoring signal
@@ -808,15 +808,15 @@ Monitoring signal
     -> historical operational record
 ```
 
-The HTTP test demonstrated isolated service unavailability with **High** severity and formal operator handling.
+The HTTP service interruption produced a **High**-severity problem that was acknowledged and investigated by the operator.
 
-The DNS test demonstrated a dependency failure with **Average** severity, deterministic fault injection, automatic recovery, and historical validation.
+The controlled DNS target change produced an **Average**-severity incident followed by recovery when the original target was restored.
 
-The unsuccessful firewall attempt also provided a realistic troubleshooting exercise: configuration changes must be validated against the actual monitored signal before being accepted as evidence.
+The earlier firewall-based DNS test did not change the monitored value. An attempted failure must be checked against the monitored signal before being treated as a reproduced incident.
 
 ---
 
-# Subsequent Stage
+## Subsequent Stage
 
 At the conclusion of Stage 05, the next planned milestone was the implementation of alert delivery and operational notification workflows. The original plan included:
 
@@ -827,4 +827,4 @@ At the conclusion of Stage 05, the next planned milestone was the implementation
 - validating problem and recovery notifications;
 - documenting notification delivery and troubleshooting behavior.
 
-Stage 06 was subsequently completed, implementing local SMTP notification delivery through Mailpit, Zabbix media types, severity-based trigger actions, and problem and recovery notifications for the monitored HTTP and DNS services. Delivery was validated through the Zabbix action history and supporting evidence. See the [Stage 06 documentation](../06-alert-delivery-notifications/README.md) for the implementation and results.
+Stage 06 later added SMTP delivery through Mailpit. HTTP and DNS problem-and-recovery messages were verified through the Zabbix action history and local mailbox; see the [Stage 06 documentation](../06-alert-delivery-notifications/README.md).

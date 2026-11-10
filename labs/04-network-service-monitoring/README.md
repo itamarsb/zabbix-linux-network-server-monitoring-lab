@@ -2,9 +2,9 @@
 
 ## Objective
 
-This stage introduces network and service monitoring through native Zabbix checks performed by the Zabbix Server and Zabbix Agent 2.
+Zabbix Server and Zabbix Agent 2 are used here to monitor network connectivity and service availability through native checks.
 
-The implementation validates:
+The exercise covers:
 
 - ICMP reachability;
 - ICMP response time and packet loss;
@@ -18,13 +18,13 @@ The implementation validates:
 
 The stage extends the host-level monitoring completed in Stages 02 and 03 with service-oriented availability checks commonly performed by Network Operations Center teams.
 
-## Current Status
+## Recorded Status
 
 Stage 04 is complete.
 
 The connectivity baselines and the native ICMP, DNS, TCP, and HTTP monitoring activities have been completed.
 
-The implementation currently confirms:
+The recorded checks showed:
 
 - local Zabbix Web availability on TCP port `8080`;
 - local Zabbix Server availability on TCP port `10051`;
@@ -379,31 +379,31 @@ PostgreSQL was not selected as the failure target because it stores the Zabbix d
 
 ![Docker-side connectivity discovery](../../docs/screenshots/stage-04-docker-connectivity-discovery.png)
 
-The evidence confirms internal Docker DNS resolution and identifies the diagnostic utilities available inside the Zabbix Server container.
+The screenshot shows internal Docker DNS resolution and identifies the diagnostic utilities available inside the Zabbix Server container.
 
 ### ICMP latest-data validation
 
 ![ICMP latest-data validation](../../docs/screenshots/stage-04-icmp-latest-data-validation.png)
 
-The evidence confirms ICMP availability, zero packet loss, and response-time collection for the external target.
+The ICMP view records availability, zero packet loss, and response-time collection for the external target.
 
 ### PostgreSQL TCP availability
 
 ![PostgreSQL TCP availability](../../docs/screenshots/stage-04-postgresql-tcp-availability.png)
 
-The evidence confirms successful TCP service monitoring for PostgreSQL through the internal Docker backend network.
+The TCP item records service monitoring for PostgreSQL through the internal Docker backend network.
 
 ### HTTP latest-data validation
 
 ![HTTP latest-data validation](../../docs/screenshots/stage-04-http-latest-data-validation.png)
 
-The evidence confirms normal-state HTTP status, failed-step, response-time, download-speed, and TCP availability collection.
+The HTTP view shows normal-state HTTP status, failed-step, response-time, download-speed, and TCP availability collection.
 
 ### Controlled HTTP failure
 
 ![Controlled HTTP failure](../../docs/screenshots/stage-04-controlled-http-failure.png)
 
-The evidence confirms TCP availability `0`, failed step `1`, scenario download speed `0 Bps`, and preserved PostgreSQL availability.
+The controlled-failure screenshot shows TCP availability `0`, failed step `1`, scenario download speed `0 Bps`, and preserved PostgreSQL availability.
 
 ### HTTP failure error history
 
@@ -421,7 +421,7 @@ The graph confirms the full TCP availability transition from normal operation to
 
 ![External DNS resolution validation](../../docs/screenshots/stage-04-dns-resolution-validation.png)
 
-The evidence confirms repeated successful DNS resolution collections with value `1` from the monitored Windows host.
+The DNS item records repeated successful resolution checks with value `1` from the monitored Windows host.
 
 ## Acceptance Criteria
 

@@ -2,13 +2,13 @@
 
 ## Overview
 
-This stage introduces the first monitored Windows host into the Zabbix NOC Operations Lab.
+The Windows monitoring exercise uses a Windows 11 Pro workstation running Zabbix Agent 2 as a native service.
 
 The monitoring target is the Windows 11 Pro workstation that also hosts Docker Desktop, WSL 2, and the containerized Zabbix platform.
 
 Zabbix Agent 2 is installed as a native Windows service and configured for passive checks initiated by the Zabbix Server container.
 
-## Current Status
+## Stage Status
 
 **Completed**
 
@@ -744,11 +744,11 @@ The Windows Firewall rule uses the required Docker-related remote-address scope 
 | Post-workload recovery confirmed | Passed |
 | Final Stage 03 evidence selected | Passed |
 
-## Current Result
+## Recorded Results
 
-The Windows workstation baseline, Docker-to-Windows IPv4 validation, Docker network-scope discovery, official Agent 2 package verification, controlled installation, direct passive-check validation, frontend registration, initial discovery, metric collection, controlled CPU validation, and recovery confirmation are complete.
+The Stage 03 record covers network connectivity, Agent 2 installation and registration, metric collection, and a controlled CPU workload.
 
-The target is a 64-bit Windows 11 Pro system now running Zabbix Agent 2 `7.0.30` as a native Windows service.
+During the exercise, the 64-bit Windows 11 Pro workstation ran Zabbix Agent 2 `7.0.30` as a native Windows service.
 
 The Zabbix Server container successfully:
 
@@ -757,22 +757,22 @@ The Zabbix Server container successfully:
 - reached the Windows Wi-Fi interface at `192.168.0.179`;
 - completed both ICMP tests without packet loss.
 
-The preferred monitoring destination is `host.docker.internal`.
+The recorded monitoring configuration used `host.docker.internal` as the preferred destination.
 
 During the original Stage 03 validation, the Zabbix Server used `172.19.0.3` on the backend network and `172.20.0.2` on the monitoring network. The Agent authorization included the observed Docker Desktop address-translation range `192.168.65.0/24` and local validation through `127.0.0.1`. These values describe the validated historical environment and must be rediscovered and revalidated before reproduction.
 
 The official Zabbix Agent 2 `7.0.30` Windows AMD64 OpenSSL MSI was downloaded from the Zabbix content-delivery network. Its SHA-256 digest was recorded, and Windows reported a valid Authenticode signature from Zabbix SIA.
 
-The original Agent configuration was preserved, the passive-check configuration passed validation, the restricted firewall rule was created, and TCP port `10050` is listening. Direct checks from the Zabbix Server container returned `1`, `NOTEACERITAMAR1`, and `7.0.30` for `agent.ping`, `system.hostname`, and `agent.version`, respectively.
+The original Agent configuration was preserved, passive checks were validated, a restricted firewall rule was created, and TCP port `10050` was listening during the test. Direct checks from the Zabbix Server container returned `1`, `NOTEACERITAMAR1`, and `7.0.30` for `agent.ping`, `system.hostname`, and `agent.version`, respectively.
 
-The Windows host is registered in the `Windows servers` group as `Windows Workstation - NOTEACERITAMAR1`. It uses `host.docker.internal:10050` as its DNS-based Agent interface and the `Windows by Zabbix agent` template.
+The Windows host was registered in the `Windows servers` group as `Windows Workstation - NOTEACERITAMAR1`, with `host.docker.internal:10050` as its DNS-based Agent interface and `Windows by Zabbix agent` as its template.
 
-The frontend confirmed Agent availability and exposed `146` monitored values after initial discovery. Live data included Agent status, CPU, memory, swap, uptime, processes, threads, disks, file systems, network interfaces, and Windows services.
+The frontend confirmed Agent availability and exposed `146` monitored values after initial discovery. The collected data included Agent status, CPU, memory, swap, uptime, processes, threads, disks, file systems, network interfaces, and Windows services.
 
 A controlled two-minute CPU workload used six of the workstation's eight logical processors. Zabbix recorded an increase from the normal range to `89.5912%` and then a decrease to `36.6596%` after the workload ended. The monitoring path remained available throughout the test.
 
-Stage 03 acceptance criteria are satisfied.
+The Stage 03 acceptance criteria were met in the recorded tests.
 
 ## Subsequent Stage
 
-At the conclusion of Stage 03, network and service monitoring was planned as the next milestone. Stage 04 was subsequently completed, introducing ICMP, DNS, TCP, and HTTP monitoring while preserving the Linux and Windows Agent monitoring capabilities established in earlier stages. The implementation also validated controlled service interruption, monitoring-state changes, and recovery. See the [Stage 04 documentation](../04-network-service-monitoring/README.md) for the implementation and technical evidence.
+Stage 04 then introduced ICMP, DNS, TCP, and HTTP monitoring, including an isolated service interruption and recovery. See the [Stage 04 documentation](../04-network-service-monitoring/README.md).
