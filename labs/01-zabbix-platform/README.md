@@ -6,7 +6,7 @@
 
 Deploy and validate a reproducible Zabbix 7.0 LTS monitoring platform using Docker Compose.
 
-This stage establishes the core services required for the subsequent Linux, Windows, network, service-monitoring, and incident-response laboratories.
+PostgreSQL, Zabbix Server, and Zabbix Web form the foundation for the later host, network, service, and incident-response exercises.
 
 ## Learning Outcomes
 
@@ -372,8 +372,6 @@ docker compose --env-file .env down
 
 ## Outcome
 
-Stage 01 delivered a reproducible and locally isolated Zabbix 7.0 LTS platform composed of PostgreSQL, Zabbix Server, and Zabbix Web.
+The Stage 01 tests confirmed the deployment of PostgreSQL, Zabbix Server, and Zabbix Web in the local Docker environment. Container status, database connectivity, and frontend availability were checked, along with basic monitoring and administrative access. An initial template-related problem was acknowledged, investigated, corrected, and observed as recovered.
 
-The deployment was validated from the container, database, server, HTTP, security, monitoring, and operator-workflow perspectives. An initial configuration-related problem was acknowledged, investigated, corrected, and confirmed as recovered.
-
-Stage 02 subsequently added an Ubuntu 24.04 LTS host running under WSL 2, monitored through Zabbix Agent 2. The completed implementation validated passive agent connectivity, resource metrics, processes, filesystems, and network-interface monitoring. See the [Stage 02 documentation](../02-linux-host-monitoring/README.md) for the implementation and technical evidence.
+The resulting platform supported the subsequent Ubuntu 24.04 LTS monitoring exercise with Zabbix Agent 2 under WSL 2. Continue with the [Stage 02 documentation](../02-linux-host-monitoring/README.md).

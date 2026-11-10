@@ -6,7 +6,7 @@
 
 Validate the local workstation before deploying the Zabbix platform.
 
-This stage establishes a technical baseline for Windows, PowerShell, WSL, Docker, networking, storage, and repository state. The validation reduces deployment failures and prevents conflicts with unrelated laboratory environments.
+The initial checks cover Windows, PowerShell, WSL, Docker, networking, storage, and repository state. Checking these prerequisites before deployment helps identify resource limits and conflicts with existing laboratory services.
 
 ## Operational Context
 
@@ -310,9 +310,9 @@ If screenshots are added later, they must exclude credentials, personal informat
 
 ## Outcome
 
-The workstation is approved for deployment of the local Zabbix NOC laboratory.
+At the time of the Stage 00 assessment, all 20 recorded checks passed without warnings or failures, allowing work on the local Zabbix environment to proceed. This is a historical workstation baseline, not a fresh assessment of its present condition.
 
-Stage 01 subsequently created and validated the reproducible platform composed of PostgreSQL, Zabbix Server, and Zabbix Web.
+Stage 01 then deployed and validated PostgreSQL, Zabbix Server, and Zabbix Web.
 
 Continue to [`Lab 01 — Zabbix Platform Deployment`](../01-zabbix-platform/README.md).
 

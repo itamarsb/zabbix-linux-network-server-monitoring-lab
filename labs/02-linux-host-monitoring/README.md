@@ -2,13 +2,13 @@
 
 ## Overview
 
-This stage introduces the first monitored Linux host into the Zabbix NOC Operations Lab.
+The first Linux monitoring exercise uses Ubuntu 24.04 LTS under WSL 2 as a target for Zabbix Agent 2.
 
 The monitored target is an Ubuntu 24.04 LTS environment running under WSL 2. Zabbix Agent 2 collects operating-system, CPU, memory, process, filesystem, storage, and network-interface data.
 
 The initial implementation uses passive agent checks initiated by the containerized Zabbix Server.
 
-## Current Status
+## Stage Status
 
 **Completed**
 
@@ -575,18 +575,14 @@ The address remained `172.31.111.15` during the controlled WSL termination and r
 | WSL lifecycle handling evaluated | Passed |
 | Final Stage 02 evidence selected | Passed |
 
-## Current Result
+## Recorded Results
 
-The first monitored Linux host is operational.
+By the end of the Stage 02 tests, Zabbix Agent 2 version `7.0.30` was running under systemd on Ubuntu 24.04 WSL, listening on TCP port `10050` and responding to authorized passive checks from the containerized Zabbix Server.
 
-Zabbix Agent 2 version `7.0.30` is installed on Ubuntu 24.04 WSL, runs under systemd, listens on TCP port `10050`, accepts authorized passive checks from the containerized Zabbix Server, and provides current Linux operating-system and resource metrics.
+The Zabbix frontend collected operating-system and resource metrics. Direct `zabbix_get` checks, controlled resource activity, and WSL restart testing were completed successfully. Four initially unsupported items became supported during template initialization without manual suppression or template changes.
 
-Direct `zabbix_get` validation, frontend data collection, controlled resource tests, and the WSL lifecycle validation all succeeded.
-
-The four initially unsupported items resolved during template initialization without manual suppression or template modification. All Stage 02 acceptance criteria passed, and the selected evidence is stored in the repository.
-
-Stage 02 is complete.
+These results document the tested environment at the time of execution; a fresh deployment requires its own availability checks.
 
 ## Subsequent Stage
 
-At the conclusion of Stage 02, Windows host monitoring was planned as the next milestone. Stage 03 was subsequently completed, introducing a Windows 11 Pro host monitored through Zabbix Agent 2. The implementation validated agent connectivity, operating-system and service monitoring, resource metrics, network-interface monitoring, and controlled CPU workload response. See the [Stage 03 documentation](../03-windows-host-monitoring/README.md) for the implementation and technical evidence.
+Stage 03 subsequently added Windows 11 Pro monitoring with Zabbix Agent 2, including service and resource metrics and a controlled CPU workload. See the [Stage 03 documentation](../03-windows-host-monitoring/README.md).
